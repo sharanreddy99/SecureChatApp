@@ -4,7 +4,7 @@ require("dotenv").config();
 require("./db/mongoose");
 
 const path = require("path");
-const ProjectURL = path.join(__dirname, "SecureChat");
+const ProjectURL = path.join(__dirname, "securechat");
 
 const directMessagesRouter = require("./routers/directmessages");
 const usersRouter = require("./routers/users");
