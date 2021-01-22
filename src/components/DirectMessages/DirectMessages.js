@@ -32,7 +32,6 @@ const DirectMessages = () => {
   });
 
   //Effects
-
   useEffect(() => {
     const pusher = new Pusher("11a8dd35181269e15a84", {
       cluster: "ap2",
@@ -118,6 +117,7 @@ const DirectMessages = () => {
   };
 
   const focusLastDiv = () => {
+    console.log("Entered");
     var objDiv = document.getElementsByClassName("DirectMessages__chatarea")[0];
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;

@@ -35,17 +35,36 @@ const Login = () => {
         email: userData.email,
       });
 
+      var response3 = await axios.post("/fetchunseenemailscount", {
+        email: userData.email,
+      });
+
       var connections = response.data.connections;
       for (let i = 0; i < connections.length; i++) {
-        connections[i].unseen =
-          response2.data.unseencount[connections[i].email];
+        if (response2.data.unseencount[connections[i].email] == undefined)
+          connections[i].unseen = 0;
+        else
+          connections[i].unseen =
+            response2.data.unseencount[connections[i].email];
+      }
+
+      for (let i = 0; i < connections.length; i++) {
+        if (response3.data.unseencount[connections[i].email] == undefined)
+          connections[i].unseenemail = 0;
+        else
+          connections[i].unseenemail =
+            response3.data.unseencount[connections[i].email];
       }
 
       connections.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
+      connections.sort((a, b) => (a.unseenemail < b.unseenemail ? 1 : -1));
 
       history.push({
         pathname: "/dashboard",
-        state: { user: userData, connections: response.data.connections },
+        state: {
+          user: userData,
+          connections: response.data.connections,
+        },
       });
     } catch (e) {
       console.log(e.message);
