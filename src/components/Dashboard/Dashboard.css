@@ -1,0 +1,96 @@
+.Dashboard__container {
+  background-color: #e3e2df;
+  padding: 2%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.Dashboard__row {
+  border-radius: 20px;
+  box-shadow: 0px 5px 10px black;
+  background-color: #e3afbc;
+  overflow: scroll;
+  width: 30%;
+  height: 90%;
+}
+
+.Dashboard__row_header {
+  background-color: #5d001e;
+  color: white;
+  width: 104%;
+}
+
+.Dashboard__row h3 {
+  padding: 2%;
+  text-shadow: 1px 1px black, 2px 2px black;
+}
+
+.Dashboard__row .fa {
+  transform: scale(2, 2);
+}
+
+.Dashboard__row .fa:hover {
+  box-shadow: 0px 0px 10px black;
+}
+
+.Dashboard__row_icon {
+  margin-top: 3%;
+}
+
+.Dashboard__DM_container {
+  width: 90%;
+  margin: 2% 0% 0% 2%;
+  background-color: #5d001e;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0px 0px 20px black;
+}
+
+.Dashboard__DM_container:hover {
+  width: 90%;
+  margin: 2% 0% 0% 2%;
+  background-color: black;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0px 0px 20px #5d001e;
+  cursor: pointer;
+}
+
+.Dashboard__DM_container img {
+  margin-top: 30%;
+  width: 100%;
+  border-radius: 100%;
+}
+
+.Dashboard__DM_container h5 {
+  position: relative;
+  top: 20%;
+  overflow: scroll;
+  font-size: 90%;
+}
+
+.Dashboard__DM_container p {
+  position: relative;
+  top: 20%;
+  background-color: red;
+  color: white;
+  padding-left: 20%;
+  padding-right: 20%;
+  border-radius: 100%;
+}
+
+@media (max-width: 768px) {
+  .Dashboard__container {
+    min-height: 150%;
+    flex-direction: column;
+    padding: 5%;
+  }
+  .Dashboard__row {
+    width: 90%;
+    height: 90%;
+    margin-bottom: 10%;
+  }
+}
