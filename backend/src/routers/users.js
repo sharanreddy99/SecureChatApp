@@ -3,6 +3,7 @@ const router = new express.Router();
 
 const Users = require("../models/users");
 const DirectMessages = require("../models/directmessages");
+const DelayDirectMessages = require("../models/delaydirectmessages");
 
 router.post("/adduser", async (req, res) => {
   try {
@@ -178,6 +179,32 @@ router.post("/removeconnection", async (req, res) => {
       }
     );
 
+    await DirectMessages.deleteMany({
+      $or: [
+        {
+          senderemail: changeuser.email,
+          receiveremail: changeconnectionuser.email,
+        },
+        {
+          senderemail: changeconnectionuser.email,
+          receiveremail: changeuser.email,
+        },
+      ],
+    });
+
+    await DelayDirectMessages.deleteMany({
+      $or: [
+        {
+          senderemail: changeuser.email,
+          receiveremail: changeconnectionuser.email,
+        },
+        {
+          senderemail: changeconnectionuser.email,
+          receiveremail: changeuser.email,
+        },
+      ],
+    });
+
     await changeconnectionuser.save();
     await changeuser.save();
 
@@ -207,14 +234,19 @@ router.post("/removeconnection", async (req, res) => {
 router.post("/fetchconnections", async (req, res) => {
   try {
     const email = req.body.email;
-    console.log;
+
     const user = await Users.findOne({
       email: req.body.email,
       connections: { $elemMatch: { accepted: true } },
     });
 
-    res.status(201).send({ connections: user.connections });
+    if (user) {
+      return res.status(201).send({ connections: user.connections });
+    } else {
+      res.status(201).send({ connections: [] });
+    }
   } catch (e) {
+    console.log(e);
     res.status(401).send({ status: "failure" });
   }
 });

@@ -4,6 +4,8 @@ const pusher = require("../db/pusher");
 
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
+const Emails = require("../models/emails");
+const DelayEmails = require("../models/delayemails");
 
 async function updateDelayedDirectMessages() {
   try {
@@ -46,11 +48,51 @@ async function updateDelayedDirectMessages() {
   }
 }
 
+async function updateDelayedEmails() {
+  try {
+    const date = DateFormat(new Date(), "yyyy-mm-dd");
+    const time = DateFormat(new Date(), "HH:MM");
+
+    const emails = await DelayEmails.find({ date: date, time: time });
+
+    for (var i = 0; i < emails.length; i++) {
+      var email = new Emails({
+        text: emails[i].text,
+        senderemail: emails[i].senderemail,
+        receiveremail: emails[i].receiveremail,
+        date: emails[i].date,
+        time: emails[i].time,
+        subject: emails[i].subject,
+      });
+      await email.save();
+    }
+
+    var delayedEmails = emails;
+    for (var i = 0; i < delayedEmails.length; i++) {
+      delayedEmails[i].date = DateFormat(delayedEmails[i].date, "mmm dS, yyyy");
+    }
+
+    await pusher.trigger("emails", "delayedemails", {
+      delayedEmails: delayedEmails,
+    });
+
+    await DelayEmails.deleteMany({
+      date: date,
+      time: time,
+    });
+
+    return true;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 var autoComputeAll = new CronJob(
   "0 0/1 * 1/1 * *",
   async function () {
     try {
       await updateDelayedDirectMessages();
+      await updateDelayedEmails();
     } catch (e) {
       console.log(e);
     }
