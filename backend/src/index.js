@@ -1,6 +1,6 @@
 const app = require("./app");
 const port = process.env.PORT;
-app.listen(PORT, (err) => {
+app.listen(port, (err) => {
   if (err) {
     console.log("Error Occured Sharan Reddy");
   }
