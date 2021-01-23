@@ -235,13 +235,19 @@ router.post("/fetchconnections", async (req, res) => {
   try {
     const email = req.body.email;
 
-    const user = await Users.findOne({
-      email: req.body.email,
-      connections: { $elemMatch: { accepted: true } },
+    const tempuser = await Users.findOne(
+      {
+        email: req.body.email,
+      },
+      { connections: 1 }
+    );
+
+    const user = tempuser.connections.filter((connection) => {
+      return connection.accepted === true;
     });
 
     if (user) {
-      return res.status(201).send({ connections: user.connections });
+      return res.status(201).send({ connections: user });
     } else {
       res.status(201).send({ connections: [] });
     }
