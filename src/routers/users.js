@@ -4,6 +4,8 @@ const router = new express.Router();
 const Users = require("../models/users");
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
+const Emails = require("../models/emails");
+const DelayEmails = require("../models/delayemails");
 
 router.post("/adduser", async (req, res) => {
   try {
@@ -205,17 +207,34 @@ router.post("/removeconnection", async (req, res) => {
       ],
     });
 
-    await changeconnectionuser.save();
-    await changeuser.save();
-
-    await DirectMessages.deleteMany({
+    await Emails.deleteMany({
       $or: [
-        { senderemail: email },
-        { receiveremail: email },
-        { senderemail: connectionemail },
-        { receiveremail: connectionemail },
+        {
+          senderemail: changeuser.email,
+          receiveremail: changeconnectionuser.email,
+        },
+        {
+          senderemail: changeconnectionuser.email,
+          receiveremail: changeuser.email,
+        },
       ],
     });
+
+    await DelayEmails.deleteMany({
+      $or: [
+        {
+          senderemail: changeuser.email,
+          receiveremail: changeconnectionuser.email,
+        },
+        {
+          senderemail: changeconnectionuser.email,
+          receiveremail: changeuser.email,
+        },
+      ],
+    });
+
+    await changeconnectionuser.save();
+    await changeuser.save();
 
     res.status(201).send({
       ModalTitle: "Connection And Data Removed..",
