@@ -1,6 +1,7 @@
 const express = require("express");
 const router = new express.Router();
 
+const pusher = require("../db/pusher");
 const Users = require("../models/users");
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
@@ -231,6 +232,10 @@ router.post("/removeconnection", async (req, res) => {
           receiveremail: changeuser.email,
         },
       ],
+    });
+
+    await pusher.trigger("users", "removeconnection", {
+      email: email,
     });
 
     await changeconnectionuser.save();

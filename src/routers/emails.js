@@ -35,14 +35,28 @@ router.post("/sendemail", async (req, res) => {
 
 router.post("/fetchallemails", async (req, res) => {
   try {
-    const allEmails = await Emails.find({
-      $or: [
-        { senderemail: req.body.email },
-        { senderemail: req.body.connectionemail },
-        { receiveremail: req.body.email },
-        { receiveremail: req.body.connectionemail },
-      ],
-    });
+    const allEmails = await Emails.find(
+      {
+        $or: [
+          {
+            $and: [
+              { senderemail: req.body.email },
+              { receiveremail: req.body.connectionemail },
+            ],
+          },
+          {
+            $and: [
+              { senderemail: req.body.connectionemail },
+              { receiveremail: req.body.email },
+            ],
+          },
+        ],
+      },
+      null,
+      {
+        sort: { date: 1, time: 1 },
+      }
+    );
 
     var changeAllEmails = allEmails.map((email) => {
       email.date = DateFormat(email.date, "mmm dS, yyyy");

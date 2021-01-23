@@ -33,14 +33,28 @@ router.post("/senddirectmessage", async (req, res) => {
 
 router.post("/fetchalldirectmessages", async (req, res) => {
   try {
-    const allMessages = await DirectMessages.find({
-      $or: [
-        { senderemail: req.body.email },
-        { senderemail: req.body.connectionemail },
-        { receiveremail: req.body.email },
-        { receiveremail: req.body.connectionemail },
-      ],
-    });
+    const allMessages = await DirectMessages.find(
+      {
+        $or: [
+          {
+            $and: [
+              { senderemail: req.body.email },
+              { receiveremail: req.body.connectionemail },
+            ],
+          },
+          {
+            $and: [
+              { senderemail: req.body.connectionemail },
+              { receiveremail: req.body.email },
+            ],
+          },
+        ],
+      },
+      null,
+      {
+        sort: { date: 1, time: 1 },
+      }
+    );
 
     var changeAllMessages = allMessages.map((message) => {
       message.date = DateFormat(message.date, "mmm dS, yyyy");
@@ -49,6 +63,7 @@ router.post("/fetchalldirectmessages", async (req, res) => {
 
     res.status(201).send({ allMessages: changeAllMessages });
   } catch (e) {
+    console.log(e);
     res.status(401).send({ status: "failure" });
   }
 });
