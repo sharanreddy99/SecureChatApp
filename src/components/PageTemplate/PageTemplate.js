@@ -52,7 +52,7 @@ const PageTemplate = (props) => {
 
     var connections = response.data.connections;
     for (let i = 0; i < connections.length; i++) {
-      if (response2.data.unseencount[connections[i].email] == undefined)
+      if (response2.data.unseencount[connections[i].email] === undefined)
         connections[i].unseen = 0;
       else
         connections[i].unseen =
@@ -60,7 +60,7 @@ const PageTemplate = (props) => {
     }
 
     for (let i = 0; i < connections.length; i++) {
-      if (response3.data.unseencount[connections[i].email] == undefined)
+      if (response3.data.unseencount[connections[i].email] === undefined)
         connections[i].unseenemail = 0;
       else
         connections[i].unseenemail =

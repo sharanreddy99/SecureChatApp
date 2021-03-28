@@ -1,19 +1,39 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { useStateValue } from "../../StateProvider";
 import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
+import Pusher from "pusher-js";
 
 const Dashboard = () => {
   const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
   const location = useLocation();
-  const DMSConnections = location.state.connections;
 
   //States
+  const [DMSConnections, setDMSConnections] = useState(
+    location.state.connections
+  );
   const [active, setActive] = useState(-1);
   const [connectionEmail, setConnectionEmail] = useState("");
+
+  //Effects
+  useEffect(() => {
+    const pusher = new Pusher("11a8dd35181269e15a84", {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe("users");
+
+    channel.bind("removeconnection", (data) => {
+      const newConnections = DMSConnections.filter((connection) => {
+        return connection.email !== data.email;
+      });
+
+      setDMSConnections(newConnections);
+    });
+  }, [DMSConnections]);
 
   //Handlers
   const goToDirectMessages = async () => {
@@ -23,6 +43,17 @@ const Dashboard = () => {
         user: user,
         connections: location.state.connections,
         allMessages: [],
+      },
+    });
+  };
+
+  const goToEmails = async () => {
+    history.push({
+      pathname: "/emails",
+      state: {
+        user: user,
+        connections: location.state.connections,
+        emailMessages: [],
       },
     });
   };
@@ -65,18 +96,6 @@ const Dashboard = () => {
         user: user,
         connections: location.state.connections,
         emailMessages: response.data.emailMessages,
-      },
-    });
-  };
-
-  const goToGroupMessages = async () => {};
-  const goToEmails = async () => {
-    history.push({
-      pathname: "/emails",
-      state: {
-        user: user,
-        connections: location.state.connections,
-        emailMessages: [],
       },
     });
   };
@@ -145,19 +164,7 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-      <div className="Dashboard__groupmessages Dashboard__row">
-        <div className="row Dashboard__row_header">
-          <div className="col-10 text-center">
-            <h3>Group Messages</h3>
-          </div>
-          <div className="col Dashboard__row_icon">
-            <i
-              onClick={goToGroupMessages}
-              className="fa fa-external-link-square"
-            ></i>
-          </div>
-        </div>
-      </div>
+
       <div className="Dashboard__directmessages Dashboard__row">
         <div className="row Dashboard__row_header">
           <div className="col-10 text-center">

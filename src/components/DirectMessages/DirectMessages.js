@@ -11,10 +11,10 @@ import TimerModal from "./TimerModal";
 const DirectMessages = () => {
   const location = useLocation();
   const history = useHistory();
-  const connections = location.state.connections;
   const user = location.state.user;
 
   //States
+  const [connections, setConnections] = useState(location.state.connections);
   const [active, setActive] = useState(-1);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState(location.state.allMessages);
@@ -32,6 +32,22 @@ const DirectMessages = () => {
   });
 
   //Effects
+  useEffect(() => {
+    const pusher = new Pusher("11a8dd35181269e15a84", {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe("users");
+
+    channel.bind("removeconnection", (data) => {
+      const newConnections = connections.filter((connection) => {
+        return connection.email !== data.email;
+      });
+
+      setConnections(newConnections);
+    });
+  }, [connections]);
+
   useEffect(() => {
     const pusher = new Pusher("11a8dd35181269e15a84", {
       cluster: "ap2",
@@ -117,7 +133,6 @@ const DirectMessages = () => {
   };
 
   const focusLastDiv = () => {
-    console.log("Entered");
     var objDiv = document.getElementsByClassName("DirectMessages__chatarea")[0];
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;

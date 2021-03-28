@@ -11,10 +11,10 @@ import DateFormat from "dateformat";
 const Emails = () => {
   const location = useLocation();
   const history = useHistory();
-  const connections = location.state.connections;
   const user = location.state.user;
 
   //States
+  const [connections, setConnections] = useState(location.state.connections);
   const [active, setActive] = useState(-1);
   const [connectionEmail, setConnectionEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -37,6 +37,23 @@ const Emails = () => {
   });
 
   //Effects
+
+  useEffect(() => {
+    const pusher = new Pusher("11a8dd35181269e15a84", {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe("users");
+
+    channel.bind("removeconnection", (data) => {
+      const newConnections = connections.filter((connection) => {
+        return connection.email !== data.email;
+      });
+
+      setConnections(newConnections);
+    });
+  }, [connections]);
+
   useEffect(() => {
     const pusher = new Pusher("11a8dd35181269e15a84", {
       cluster: "ap2",
