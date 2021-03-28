@@ -6,10 +6,13 @@ const pusher = require("../db/pusher");
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
 
+var Filter = require("bad-words");
+var filter = new Filter();
+
 router.post("/senddirectmessage", async (req, res) => {
   try {
     var data = {
-      text: req.body.text,
+      text: filter.clean(req.body.text),
       senderemail: req.body.email,
       receiveremail: req.body.connectionemail,
       date: req.body.date,
@@ -52,7 +55,7 @@ router.post("/fetchalldirectmessages", async (req, res) => {
       },
       null,
       {
-        sort: { date: 1, time: 1 },
+        sort: { _id: 1 },
       }
     );
 
@@ -118,7 +121,7 @@ router.post("/directmessagesseen", async (req, res) => {
 router.post("/delaydirectmessage", async (req, res) => {
   try {
     var data = {
-      text: req.body.text,
+      text: filter.clean(req.body.text),
       senderemail: req.body.senderemail,
       receiveremail: req.body.receiveremail,
       date: req.body.date,
