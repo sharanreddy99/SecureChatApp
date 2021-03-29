@@ -39,13 +39,28 @@ const Login = () => {
         email: userData.email,
       });
 
+      var response4 = await axios.post("/fetchgroups", {
+        email: userData.email,
+      });
+
+      var response5 = await axios.post("/fetchunseengroupchatscount", {
+        email: userData.email,
+      });
       var connections = response.data.connections;
+      var groups = response4.data.groups;
+
       for (let i = 0; i < connections.length; i++) {
         if (response2.data.unseencount[connections[i].email] === undefined)
           connections[i].unseen = 0;
         else
           connections[i].unseen =
             response2.data.unseencount[connections[i].email];
+      }
+
+      for (let i = 0; i < groups.length; i++) {
+        if (response5.data.unseencount[groups[i]._id] === undefined)
+          groups[i].unseen = 0;
+        else groups[i].unseen = response5.data.unseencount[groups[i]._id];
       }
 
       for (let i = 0; i < connections.length; i++) {
@@ -57,13 +72,15 @@ const Login = () => {
       }
 
       connections.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
+      groups.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
       connections.sort((a, b) => (a.unseenemail < b.unseenemail ? 1 : -1));
 
       history.push({
         pathname: "/dashboard",
         state: {
           user: userData,
-          connections: response.data.connections,
+          connections: connections,
+          groups: groups,
         },
       });
     } catch (e) {

@@ -44,6 +44,10 @@ const DirectMessages = () => {
         return connection.email !== data.email;
       });
 
+      history.replace({
+        ...history.location,
+        state: { ...location.state, connections: newConnections },
+      });
       setConnections(newConnections);
     });
   }, [connections]);
@@ -61,6 +65,10 @@ const DirectMessages = () => {
         (connectionEmail == data.senderemail ||
           connectionEmail == data.receiveremail)
       ) {
+        history.replace({
+          ...history.location,
+          state: { ...location.state, allMessages: [...messages, { ...data }] },
+        });
         setMessages([...messages, { ...data }]);
       }
     });
@@ -73,6 +81,10 @@ const DirectMessages = () => {
           (connectionEmail === message.senderemail ||
             connectionEmail === message.receiveremail)
         );
+      });
+      history.replace({
+        ...history.location,
+        state: { ...location.state, allMessages: [...messages, { ...data }] },
       });
       setMessages([...messages, ...newMessages]);
     });

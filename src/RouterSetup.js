@@ -12,6 +12,7 @@ import PageTemplate from "./components/PageTemplate/PageTemplate";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Connections from "./components/Connections/Connections";
 import DirectMessages from "./components/DirectMessages/DirectMessages";
+import GroupMessages from "./components/GroupMessages/GroupMessages";
 import Emails from "./components/Emails/Emails";
 
 const RouterSetup = () => {
@@ -38,6 +39,11 @@ const RouterSetup = () => {
           <Route exact path="/directmessages">
             <PageTemplate>
               <DirectMessages />
+            </PageTemplate>
+          </Route>
+          <Route exact path="/groupmessages">
+            <PageTemplate>
+              <GroupMessages />
             </PageTemplate>
           </Route>
           <Route exact path="/emails">
