@@ -80,12 +80,23 @@ const Dashboard = () => {
       connectionemail: connectionemail,
     });
 
+    var active = location.state.connections.findIndex((connection) => {
+      return connection.email === connectionemail;
+    });
+
+    var connectionemail = "";
+    if (active != -1) {
+      connectionemail = location.state.connections[active].email;
+    }
+
     history.push({
       pathname: "/directmessages",
       state: {
         user: user,
         connections: location.state.connections,
+        connectionemail: connectionemail,
         allMessages: response.data.allMessages,
+        active: active,
       },
     });
   };
@@ -103,12 +114,22 @@ const Dashboard = () => {
       email: user.email,
     });
 
+    var active = location.state.groups.findIndex(
+      (row) => row._id === group._id && row.name === group.name
+    );
+    var activeGroup = {};
+    if (active != -1) {
+      activeGroup = location.state.groups[active];
+    }
+
     history.push({
       pathname: "/groupmessages",
       state: {
         user: user,
         connections: location.state.connections,
         groups: location.state.groups,
+        active: active,
+        activeGroup: activeGroup,
         allMessages: response.data.allMessages,
       },
     });

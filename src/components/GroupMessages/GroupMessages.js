@@ -25,7 +25,9 @@ const GroupMessages = () => {
   const [connections, setConnections] = useState(location.state.connections);
   const [groups, setGroups] = useState(location.state.groups);
   const [activeGroup, setActiveGroup] = useState({});
-  const [active, setActive] = useState(-1);
+  const [active, setActive] = useState(
+    location.state.active !== undefined ? location.state.active : -1
+  );
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState(location.state.allMessages);
   const [modal, setModal] = useState({
@@ -58,6 +60,14 @@ const GroupMessages = () => {
   });
 
   //Effects
+
+  useEffect(() => {
+    if (active != -1) {
+      setActiveGroup(location.state.activeGroup);
+      $("#connection" + active).addClass("GroupMessages__connections_active");
+    }
+  }, []);
+
   useEffect(() => {
     const pusher = new Pusher("11a8dd35181269e15a84", {
       cluster: "ap2",

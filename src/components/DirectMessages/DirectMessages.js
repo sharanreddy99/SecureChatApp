@@ -15,10 +15,14 @@ const DirectMessages = () => {
 
   //States
   const [connections, setConnections] = useState(location.state.connections);
-  const [active, setActive] = useState(-1);
+  const [active, setActive] = useState(
+    location.state.active !== undefined ? location.state.active : -1
+  );
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState(location.state.allMessages);
-  const [connectionEmail, setConnectionEmail] = useState("");
+  const [connectionEmail, setConnectionEmail] = useState(
+    location.state.connectionemail ? location.state.connectionemail : ""
+  );
   const [modal, setModal] = useState({
     isShown: false,
     ModalTitle: "",
@@ -32,6 +36,13 @@ const DirectMessages = () => {
   });
 
   //Effects
+
+  useEffect(() => {
+    if (active != -1) {
+      $("#connection" + active).addClass("DirectMessages__connections_active");
+    }
+  }, []);
+
   useEffect(() => {
     const pusher = new Pusher("11a8dd35181269e15a84", {
       cluster: "ap2",
