@@ -91,12 +91,17 @@ const Dashboard = () => {
   };
 
   const fetchGroupChat = async (group) => {
-    // const response = await axios.post("/fetchallgroupmessages", {group: group});
+    const response = await axios.post("/fetchallgroupmessages", {
+      groupid: group._id,
+      groupname: group.name,
+      email: user.email,
+    });
 
-    // await axios.post("/directmessagesseen", {
-    //   email: email,
-    //   connectionemail: connectionemail,
-    // });
+    await axios.post("/groupmessagesseen", {
+      groupid: group._id,
+      groupname: group.name,
+      email: user.email,
+    });
 
     history.push({
       pathname: "/groupmessages",
@@ -104,8 +109,7 @@ const Dashboard = () => {
         user: user,
         connections: location.state.connections,
         groups: location.state.groups,
-        // allMessages: response.data.allMessages,
-        allMessages: [],
+        allMessages: response.data.allMessages,
       },
     });
   };
