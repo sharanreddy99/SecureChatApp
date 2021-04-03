@@ -15,6 +15,7 @@ import AddMembersModal from "./Modals/AddMembersModal";
 import RemoveMembersModal from "./Modals/RemoveMembersModal";
 import MakeAdminsModal from "./Modals/MakeAdminsModal";
 import RemoveAdminsModal from "./Modals/RemoveAdminsModal";
+import GroupInfoModal from "./Modals/GroupInfoModal";
 
 const GroupMessages = () => {
   const location = useLocation();
@@ -58,9 +59,11 @@ const GroupMessages = () => {
   const [removeAdminsModal, setRemoveAdminsModal] = useState({
     isShown: false,
   });
+  const [groupInfoModal, setGroupInfoModal] = useState({
+    isShown: false,
+  });
 
   //Effects
-
   useEffect(() => {
     if (active != -1) {
       setActiveGroup(location.state.activeGroup);
@@ -80,17 +83,26 @@ const GroupMessages = () => {
           return member.email === user.email;
         });
 
-        if (
-          isMember &&
-          !groups.some(
+        if (isMember) {
+          var groupExists = groups.some(
             (group) => group._id === data._id && group.name === data.name
-          )
-        ) {
+          );
+          var newGroups = [];
+          if (groupExists) {
+            newGroups = groups.map((group) => {
+              if (group._id === data._id && group.name === data.name) {
+                group.members = data.members;
+              }
+              return group;
+            });
+          } else {
+            newGroups = [...groups, data];
+          }
           history.replace({
             ...history.location,
-            state: { ...location.state, groups: [...groups, data] },
+            state: { ...location.state, groups: newGroups },
           });
-          setGroups([...groups, data]);
+          setGroups(newGroups);
         }
       }
     });
@@ -119,9 +131,17 @@ const GroupMessages = () => {
 
           history.replace({
             ...history.location,
-            state: { ...location.state, groups: newGroups, allMessages: [] },
+            state: {
+              ...location.state,
+              active: -1,
+              activeGroup: {},
+              groups: newGroups,
+              allMessages: [],
+            },
           });
           setGroups(newGroups);
+          setActive(-1);
+          setActiveGroup({});
           setMessages([]);
         }
       }
@@ -156,10 +176,31 @@ const GroupMessages = () => {
 
           history.replace({
             ...history.location,
-            state: { ...location.state, groups: newGroups, allMessages: [] },
+            state: {
+              ...location.state,
+              active: -1,
+              activeGroup: {},
+              groups: newGroups,
+              allMessages: [],
+            },
           });
           setGroups(newGroups);
+          setActive(-1);
+          setActiveGroup({});
           setMessages([]);
+        } else {
+          var newGroups = groups.map((group) => {
+            if (group._id === data._id && group.name === data.name) {
+              group.members = data.members;
+            }
+            return group;
+          });
+
+          history.replace({
+            ...history.location,
+            state: { ...location.state, groups: newGroups },
+          });
+          setGroups(newGroups);
         }
       }
     });
@@ -189,7 +230,7 @@ const GroupMessages = () => {
           ...history.location,
           state: { ...location.state, groups: newGroups },
         });
-        setGroups(groups);
+        setGroups(newGroups);
       }
     });
 
@@ -218,7 +259,7 @@ const GroupMessages = () => {
           ...history.location,
           state: { ...location.state, groups: newGroups },
         });
-        setGroups(groups);
+        setGroups(newGroups);
       }
     });
 
@@ -383,6 +424,18 @@ const GroupMessages = () => {
                     <div className="col">
                       <img src={group.pictureUrl} alt={"."} />
                       <h5>{group.name}</h5>
+                    </div>
+                    <div className="col-2">
+                      <i
+                        className="fa fa-info-circle GroupMessages__info_button"
+                        onClick={() => {
+                          setActive(ind);
+                          setActiveGroup(group);
+                          setGroupInfoModal({
+                            isShown: true,
+                          });
+                        }}
+                      ></i>
                     </div>
                   </div>
                 </div>
@@ -667,13 +720,18 @@ const GroupMessages = () => {
         user={user}
         connections={connections}
       />
-
       <RemoveAdminsModal
         isShown={removeAdminsModal.isShown}
         setIsShown={setRemoveAdminsModal}
         group={activeGroup}
         user={user}
         connections={connections}
+      />
+
+      <GroupInfoModal
+        isShown={groupInfoModal.isShown}
+        setIsShown={setGroupInfoModal}
+        group={activeGroup}
       />
     </div>
   );
