@@ -77,9 +77,16 @@ router.post("/deletegroup", async (req, res) => {
       throw new Error("User is not an owner");
     }
 
-    await groupChat.deleteOne({
+    var tempgroupid = groupChat._id;
+    var tempgroupname = groupChat.name;
+    await GroupMessages.deleteOne({
       _id: groupChat._id,
       name: groupChat.name,
+    });
+
+    await DelayGroupMessages.deleteOne({
+      groupid: tempgroupid,
+      name: tempgroupname,
     });
 
     await pusher.trigger("groupmessages", "deletegroup", {
