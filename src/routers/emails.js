@@ -5,6 +5,20 @@ const router = new express.Router();
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
 
+router.post("/deleteemail", async (req, res) => {
+  try {
+    await Emails.deleteOne({ _id: req.body.message._id });
+    req.app
+      .get("socketio")
+      .emit("emails__deleteemail", { _id: req.body.message._id });
+
+    res.status(201).send({ msg: "success" });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
+  }
+});
+
 router.post("/sendemail", async (req, res) => {
   try {
     var data = {

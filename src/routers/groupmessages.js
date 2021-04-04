@@ -300,6 +300,29 @@ router.post("/removeadmins", async (req, res) => {
   }
 });
 
+router.post("/deletegroupmessage", async (req, res) => {
+  try {
+    var groupChat = await GroupMessages.findOne({
+      _id: req.body.groupid,
+      name: req.body.groupname,
+    });
+
+    groupChat.messages = groupChat.messages.filter((message) => {
+      return message._id != req.body.messageid;
+    });
+    await groupChat.save();
+
+    req.app.get("socketio").emit("groupmessages__deletemessage", {
+      _id: req.body.messageid,
+    });
+
+    res.status(201).send({ msg: "success" });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
+  }
+});
+
 router.post("/sendgroupmessage", async (req, res) => {
   try {
     var groupChat = await GroupMessages.findOne(
@@ -340,6 +363,7 @@ router.post("/sendgroupmessage", async (req, res) => {
       avatarUrl: data.avatarUrl,
       date: data.date,
       time: data.time,
+      messageid: groupChat.messages[groupChat.messages.length - 1]["_id"],
     });
 
     res.status(201).send({ msg: "success" });

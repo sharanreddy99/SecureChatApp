@@ -8,6 +8,20 @@ const DelayDirectMessages = require("../models/delaydirectmessages");
 var Filter = require("bad-words");
 var filter = new Filter();
 
+router.post("/deletedirectmessage", async (req, res) => {
+  try {
+    await DirectMessages.deleteOne({ _id: req.body.message._id });
+
+    req.app
+      .get("socketio")
+      .emit("directmessages__deletemessage", { _id: req.body.message._id });
+
+    res.status(201).send({ msg: "success" });
+  } catch (e) {
+    res.status(401).send({ error: "error" });
+  }
+});
+
 router.post("/senddirectmessage", async (req, res) => {
   try {
     var data = {
