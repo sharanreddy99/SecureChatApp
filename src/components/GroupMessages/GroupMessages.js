@@ -16,6 +16,7 @@ import RemoveMembersModal from "./Modals/RemoveMembersModal";
 import MakeAdminsModal from "./Modals/MakeAdminsModal";
 import RemoveAdminsModal from "./Modals/RemoveAdminsModal";
 import GroupInfoModal from "./Modals/GroupInfoModal";
+import DeleteMessageModal from "./DeleteMessageModal";
 
 const GroupMessages = () => {
   const location = useLocation();
@@ -61,6 +62,10 @@ const GroupMessages = () => {
   });
   const [groupInfoModal, setGroupInfoModal] = useState({
     isShown: false,
+  });
+  const [deleteMessageModal, setDeleteMessageModal] = useState({
+    isShown: false,
+    message: "",
   });
 
   //Effects
@@ -212,6 +217,15 @@ const GroupMessages = () => {
       }
     });
 
+    socket.on("groupmessages__deletemessage", (data) => {
+      const newMessages = messages.filter((row) => row._id !== data._id);
+      history.replace({
+        ...history.location,
+        state: { ...location.state, allMessages: newMessages },
+      });
+      setMessages(newMessages);
+    });
+
     socket.on("groupmessages__newmessage", (data) => {
       if (activeGroup._id == data._id && activeGroup.name == data.name) {
         setMessages([
@@ -223,6 +237,7 @@ const GroupMessages = () => {
             avatarUrl: data.avatarUrl,
             date: data.date,
             time: data.time,
+            _id: data.messageid,
           },
         ]);
       }
@@ -492,6 +507,12 @@ const GroupMessages = () => {
                           ? "sender"
                           : "receiver"
                       }`}
+                      onClick={() => {
+                        setDeleteMessageModal({
+                          isShown: true,
+                          message: message,
+                        });
+                      }}
                     >
                       {message.text}
                     </p>
@@ -666,6 +687,15 @@ const GroupMessages = () => {
       <GroupInfoModal
         isShown={groupInfoModal.isShown}
         setIsShown={setGroupInfoModal}
+        group={activeGroup}
+      />
+
+      <DeleteMessageModal
+        isShown={deleteMessageModal.isShown}
+        setIsShown={setDeleteMessageModal}
+        message={deleteMessageModal.message}
+        messages={messages}
+        setMessages={setMessages}
         group={activeGroup}
       />
     </div>

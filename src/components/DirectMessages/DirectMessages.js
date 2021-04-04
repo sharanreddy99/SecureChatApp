@@ -6,6 +6,7 @@ import $ from "jquery";
 import DateFormat from "dateformat";
 import TemplateModal from "../Modals/TemplateModal";
 import TimerModal from "./TimerModal";
+import DeleteMessageModal from "./DeleteMessageModal";
 import socketIOClient from "socket.io-client";
 
 const DirectMessages = () => {
@@ -35,6 +36,10 @@ const DirectMessages = () => {
     connectionemail: connectionEmail,
   });
 
+  const [deleteMessageModal, setDeleteMessageModal] = useState({
+    isShown: false,
+    message: "",
+  });
   //Effects
   useEffect(() => {
     if (active != -1) {
@@ -55,6 +60,15 @@ const DirectMessages = () => {
         state: { ...location.state, connections: newConnections },
       });
       setConnections(newConnections);
+    });
+
+    socket.on("directmessages__deletemessage", (data) => {
+      const newMessages = messages.filter((row) => row._id !== data._id);
+      history.replace({
+        ...history.location,
+        state: { ...location.state, allMessages: newMessages },
+      });
+      setMessages(newMessages);
     });
 
     socket.on("directmessages__newmessage", (data) => {
@@ -205,6 +219,12 @@ const DirectMessages = () => {
                           ? "sender"
                           : "receiver"
                       }`}
+                      onClick={() => {
+                        setDeleteMessageModal({
+                          isShown: true,
+                          message: message,
+                        });
+                      }}
                     >
                       {message.text}
                     </p>
@@ -317,6 +337,13 @@ const DirectMessages = () => {
         setMessage={setMessage}
         email={timermodal.email}
         connectionemail={timermodal.connectionemail}
+      />
+      <DeleteMessageModal
+        isShown={deleteMessageModal.isShown}
+        setIsShown={setDeleteMessageModal}
+        message={deleteMessageModal.message}
+        messages={messages}
+        setMessages={setMessages}
       />
     </div>
   );

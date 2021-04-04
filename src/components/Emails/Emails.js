@@ -6,6 +6,7 @@ import $ from "jquery";
 import TemplateModal from "../Modals/TemplateModal";
 import TimerModal from "./TimerModal";
 import DateFormat from "dateformat";
+import DeleteMessageModal from "./DeleteMessageModal";
 import socketIOClient from "socket.io-client";
 
 const Emails = () => {
@@ -22,7 +23,10 @@ const Emails = () => {
   const [emailMessages, setEmailMessages] = useState(
     location.state.emailMessages
   );
-
+  const [deleteMessageModal, setDeleteMessageModal] = useState({
+    isShown: false,
+    message: "",
+  });
   const [modal, setModal] = useState({
     isShown: false,
     ModalTitle: "",
@@ -45,6 +49,10 @@ const Emails = () => {
         return connection.email !== data.email;
       });
 
+      history.replace({
+        ...history.location,
+        state: { ...location.state, connections: newConnections },
+      });
       setConnections(newConnections);
     });
 
@@ -54,8 +62,24 @@ const Emails = () => {
         (connectionEmail == data.senderemail ||
           connectionEmail == data.receiveremail)
       ) {
+        history.replace({
+          ...history.location,
+          state: {
+            ...location.state,
+            emailMessages: [...emailMessages, { ...data }],
+          },
+        });
         setEmailMessages([...emailMessages, { ...data }]);
       }
+    });
+
+    socket.on("emails__deleteemail", (data) => {
+      const newEmails = emailMessages.filter((row) => row._id !== data._id);
+      history.replace({
+        ...history.location,
+        state: { ...location.state, emailMessages: newEmails },
+      });
+      setEmailMessages(newEmails);
     });
 
     socket.on("emails__delayedemails", (data) => {
@@ -208,11 +232,18 @@ const Emails = () => {
         </div>
         <div className="Emails__chat w-100 ">
           <div className="Emails__chatarea">
-            {console.log(emailMessages)}
             {emailMessages.map((message, ind) => {
               return (
                 <div className="row" key={ind}>
-                  <div className="col">
+                  <div
+                    className="col"
+                    onClick={() => {
+                      setDeleteMessageModal({
+                        isShown: true,
+                        message: message,
+                      });
+                    }}
+                  >
                     <p
                       className={`DirectMessages__message ${
                         message.senderemail == user.email
@@ -341,6 +372,13 @@ const Emails = () => {
         setSubject={setSubject}
         email={timermodal.email}
         connectionemail={timermodal.connectionemail}
+      />
+      <DeleteMessageModal
+        isShown={deleteMessageModal.isShown}
+        setIsShown={setDeleteMessageModal}
+        message={deleteMessageModal.message}
+        messages={emailMessages}
+        setMessages={setEmailMessages}
       />
     </div>
   );
