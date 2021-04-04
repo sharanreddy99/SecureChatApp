@@ -1,6 +1,5 @@
 const CronJob = require("cron").CronJob;
 const DateFormat = require("dateformat");
-const pusher = require("../db/pusher");
 
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
@@ -9,7 +8,7 @@ const DelayGroupMessages = require("../models/delaygroupmessages");
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
 
-async function updateDelayedDirectMessages() {
+async function updateDelayedDirectMessages(socket) {
   try {
     const date = DateFormat(new Date(), "yyyy-mm-dd");
     const time = DateFormat(new Date(), "HH:MM");
@@ -35,7 +34,7 @@ async function updateDelayedDirectMessages() {
       );
     }
 
-    await pusher.trigger("directmessages", "delayedmessages", {
+    socket.emit("directmessages__delayedmessages", {
       delayedMessages: delayedMessages,
     });
 
@@ -50,7 +49,7 @@ async function updateDelayedDirectMessages() {
   }
 }
 
-async function updateDelayedGroupMessages() {
+async function updateDelayedGroupMessages(socket) {
   try {
     const date = DateFormat(new Date(), "yyyy-mm-dd");
     const time = DateFormat(new Date(), "HH:MM");
@@ -96,7 +95,7 @@ async function updateDelayedGroupMessages() {
         newMessages[j].date = DateFormat(newMessages[j].date, "mmm dS, yyyy");
       }
 
-      await pusher.trigger("groupmessages", "delayedmessages", {
+      socket.emit("groupmessages__delayedmessages", {
         delayedMessages: newMessages,
         _id: DGMS[i].groupid,
         name: DGMS[i].name,
@@ -123,7 +122,7 @@ async function updateDelayedGroupMessages() {
   }
 }
 
-async function updateDelayedEmails() {
+async function updateDelayedEmails(socket) {
   try {
     const date = DateFormat(new Date(), "yyyy-mm-dd");
     const time = DateFormat(new Date(), "HH:MM");
@@ -147,7 +146,7 @@ async function updateDelayedEmails() {
       delayedEmails[i].date = DateFormat(delayedEmails[i].date, "mmm dS, yyyy");
     }
 
-    await pusher.trigger("emails", "delayedemails", {
+    socket.emit("emails__delayedemails", {
       delayedEmails: delayedEmails,
     });
 
@@ -162,17 +161,19 @@ async function updateDelayedEmails() {
   }
 }
 
-var autoComputeAll = new CronJob(
-  "0 0/1 * 1/1 * *",
-  async function () {
-    try {
-      await updateDelayedDirectMessages();
-      await updateDelayedGroupMessages();
-      await updateDelayedEmails();
-    } catch (e) {
-      console.log(e);
-    }
-  },
-  null,
-  true
-);
+module.exports = (socket) => {
+  var autoComputeAll = new CronJob(
+    "0 0/1 * 1/1 * *",
+    async function () {
+      try {
+        await updateDelayedDirectMessages(socket);
+        await updateDelayedGroupMessages(socket);
+        await updateDelayedEmails(socket);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    null,
+    true
+  );
+};
