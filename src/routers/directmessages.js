@@ -2,7 +2,6 @@ const express = require("express");
 const DateFormat = require("dateformat");
 const router = new express.Router();
 
-const pusher = require("../db/pusher");
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
 
@@ -24,9 +23,7 @@ router.post("/senddirectmessage", async (req, res) => {
 
     data.date = DateFormat(data.date, "mmm dS, yyyy");
 
-    await pusher.trigger("directmessages", "newmessage", {
-      ...data,
-    });
+    req.app.get("socketio").emit("directmessages__newmessage", { ...data });
 
     res.status(201).send({ msg: "success" });
   } catch (e) {

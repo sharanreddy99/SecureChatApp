@@ -2,7 +2,6 @@ const express = require("express");
 const DateFormat = require("dateformat");
 const router = new express.Router();
 
-const pusher = require("../db/pusher");
 const GroupMessages = require("../models/groupmessages");
 const DelayGroupMessages = require("../models/delaygroupmessages");
 
@@ -56,6 +55,15 @@ router.post("/creategroup", async (req, res) => {
 
     await groupChat.save();
 
+    req.app.get("socketio").emit("groupmessages__newgroup", {
+      _id: groupChat._id,
+      name: groupChat.name,
+      owner: groupChat.owner,
+      pictureUrl: groupChat.pictureUrl,
+      admin: groupChat.admin,
+      members: groupChat.members,
+    });
+
     res.status(201).send(groupChat);
   } catch (e) {
     res.status(401).send({ error: "error" });
@@ -89,7 +97,7 @@ router.post("/deletegroup", async (req, res) => {
       name: tempgroupname,
     });
 
-    await pusher.trigger("groupmessages", "deletegroup", {
+    req.app.get("socketio").emit("groupmessages__deletegroup", {
       _id: groupChat._id,
       name: groupChat.name,
     });
@@ -133,7 +141,7 @@ router.post("/addmembers", async (req, res) => {
 
     await groupChat.save();
 
-    await pusher.trigger("groupmessages", "newgroup", {
+    req.app.get("socketio").emit("groupmessages__newgroup", {
       _id: groupChat._id,
       name: groupChat.name,
       owner: groupChat.owner,
@@ -186,7 +194,7 @@ router.post("/removemembers", async (req, res) => {
 
     await groupChat.save();
 
-    await pusher.trigger("groupmessages", "removemembers", {
+    req.app.get("socketio").emit("groupmessages__removemembers", {
       _id: groupChat._id,
       name: groupChat.name,
       members: groupChat.members,
@@ -232,7 +240,7 @@ router.post("/makeadmins", async (req, res) => {
 
     await groupChat.save();
 
-    await pusher.trigger("groupmessages", "makeadmins", {
+    req.app.get("socketio").emit("groupmessages__makeadmins", {
       _id: groupChat._id,
       name: groupChat.name,
       admin: groupChat.admin,
@@ -279,7 +287,7 @@ router.post("/removeadmins", async (req, res) => {
 
     await groupChat.save();
 
-    await pusher.trigger("groupmessages", "removeadmins", {
+    req.app.get("socketio").emit("groupmessages__removeadmins", {
       _id: groupChat._id,
       name: groupChat.name,
       admin: groupChat.admin,
@@ -323,7 +331,7 @@ router.post("/sendgroupmessage", async (req, res) => {
 
     data.date = DateFormat(data.date, "mmm dS, yyyy");
 
-    await pusher.trigger("groupmessages", "newmessage", {
+    req.app.get("socketio").emit("groupmessages__newmessage", {
       _id: groupChat._id,
       name: groupChat.name,
       text: data.text,

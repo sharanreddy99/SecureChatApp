@@ -1,7 +1,6 @@
 const express = require("express");
 const router = new express.Router();
 
-const pusher = require("../db/pusher");
 const Users = require("../models/users");
 const DirectMessages = require("../models/directmessages");
 const DelayDirectMessages = require("../models/delaydirectmessages");
@@ -234,9 +233,7 @@ router.post("/removeconnection", async (req, res) => {
       ],
     });
 
-    await pusher.trigger("users", "removeconnection", {
-      email: email,
-    });
+    req.app.get("socketio").emit("users__removeconnection", { email: email });
 
     await changeconnectionuser.save();
     await changeuser.save();

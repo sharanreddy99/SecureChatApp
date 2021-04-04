@@ -2,7 +2,6 @@ const express = require("express");
 const DateFormat = require("dateformat");
 const router = new express.Router();
 
-const pusher = require("../db/pusher");
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
 
@@ -22,7 +21,7 @@ router.post("/sendemail", async (req, res) => {
 
     data.date = DateFormat(data.date, "mmm dS, yyyy");
 
-    await pusher.trigger("emails", "newemail", {
+    req.app.get("socketio").emit("emails__newemail", {
       ...data,
     });
 

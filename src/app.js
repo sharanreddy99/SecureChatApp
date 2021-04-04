@@ -16,6 +16,11 @@ require("./routers/automaticserver");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
+app.set("socketio", io);
+
 // app.use(express.static(ProjectURL));
 
 app.use("/api", directMessagesRouter);
@@ -27,4 +32,8 @@ app.use("/api", emailRouter);
 //   res.sendFile(path.join(ProjectURL + "/index.html"));
 // });
 
-module.exports = app;
+io.on("connection", (client) => {
+  console.log("client: ", client.id);
+});
+
+module.exports = { socketio: io, server: server };
