@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Pusher from "pusher-js";
 import "./Emails.css";
 import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
 import TemplateModal from "../Modals/TemplateModal";
 import TimerModal from "./TimerModal";
 import DateFormat from "dateformat";
+import socketIOClient from "socket.io-client";
 
 const Emails = () => {
   const location = useLocation();
@@ -39,29 +39,16 @@ const Emails = () => {
   //Effects
 
   useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("users");
-
-    channel.bind("removeconnection", (data) => {
+    const socket = socketIOClient("http://localhost:4201");
+    socket.on("users__removeconnection", (data) => {
       const newConnections = connections.filter((connection) => {
         return connection.email !== data.email;
       });
 
       setConnections(newConnections);
     });
-  }, [connections]);
 
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("emails");
-
-    channel.bind("newemail", (data) => {
+    socket.on("emails__newemail", (data) => {
       if (
         (user.email == data.senderemail || user.email == data.receiveremail) &&
         (connectionEmail == data.senderemail ||
@@ -71,7 +58,7 @@ const Emails = () => {
       }
     });
 
-    channel.bind("delayedemails", (data) => {
+    socket.on("emails__delayedemails", (data) => {
       const newMessages = data.delayedEmails.filter((message) => {
         return (
           (user.email === message.senderemail ||
@@ -84,11 +71,10 @@ const Emails = () => {
     });
 
     return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
+      socket.disconnect();
       focusLastDiv();
     };
-  }, [emailMessages]);
+  });
 
   //Handlers
   const fetchEmails = async (email, connectionemail) => {

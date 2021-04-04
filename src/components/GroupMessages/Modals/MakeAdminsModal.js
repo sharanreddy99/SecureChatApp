@@ -65,7 +65,7 @@ const MakeAdminsModal = ({ isShown, setIsShown, user, group, connections }) => {
         });
 
         handleClose();
-      }, 2500);
+      }, 1500);
     } catch (e) {
       setResultModal({
         isShown: true,

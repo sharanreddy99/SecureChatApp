@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
@@ -8,19 +8,15 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
   const [showMembers, setShowMembers] = useState(false);
   const [admins, setAdmins] = useState([]);
 
-  //Effects
-  useEffect(() => {
-    if (JSON.stringify(group) !== JSON.stringify({})) {
-      var completeAdmins = group.members.filter((member) => {
-        return group.admin.some((row) => row.email === member.email);
-      });
-      setAdmins(completeAdmins);
-    }
-  });
-
   //Handlers
   const chooseRoleHandler = (option) => {
     if (option === "admins") {
+      if (JSON.stringify(group) !== JSON.stringify({})) {
+        var completeAdmins = group.members.filter((member) => {
+          return group.admin.some((row) => row.email === member.email);
+        });
+        setAdmins(completeAdmins);
+      }
       setShowAdmin(true);
       setShowMembers(false);
     } else if (option === "members") {

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Pusher from "pusher-js";
 import "./DirectMessages.css";
 import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
 import DateFormat from "dateformat";
 import TemplateModal from "../Modals/TemplateModal";
 import TimerModal from "./TimerModal";
+import socketIOClient from "socket.io-client";
 
 const DirectMessages = () => {
   const location = useLocation();
@@ -36,7 +36,6 @@ const DirectMessages = () => {
   });
 
   //Effects
-
   useEffect(() => {
     if (active != -1) {
       $("#connection" + active).addClass("DirectMessages__connections_active");
@@ -44,13 +43,9 @@ const DirectMessages = () => {
   }, []);
 
   useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
+    const socket = socketIOClient("http://localhost:4201");
 
-    const channel = pusher.subscribe("users");
-
-    channel.bind("removeconnection", (data) => {
+    socket.on("users__removeconnection", (data) => {
       const newConnections = connections.filter((connection) => {
         return connection.email !== data.email;
       });
@@ -61,16 +56,8 @@ const DirectMessages = () => {
       });
       setConnections(newConnections);
     });
-  }, [connections]);
 
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("directmessages");
-
-    channel.bind("newmessage", (data) => {
+    socket.on("directmessages__newmessage", (data) => {
       if (
         (user.email == data.senderemail || user.email == data.receiveremail) &&
         (connectionEmail == data.senderemail ||
@@ -84,7 +71,7 @@ const DirectMessages = () => {
       }
     });
 
-    channel.bind("delayedmessages", (data) => {
+    socket.on("directmessages__delayedmessages", (data) => {
       const newMessages = data.delayedMessages.filter((message) => {
         return (
           (user.email === message.senderemail ||
@@ -101,11 +88,10 @@ const DirectMessages = () => {
     });
 
     return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
+      socket.disconnect();
       focusLastDiv();
     };
-  }, [messages]);
+  });
 
   //Handlers
   const fetchChat = async (email, connectionemail) => {

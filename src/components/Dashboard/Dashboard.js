@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { useStateValue } from "../../StateProvider";
 import { useHistory, useLocation } from "react-router-dom";
-import $ from "jquery";
-import Pusher from "pusher-js";
+import socketIOClient from "socket.io-client";
 
 const Dashboard = () => {
   const [{ user }, dispatch] = useStateValue();
@@ -19,20 +18,23 @@ const Dashboard = () => {
 
   //Effects
   useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
+    const socket = socketIOClient("http://localhost:4201");
 
-    const channel = pusher.subscribe("users");
-
-    channel.bind("removeconnection", (data) => {
+    socket.on("users__removeconnection", (data) => {
       const newConnections = DMSConnections.filter((connection) => {
         return connection.email !== data.email;
       });
-
+      history.replace({
+        ...history.location,
+        state: { ...location.state, connections: newConnections },
+      });
       setDMSConnections(newConnections);
     });
-  }, [DMSConnections]);
+
+    return () => {
+      socket.disconnect();
+    };
+  });
 
   //Handlers
   const goToDirectMessages = async () => {

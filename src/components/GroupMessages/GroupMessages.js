@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Pusher from "pusher-js";
+import socketIOClient from "socket.io-client";
 import "./GroupMessages.css";
 import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
@@ -72,12 +72,9 @@ const GroupMessages = () => {
   }, []);
 
   useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
+    const socket = socketIOClient("http://localhost:4201");
 
-    const channel = pusher.subscribe("groupmessages");
-    channel.bind("newgroup", (data) => {
+    socket.on("groupmessages__newgroup", (data) => {
       if (data && Object.keys(data).length > 0) {
         var isMember = data.members.some((member) => {
           return member.email === user.email;
@@ -107,19 +104,7 @@ const GroupMessages = () => {
       }
     });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [groups]);
-
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("groupmessages");
-    channel.bind("deletegroup", (data) => {
+    socket.on("groupmessages__deletegroup", (data) => {
       if (data && Object.keys(data).length > 0) {
         var isMember = groups.some((group) => {
           return group._id === data._id && group.name === data.name;
@@ -147,19 +132,7 @@ const GroupMessages = () => {
       }
     });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [groups]);
-
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("groupmessages");
-    channel.bind("removemembers", (data) => {
+    socket.on("groupmessages__removemembers", (data) => {
       if (data && Object.keys(data).length > 0) {
         var isPartOfRemovedGroup = groups.some((group) => {
           return (
@@ -205,19 +178,7 @@ const GroupMessages = () => {
       }
     });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [groups]);
-
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("groupmessages");
-    channel.bind("makeadmins", (data) => {
+    socket.on("groupmessages__makeadmins", (data) => {
       if (data && Object.keys(data).length > 0) {
         var newGroups = groups.map((group) => {
           if (group._id === data._id && group.name === data.name) {
@@ -234,19 +195,7 @@ const GroupMessages = () => {
       }
     });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [groups]);
-
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("groupmessages");
-    channel.bind("removeadmins", (data) => {
+    socket.on("groupmessages__removeadmins", (data) => {
       if (data && Object.keys(data).length > 0) {
         var newGroups = groups.map((group) => {
           if (group._id === data._id && group.name === data.name) {
@@ -263,20 +212,7 @@ const GroupMessages = () => {
       }
     });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [groups]);
-
-  useEffect(() => {
-    const pusher = new Pusher("11a8dd35181269e15a84", {
-      cluster: "ap2",
-    });
-
-    const channel = pusher.subscribe("groupmessages");
-
-    channel.bind("newmessage", (data) => {
+    socket.on("groupmessages__newmessage", (data) => {
       if (activeGroup._id == data._id && activeGroup.name == data.name) {
         setMessages([
           ...messages,
@@ -292,7 +228,7 @@ const GroupMessages = () => {
       }
     });
 
-    channel.bind("delayedmessages", (data) => {
+    socket.on("groupmessages__delayedmessages", (data) => {
       if (activeGroup._id === data._id && activeGroup.name === data.name) {
         const newMessages = data.delayedMessages;
         history.replace({
@@ -304,8 +240,7 @@ const GroupMessages = () => {
     });
 
     return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
+      socket.disconnect();
       focusLastDiv();
     };
   });

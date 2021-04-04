@@ -50,7 +50,7 @@ const CreateGroupModal = ({ isShown, setIsShown, user }) => {
       });
 
       handleClose();
-    }, 2000);
+    }, 1500);
   };
 
   const handleClose = () => {

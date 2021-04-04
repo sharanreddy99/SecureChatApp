@@ -48,7 +48,7 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
         });
 
         handleClose();
-      }, 2500);
+      }, 1500);
     }
   };
 
