@@ -27,26 +27,34 @@ const Login = () => {
 
       await axios.post("/adduser", { ...userData });
 
+      var email = userData.email;
+
       var response = await axios.post("/fetchconnections", {
-        email: userData.email,
+        email: email,
+      });
+
+      var emailresponse = await axios.post("/fetchconnections", {
+        email: email,
       });
 
       var response2 = await axios.post("/fetchunseendmscount", {
-        email: userData.email,
+        email: email,
       });
 
       var response3 = await axios.post("/fetchunseenemailscount", {
-        email: userData.email,
+        email: email,
       });
 
       var response4 = await axios.post("/fetchgroups", {
-        email: userData.email,
+        email: email,
       });
 
       var response5 = await axios.post("/fetchunseengroupchatscount", {
-        email: userData.email,
+        email: email,
       });
+
       var connections = response.data.connections;
+      var emailconnections = emailresponse.data.connections;
       var groups = response4.data.groups;
 
       for (let i = 0; i < connections.length; i++) {
@@ -63,24 +71,27 @@ const Login = () => {
         else groups[i].unseen = response5.data.unseencount[groups[i]._id];
       }
 
-      for (let i = 0; i < connections.length; i++) {
-        if (response3.data.unseencount[connections[i].email] === undefined)
-          connections[i].unseenemail = 0;
+      for (let i = 0; i < emailconnections.length; i++) {
+        if (response3.data.unseencount[emailconnections[i].email] === undefined)
+          emailconnections[i].unseenemail = 0;
         else
-          connections[i].unseenemail =
-            response3.data.unseencount[connections[i].email];
+          emailconnections[i].unseenemail =
+            response3.data.unseencount[emailconnections[i].email];
       }
 
       connections.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
       groups.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
-      connections.sort((a, b) => (a.unseenemail < b.unseenemail ? 1 : -1));
+      emailconnections.sort((a, b) => (a.unseenemail < b.unseenemail ? 1 : -1));
 
       history.push({
         pathname: "/dashboard",
         state: {
           user: userData,
           connections: connections,
+          emailconnections: emailconnections,
           groups: groups,
+          allMessages: [],
+          emailMessages: [],
         },
       });
     } catch (e) {

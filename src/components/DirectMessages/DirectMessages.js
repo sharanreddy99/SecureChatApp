@@ -259,7 +259,6 @@ const DirectMessages = () => {
                           ? "sender"
                           : "receiver"
                       }`}
-                      style={{ border: "2px solid black" }}
                       onMouseEnter={(e) => {
                         editbutton = e.target.children[0];
                         deletebutton = e.target.children[1];

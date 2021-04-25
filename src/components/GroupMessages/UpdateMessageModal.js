@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -6,31 +6,32 @@ import DateFormat from "dateformat";
 import axios from "axios";
 import TemplateModal from "../Modals/TemplateModal";
 
-const DeleteMessageModal = ({
+const UpdateMessageModal = ({
   isShown,
   setIsShown,
   message,
-  messages,
-  setMessages,
   editbutton,
   deletebutton,
+  senderemail,
   group,
 }) => {
   const location = useLocation();
   const history = useHistory();
+  const [newMessage, setNewMessage] = useState("");
 
-  const deleteMessageHandler = async () => {
-    await axios.post("/deletegroupmessage", {
+  const updateMessageHandler = async () => {
+    if (newMessage === "") {
+      return;
+    }
+
+    await axios.post("/updategroupmessage", {
       groupid: group._id,
       groupname: group.name,
-      messageid: message._id,
+      message: message,
+      newmessage: newMessage,
+      senderemail: senderemail,
     });
-    const updatedMessages = messages.filter((row) => row._id !== message._id);
-    history.replace({
-      ...history.location,
-      state: { ...location.state, allMessages: updatedMessages },
-    });
-    setMessages(updatedMessages);
+    setNewMessage("");
     handleClose();
   };
 
@@ -61,12 +62,27 @@ const DeleteMessageModal = ({
             textShadow: "2px 2px var(--logoBgColor)",
           }}
         >
-          <Modal.Title>Delete the Message</Modal.Title>
+          <Modal.Title>Update the Message</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
-            Are you sure you want to delete the message?
-          </h5>
+          <h4>Enter the updated message: </h4>
+          <b style={{ padding: "2%" }}>
+            {typeof message === "object" ? message.text : ""}
+          </b>
+          <hr />
+          <input
+            type="text"
+            style={{
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
+            }}
+            class="form-control"
+            placeholder="Enter New Message."
+            value={newMessage}
+            onChange={(e) => {
+              setNewMessage(e.target.value);
+            }}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -75,9 +91,9 @@ const DeleteMessageModal = ({
               color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
-            onClick={deleteMessageHandler}
+            onClick={updateMessageHandler}
           >
-            Yes
+            Update
           </Button>
           <Button
             style={{
@@ -87,11 +103,11 @@ const DeleteMessageModal = ({
             }}
             onClick={handleClose}
           >
-            No
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 };
-export default DeleteMessageModal;
+export default UpdateMessageModal;

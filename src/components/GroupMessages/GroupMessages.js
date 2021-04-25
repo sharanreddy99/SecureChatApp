@@ -17,11 +17,14 @@ import MakeAdminsModal from "./Modals/MakeAdminsModal";
 import RemoveAdminsModal from "./Modals/RemoveAdminsModal";
 import GroupInfoModal from "./Modals/GroupInfoModal";
 import DeleteMessageModal from "./DeleteMessageModal";
+import UpdateMessageModal from "./UpdateMessageModal";
 
 const GroupMessages = () => {
   const location = useLocation();
   const history = useHistory();
   const user = location.state.user;
+  var editbutton = undefined;
+  var deletebutton = undefined;
 
   //States
   const [connections, setConnections] = useState(location.state.connections);
@@ -64,6 +67,10 @@ const GroupMessages = () => {
     isShown: false,
   });
   const [deleteMessageModal, setDeleteMessageModal] = useState({
+    isShown: false,
+    message: "",
+  });
+  const [updateMessageModal, setUpdateMessageModal] = useState({
     isShown: false,
     message: "",
   });
@@ -226,6 +233,20 @@ const GroupMessages = () => {
       setMessages(newMessages);
     });
 
+    socket.on("groupmessages__updatemessage", (data) => {
+      const newMessages = messages.map((row) => {
+        if (row._id === data.message._id) {
+          row.text = data.message.text;
+        }
+        return row;
+      });
+      history.replace({
+        ...history.location,
+        state: { ...location.state, allMessages: newMessages },
+      });
+      setMessages(newMessages);
+    });
+
     socket.on("groupmessages__newmessage", (data) => {
       if (activeGroup._id == data._id && activeGroup.name == data.name) {
         setMessages([
@@ -261,6 +282,24 @@ const GroupMessages = () => {
   });
 
   //Handlers
+  const addHoverClass = () => {
+    if (typeof editbutton === "object" && typeof deletebutton === "object") {
+      editbutton.classList.add("GroupMessages__message_hover");
+      editbutton.classList.remove("GroupMessages__message_non_hover");
+      deletebutton.classList.add("GroupMessages__message_hover");
+      deletebutton.classList.remove("GroupMessages__message_non_hover");
+    }
+  };
+
+  const removeHoverClass = () => {
+    if (typeof editbutton === "object" && typeof deletebutton === "object") {
+      editbutton.classList.remove("GroupMessages__message_hover");
+      editbutton.classList.add("GroupMessages__message_non_hover");
+      deletebutton.classList.remove("GroupMessages__message_hover");
+      deletebutton.classList.add("GroupMessages__message_non_hover");
+    }
+  };
+
   const isGroupClicked = () => {
     if (JSON.stringify(activeGroup) === JSON.stringify({})) {
       setModal({
@@ -507,13 +546,38 @@ const GroupMessages = () => {
                           ? "sender"
                           : "receiver"
                       }`}
-                      onClick={() => {
-                        setDeleteMessageModal({
-                          isShown: true,
-                          message: message,
-                        });
+                      onMouseEnter={(e) => {
+                        editbutton = e.target.children[0];
+                        deletebutton = e.target.children[1];
+                        addHoverClass();
+                      }}
+                      onMouseLeave={() => {
+                        removeHoverClass();
                       }}
                     >
+                      <i
+                        class="fa fa-pencil-square-o GroupMessages__edit_button GroupMessages__message_non_hover"
+                        onClick={() => {
+                          setUpdateMessageModal({
+                            isShown: true,
+                            message: message,
+                            editbutton: editbutton,
+                            deletebutton: deletebutton,
+                          });
+                        }}
+                      ></i>
+                      <i
+                        class="fa fa-trash GroupMessages__delete_button GroupMessages__message_non_hover"
+                        onClick={() => {
+                          setDeleteMessageModal({
+                            isShown: true,
+                            message: message,
+                            editbutton: editbutton,
+                            deletebutton: deletebutton,
+                          });
+                        }}
+                      ></i>
+
                       {message.text}
                     </p>
                     {message.senderemail == user.email ? (
@@ -689,7 +753,15 @@ const GroupMessages = () => {
         setIsShown={setGroupInfoModal}
         group={activeGroup}
       />
-
+      <UpdateMessageModal
+        isShown={updateMessageModal.isShown}
+        setIsShown={setUpdateMessageModal}
+        message={updateMessageModal.message}
+        editbutton={updateMessageModal.editbutton}
+        deletebutton={updateMessageModal.deletebutton}
+        senderemail={user.email}
+        group={activeGroup}
+      />
       <DeleteMessageModal
         isShown={deleteMessageModal.isShown}
         setIsShown={setDeleteMessageModal}
@@ -697,6 +769,8 @@ const GroupMessages = () => {
         messages={messages}
         setMessages={setMessages}
         group={activeGroup}
+        editbutton={deleteMessageModal.editbutton}
+        deletebutton={deleteMessageModal.deletebutton}
       />
     </div>
   );
