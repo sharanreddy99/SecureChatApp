@@ -11,28 +11,28 @@
   position: absolute;
   top: 3%;
   left: 50%;
-  background-color: #5d001e;
-  color: white;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
 }
 
 .Emails__container {
   display: flex;
-  border: 1px solid #5d001e;
+  border: 1px solid var(--templateColor1);
   width: 95%;
   height: 100%;
   padding: 1%;
   border-radius: 10px;
-  box-shadow: 3px 5px 20px #5d001e;
+  box-shadow: 3px 5px 20px var(--templateColor1);
 }
 
 .Emails__sidebar {
-  box-shadow: 5px 10px 20px black;
+  box-shadow: 5px 10px 20px var(--logoBgColor);
   height: 100%;
   overflow: scroll;
 }
 
 .Emails__chat {
-  box-shadow: 5px 10px 20px black;
+  box-shadow: 5px 10px 20px var(--logoBgColor);
   height: 100%;
   padding: 2%;
   overflow: scroll;
@@ -44,31 +44,32 @@
   overflow: scroll;
   padding: 2%;
   margin-bottom: 2%;
-  box-shadow: 0px 0px 10px black, 0px 0px 20px black;
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor);
 }
 
 .Emails__chatarea .customtext {
-  background-color: #5d001e;
-  color: white;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
   width: 10vw;
 }
 
 .Emails__inputarea .customform {
-  background-color: #5d001e;
-  color: white;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
   padding-right: 14%;
 }
 
 .Emails__inputarea .customform:focus {
   outline: none;
-  box-shadow: 0px 0px 10px black, 0px 0px 20px black, 0px 0px 20px black;
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
+    0px 0px 20px var(--logoBgColor);
 }
 
 .Emails__inputarea .fa {
   float: right;
   position: relative;
   bottom: 28px;
-  color: white;
+  color: var(--logoTextColor);
   margin: 0px 15px 0px 5px;
 }
 
@@ -94,7 +95,7 @@
     position: absolute;
     top: 6%;
     left: -12%;
-    background-color: #e3e2df;
-    color: black;
+    background-color: var(--templateColor3);
+    color: var(--logoBgColor);
   }
 }

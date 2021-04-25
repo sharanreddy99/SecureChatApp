@@ -1,5 +1,5 @@
 .Dashboard__container {
-  background-color: #e3e2df;
+  background-color: var(--templateColor3);
   padding: 2%;
   display: flex;
   justify-content: space-around;
@@ -10,22 +10,23 @@
 
 .Dashboard__row {
   border-radius: 20px;
-  box-shadow: 0px 5px 10px black;
-  background-color: #e3afbc;
+  box-shadow: 0px 5px 10px var(--logoBgColor);
+  background-color: var(--templateColor2);
   overflow: scroll;
   width: 30%;
   height: 90%;
 }
 
 .Dashboard__row_header {
-  background-color: #5d001e;
-  color: white;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
   width: 104%;
+  height: 9vh;
 }
 
 .Dashboard__row h3 {
   padding: 2%;
-  text-shadow: 1px 1px black, 2px 2px black;
+  text-shadow: 1px 1px var(--logoBgColor), 2px 2px var(--logoBgColor);
 }
 
 .Dashboard__row .fa {
@@ -33,7 +34,7 @@
 }
 
 .Dashboard__row .fa:hover {
-  box-shadow: 0px 0px 10px black;
+  box-shadow: 0px 0px 10px var(--logoBgColor);
 }
 
 .Dashboard__row_icon {
@@ -43,25 +44,26 @@
 .Dashboard__DM_container {
   width: 90%;
   margin: 2% 0% 0% 2%;
-  background-color: #5d001e;
+  background-color: var(--templateColor1);
   border-radius: 20px;
-  color: white;
-  box-shadow: 0px 0px 20px black;
+  color: var(--logoTextColor);
+  box-shadow: 0px 0px 20px var(--logoBgColor);
 }
 
 .Dashboard__DM_container:hover {
   width: 90%;
   margin: 2% 0% 0% 2%;
-  background-color: black;
+  background-color: var(--logoBgColor);
   border-radius: 20px;
-  color: white;
-  box-shadow: 0px 0px 20px #5d001e;
+  color: var(--logoTextColor);
+  box-shadow: 0px 0px 20px var(--templateColor1);
   cursor: pointer;
 }
 
 .Dashboard__DM_container img {
-  margin-top: 30%;
-  width: 100%;
+  margin-top: 10%;
+  margin-left: -50%;
+  width: 10vw;
   border-radius: 100%;
 }
 
@@ -69,20 +71,35 @@
   position: relative;
   top: 20%;
   overflow: scroll;
-  font-size: 90%;
+  font-size: 1.2em;
 }
 
 .Dashboard__DM_container p {
   position: relative;
   top: 20%;
-  background-color: red;
-  color: white;
-  padding-left: 20%;
-  padding-right: 20%;
+  background-color: var(--notificationBgColor);
+  color: var(--notificationTextColor);
+  padding: 1vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  font-size: 1.2em;
   border-radius: 100%;
 }
 
-@media (max-width: 768px) {
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .Dashboard__DM_container img {
+    margin-top: 4%;
+    margin-left: -30%;
+    width: 100%;
+  }
+
+  .Dashboard__DM_container h5 {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 900px) {
   .Dashboard__container {
     min-height: 150%;
     flex-direction: column;
@@ -92,5 +109,25 @@
     width: 90%;
     height: 90%;
     margin-bottom: 10%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .Dashboard__DM_container img {
+    margin-top: 20%;
+    margin-left: -40%;
+    width: 200%;
+  }
+
+  .Dashboard__DM_container h5 {
+    font-size: 1em;
+  }
+
+  .Dashboard__DM_container p {
+    padding: 0.5vw;
+    padding-left: 0.8vw;
+    padding-right: 0.8vw;
+    font-size: 0.8em;
   }
 }

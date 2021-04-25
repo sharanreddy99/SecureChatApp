@@ -11,28 +11,28 @@
   position: absolute;
   top: 3%;
   left: 50%;
-  background-color: #5d001e;
-  color: white;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
 }
 
 .DirectMessages__container {
   display: flex;
-  border: 1px solid #5d001e;
+  border: 1px solid var(--templateColor1);
   width: 95%;
   height: 100%;
   padding: 1%;
   border-radius: 10px;
-  box-shadow: 3px 5px 20px #5d001e;
+  box-shadow: 3px 5px 20px var(--templateColor1);
 }
 
 .DirectMessages__sidebar {
-  box-shadow: 5px 10px 20px black;
+  box-shadow: 5px 10px 20px var(--logoBgColor);
   height: 100%;
   overflow: scroll;
 }
 
 .DirectMessages__chat {
-  box-shadow: 5px 10px 20px black;
+  box-shadow: 5px 10px 20px var(--logoBgColor);
   height: 100%;
   padding: 2%;
   overflow: scroll;
@@ -40,14 +40,14 @@
 }
 
 .DirectMessages__connections {
-  border: 2px solid black;
+  border: 2px solid var(--logoBgColor);
 }
 
 .DirectMessages__connections {
   margin-bottom: 2%;
   padding: 1%;
-  background-color: white;
-  box-shadow: 0px 6px 10px black;
+  background-color: var(--logoTextColor);
+  box-shadow: 0px 6px 10px var(--logoBgColor);
   border-radius: 10px;
 }
 
@@ -68,16 +68,16 @@
 }
 
 .DirectMessages__connections:hover {
-  background-color: #5d001e;
-  color: white;
-  box-shadow: 20px 20px 40px #5d001e;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  box-shadow: 20px 20px 40px var(--templateColor1);
   cursor: pointer;
 }
 
 .DirectMessages__connections_active {
-  background-color: black;
-  color: white;
-  box-shadow: 20px 20px 40px #5d001e;
+  background-color: var(--logoBgColor);
+  color: var(--logoTextColor);
+  box-shadow: 20px 20px 40px var(--templateColor1);
 }
 
 .DirectMessages__chatarea {
@@ -87,21 +87,22 @@
 }
 
 .DirectMessages__inputarea .customform {
-  background-color: #5d001e;
-  color: white;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
   padding-right: 14%;
 }
 
 .DirectMessages__inputarea .customform:focus {
   outline: none;
-  box-shadow: 0px 0px 10px black, 0px 0px 20px black, 0px 0px 20px black;
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
+    0px 0px 20px var(--logoBgColor);
 }
 
 .DirectMessages__inputarea .fa {
   float: right;
   position: relative;
   bottom: 28px;
-  color: white;
+  color: var(--logoTextColor);
   margin: 0px 15px 0px 5px;
 }
 
@@ -110,11 +111,11 @@
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
-  color: black;
+  color: var(--logoBgColor);
   font-weight: bold;
   max-width: 50%;
   overflow-wrap: break-word;
-  box-shadow: 5px 5px 10px #5d001e;
+  box-shadow: 5px 5px 10px var(--templateColor1);
 }
 
 .DirectMessages__date {
@@ -181,7 +182,7 @@
     position: absolute;
     top: 6%;
     left: -12%;
-    background-color: #e3e2df;
-    color: black;
+    background-color: var(--templateColor3);
+    color: var(--logoBgColor);
   }
 }

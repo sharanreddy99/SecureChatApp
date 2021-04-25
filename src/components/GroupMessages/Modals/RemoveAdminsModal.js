@@ -41,8 +41,12 @@ const RemoveAdminsModal = ({
    * @returns {Object}
    */
   function styleFn(provided, state) {
-    var backgroundColor = state.isFocused ? "#5d001e" : "white";
-    var color = state.isFocused ? "white" : "#5d001e";
+    var backgroundColor = state.isFocused
+      ? "var(--templateColor1)"
+      : "var(--logoTextColor)";
+    var color = state.isFocused
+      ? "var(--logoTextColor)"
+      : "var(--templateColor1)";
     return { ...provided, backgroundColor, color };
   }
 
@@ -108,9 +112,9 @@ const RemoveAdminsModal = ({
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "#5d001e",
-            color: "white",
-            textShadow: "2px 2px black",
+            backgroundColor: "var(--templateColor1)",
+            color: "var(--logoTextColor)",
+            textShadow: "2px 2px var(--logoBgColor)",
           }}
         >
           <Modal.Title>
@@ -132,8 +136,8 @@ const RemoveAdminsModal = ({
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             disabled={selectedMembers.length === 0}
@@ -143,8 +147,8 @@ const RemoveAdminsModal = ({
           </Button>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

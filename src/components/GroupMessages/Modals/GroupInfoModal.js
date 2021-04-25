@@ -48,9 +48,9 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "#5d001e",
-            color: "white",
-            textShadow: "2px 2px black",
+            backgroundColor: "var(--templateColor1)",
+            color: "var(--logoTextColor)",
+            textShadow: "2px 2px var(--logoBgColor)",
           }}
         >
           <Modal.Title>{group.name}</Modal.Title>
@@ -77,14 +77,14 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
                 <div
                   className="input-group-prepend"
                   style={{
-                    borderRight: "1px solid white",
+                    borderRight: "1px solid var(--logoTextColor)",
                   }}
                 >
                   <span
                     className="input-group-text"
                     style={{
-                      backgroundColor: "#5d001e",
-                      color: "white",
+                      backgroundColor: "var(--templateColor1)",
+                      color: "var(--logoTextColor)",
                     }}
                   >
                     Owner
@@ -103,7 +103,10 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
             <div className="col">
               <select
                 class="form-control GroupMessages__info_select"
-                style={{ backgroundColor: "#5d001e", color: "white" }}
+                style={{
+                  backgroundColor: "var(--templateColor1)",
+                  color: "var(--logoTextColor)",
+                }}
                 onChange={(e) => {
                   chooseRoleHandler(e.target.value);
                 }}
@@ -179,8 +182,8 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

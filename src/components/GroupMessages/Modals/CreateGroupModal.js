@@ -74,27 +74,37 @@ const CreateGroupModal = ({ isShown, setIsShown, user }) => {
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "#5d001e",
-            color: "white",
-            textShadow: "2px 2px black",
+            backgroundColor: "var(--templateColor1)",
+            color: "var(--logoTextColor)",
+            textShadow: "2px 2px var(--logoBgColor)",
           }}
         >
           <Modal.Title>Create Group</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px #5d001e" }}>Group Name</h5>
+          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+            Group Name
+          </h5>
           <input
             type="text"
             name="groupname"
-            style={{ backgroundColor: "#5d001e", color: "white" }}
+            style={{
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
+            }}
             class="form-control mb-4"
             onChange={(e) => {
               setGroupName(e.target.value);
             }}
           />
-          <h5 style={{ textShadow: "1px 1px #5d001e" }}>Group Picture URL </h5>
+          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+            Group Picture URL{" "}
+          </h5>
           <input
-            style={{ backgroundColor: "#5d001e", color: "white" }}
+            style={{
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
+            }}
             class="form-control"
             type="url"
             name="imageurl"
@@ -106,8 +116,8 @@ const CreateGroupModal = ({ isShown, setIsShown, user }) => {
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             onClick={createGroupHandler}
@@ -116,8 +126,8 @@ const CreateGroupModal = ({ isShown, setIsShown, user }) => {
           </Button>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

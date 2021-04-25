@@ -226,6 +226,14 @@ const DirectMessages = () => {
                         });
                       }}
                     >
+                      <i
+                        class="fa fa-trash DirectMessages__delete_button"
+                        aria-hidden="true"
+                      ></i>
+                      <i
+                        class="fa fa-pencil-square-o DirectMessages__edit_button"
+                        aria-hidden="true"
+                      ></i>
                       {message.text}
                     </p>
                     {message.senderemail == user.email ? (

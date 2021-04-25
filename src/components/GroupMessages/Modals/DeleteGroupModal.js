@@ -67,15 +67,15 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "#5d001e",
-            color: "white",
-            textShadow: "2px 2px black",
+            backgroundColor: "var(--templateColor1)",
+            color: "var(--logoTextColor)",
+            textShadow: "2px 2px var(--logoBgColor)",
           }}
         >
           <Modal.Title>Delete Group</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px #5d001e" }}>
+          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
             Please type the following text <br />
             <b style={{ color: "red" }}>{group.name}</b>
             <br /> to confirm deletion...
@@ -83,7 +83,10 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
           <input
             type="text"
             name="groupname"
-            style={{ backgroundColor: "#5d001e", color: "white" }}
+            style={{
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
+            }}
             class="form-control mb-4"
             onChange={(e) => {
               setGroupName(e.target.value);
@@ -93,8 +96,8 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             disabled={group.name !== groupName}
@@ -104,8 +107,8 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
           </Button>
           <Button
             style={{
-              backgroundColor: "#5d001e",
-              color: "white",
+              backgroundColor: "var(--templateColor1)",
+              color: "var(--logoTextColor)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

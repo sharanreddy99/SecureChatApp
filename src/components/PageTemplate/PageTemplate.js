@@ -42,6 +42,10 @@ const PageTemplate = (props) => {
       email: email,
     });
 
+    var emailresponse = await axios.post("/fetchconnections", {
+      email: email,
+    });
+
     var response2 = await axios.post("/fetchunseendmscount", {
       email: email,
     });
@@ -57,7 +61,9 @@ const PageTemplate = (props) => {
     var response5 = await axios.post("/fetchunseengroupchatscount", {
       email: email,
     });
+
     var connections = response.data.connections;
+    var emailconnections = emailresponse.data.connections;
     var groups = response4.data.groups;
 
     for (let i = 0; i < connections.length; i++) {
@@ -74,28 +80,33 @@ const PageTemplate = (props) => {
       else groups[i].unseen = response5.data.unseencount[groups[i]._id];
     }
 
-    for (let i = 0; i < connections.length; i++) {
-      if (response3.data.unseencount[connections[i].email] === undefined)
-        connections[i].unseenemail = 0;
+    for (let i = 0; i < emailconnections.length; i++) {
+      if (response3.data.unseencount[emailconnections[i].email] === undefined)
+        emailconnections[i].unseenemail = 0;
       else
-        connections[i].unseenemail =
-          response3.data.unseencount[connections[i].email];
+        emailconnections[i].unseenemail =
+          response3.data.unseencount[emailconnections[i].email];
     }
 
     connections.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
     groups.sort((a, b) => (a.unseen < b.unseen ? 1 : -1));
-    connections.sort((a, b) => (a.unseenemail < b.unseenemail ? 1 : -1));
+    emailconnections.sort((a, b) => (a.unseenemail < b.unseenemail ? 1 : -1));
 
     history.push({
       pathname: "/dashboard",
       state: {
         user: location.state.user,
         connections: connections,
+        emailconnections: emailconnections,
         groups: groups,
         allMessages: [],
         emailMessages: [],
       },
     });
+
+    if (location.pathname === "/dashboard") {
+      window.location.reload();
+    }
   };
 
   const settingsHandler = () => {};

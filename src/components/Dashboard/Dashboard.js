@@ -14,6 +14,9 @@ const Dashboard = () => {
   const [DMSConnections, setDMSConnections] = useState(
     location.state.connections
   );
+  const [EmailConnections, setEmailConnections] = useState(
+    location.state.emailconnections
+  );
   const [groupChats, setGroupChats] = useState(location.state.groups);
 
   //Effects
@@ -65,7 +68,7 @@ const Dashboard = () => {
       pathname: "/emails",
       state: {
         user: user,
-        connections: location.state.connections,
+        connections: location.state.emailconnections,
         emailMessages: [],
       },
     });
@@ -152,7 +155,7 @@ const Dashboard = () => {
       pathname: "/emails",
       state: {
         user: user,
-        connections: location.state.connections,
+        connections: location.state.emailconnections,
         emailMessages: response.data.emailMessages,
       },
     });
@@ -212,7 +215,7 @@ const Dashboard = () => {
           >
             <h4
               style={{
-                textShadow: "1px 1px white",
+                textShadow: "1px 1px var(--logoTextColor)",
                 fontWeight: "bold",
               }}
             >
@@ -271,7 +274,7 @@ const Dashboard = () => {
           >
             <h4
               style={{
-                textShadow: "1px 1px white",
+                textShadow: "1px 1px var(--logoTextColor)",
                 fontWeight: "bold",
               }}
             >
@@ -290,8 +293,8 @@ const Dashboard = () => {
             <i onClick={goToEmails} className="fa fa-external-link-square"></i>
           </div>
         </div>
-        {DMSConnections.length > 0 ? (
-          DMSConnections.map((connection, ind) => {
+        {EmailConnections.length > 0 ? (
+          EmailConnections.map((connection, ind) => {
             return (
               <div
                 className="Dashboard__DM_container"
@@ -330,7 +333,7 @@ const Dashboard = () => {
           >
             <h4
               style={{
-                textShadow: "1px 1px white",
+                textShadow: "1px 1px var(--logoTextColor)",
                 fontWeight: "bold",
               }}
             >
