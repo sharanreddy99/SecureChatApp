@@ -7,12 +7,15 @@ import DateFormat from "dateformat";
 import TemplateModal from "../Modals/TemplateModal";
 import TimerModal from "./TimerModal";
 import DeleteMessageModal from "./DeleteMessageModal";
+import UpdateMessageModal from "./UpdateMessageModal";
 import socketIOClient from "socket.io-client";
 
 const DirectMessages = () => {
   const location = useLocation();
   const history = useHistory();
   const user = location.state.user;
+  var editbutton = undefined;
+  var deletebutton = undefined;
 
   //States
   const [connections, setConnections] = useState(location.state.connections);
@@ -35,11 +38,15 @@ const DirectMessages = () => {
     email: user.email,
     connectionemail: connectionEmail,
   });
-
   const [deleteMessageModal, setDeleteMessageModal] = useState({
     isShown: false,
     message: "",
   });
+  const [updateMessageModal, setUpdateMessageModal] = useState({
+    isShown: false,
+    message: "",
+  });
+
   //Effects
   useEffect(() => {
     if (active != -1) {
@@ -64,6 +71,20 @@ const DirectMessages = () => {
 
     socket.on("directmessages__deletemessage", (data) => {
       const newMessages = messages.filter((row) => row._id !== data._id);
+      history.replace({
+        ...history.location,
+        state: { ...location.state, allMessages: newMessages },
+      });
+      setMessages(newMessages);
+    });
+
+    socket.on("directmessages__updatemessage", (data) => {
+      const newMessages = messages.map((row) => {
+        if (row._id === data._id) {
+          return data;
+        }
+        return row;
+      });
       history.replace({
         ...history.location,
         state: { ...location.state, allMessages: newMessages },
@@ -108,6 +129,25 @@ const DirectMessages = () => {
   });
 
   //Handlers
+
+  const addHoverClass = () => {
+    if (typeof editbutton === "object" && typeof deletebutton === "object") {
+      editbutton.classList.add("DirectMessages__message_hover");
+      editbutton.classList.remove("DirectMessages__message_non_hover");
+      deletebutton.classList.add("DirectMessages__message_hover");
+      deletebutton.classList.remove("DirectMessages__message_non_hover");
+    }
+  };
+
+  const removeHoverClass = () => {
+    if (typeof editbutton === "object" && typeof deletebutton === "object") {
+      editbutton.classList.remove("DirectMessages__message_hover");
+      editbutton.classList.add("DirectMessages__message_non_hover");
+      deletebutton.classList.remove("DirectMessages__message_hover");
+      deletebutton.classList.add("DirectMessages__message_non_hover");
+    }
+  };
+
   const fetchChat = async (email, connectionemail) => {
     const response = await axios.post("/fetchalldirectmessages", {
       email: email,
@@ -219,21 +259,39 @@ const DirectMessages = () => {
                           ? "sender"
                           : "receiver"
                       }`}
-                      onClick={() => {
-                        setDeleteMessageModal({
-                          isShown: true,
-                          message: message,
-                        });
+                      style={{ border: "2px solid black" }}
+                      onMouseEnter={(e) => {
+                        editbutton = e.target.children[0];
+                        deletebutton = e.target.children[1];
+                        addHoverClass();
+                      }}
+                      onMouseLeave={() => {
+                        removeHoverClass();
                       }}
                     >
                       <i
-                        class="fa fa-trash DirectMessages__delete_button"
-                        aria-hidden="true"
+                        class="fa fa-pencil-square-o DirectMessages__edit_button DirectMessages__message_non_hover"
+                        onClick={() => {
+                          setUpdateMessageModal({
+                            isShown: true,
+                            message: message,
+                            editbutton: editbutton,
+                            deletebutton: deletebutton,
+                          });
+                        }}
                       ></i>
                       <i
-                        class="fa fa-pencil-square-o DirectMessages__edit_button"
-                        aria-hidden="true"
+                        class="fa fa-trash DirectMessages__delete_button DirectMessages__message_non_hover"
+                        onClick={() => {
+                          setDeleteMessageModal({
+                            isShown: true,
+                            message: message,
+                            editbutton: editbutton,
+                            deletebutton: deletebutton,
+                          });
+                        }}
                       ></i>
+
                       {message.text}
                     </p>
                     {message.senderemail == user.email ? (
@@ -346,12 +404,22 @@ const DirectMessages = () => {
         email={timermodal.email}
         connectionemail={timermodal.connectionemail}
       />
+      <UpdateMessageModal
+        isShown={updateMessageModal.isShown}
+        setIsShown={setUpdateMessageModal}
+        message={updateMessageModal.message}
+        editbutton={updateMessageModal.editbutton}
+        deletebutton={updateMessageModal.deletebutton}
+        connectionemail={connectionEmail}
+      />
       <DeleteMessageModal
         isShown={deleteMessageModal.isShown}
         setIsShown={setDeleteMessageModal}
         message={deleteMessageModal.message}
         messages={messages}
         setMessages={setMessages}
+        editbutton={deleteMessageModal.editbutton}
+        deletebutton={deleteMessageModal.deletebutton}
       />
     </div>
   );

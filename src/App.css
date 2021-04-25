@@ -6,6 +6,8 @@
   --logoTextColor: white;
   --notificationBgColor: red;
   --notificationTextColor: white;
+  --senderMessageColor: green;
+  --receiverMessageColor: red;
 }
 
 .App__container {

@@ -109,6 +109,8 @@
 .DirectMessages__message {
   position: relative;
   padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
   border-radius: 10px;
   width: fit-content;
   color: var(--logoBgColor);
@@ -130,13 +132,13 @@
 }
 
 .DirectMessages__message.sender {
-  background-color: green;
+  background-color: var(--senderMessageColor);
   float: right;
   clear: left;
 }
 
 .DirectMessages__message.receiver {
-  background-color: red;
+  background-color: var(--receiverMessageColor);
   float: left;
   clear: right;
 }
@@ -160,7 +162,65 @@
   float: left;
   clear: right;
 }
-@media (max-width: 768px) {
+
+.DirectMessages__message_hover {
+  display: block;
+  font-size: 0.8em;
+  float: right;
+}
+
+.DirectMessages__message_non_hover {
+  display: none;
+}
+
+.DirectMessages__message.sender .DirectMessages__delete_button {
+  position: absolute;
+  float: right;
+  top: 45%;
+  right: 5%;
+}
+
+.DirectMessages__message.sender .DirectMessages__edit_button {
+  position: absolute;
+  float: left;
+  top: 45%;
+  left: 5%;
+}
+
+.DirectMessages__message.receiver .DirectMessages__delete_button {
+  position: absolute;
+  float: right;
+  top: 45%;
+  right: 5%;
+}
+
+.DirectMessages__message.receiver .DirectMessages__edit_button {
+  position: absolute;
+  float: left;
+  top: 45%;
+  left: 5%;
+}
+
+@media (max-width: 900px) {
+  .DirectMessages__message.sender .DirectMessages__delete_button {
+    top: 15%;
+    right: -12%;
+  }
+
+  .DirectMessages__message.sender .DirectMessages__edit_button {
+    top: 15%;
+    left: -12%;
+  }
+
+  .DirectMessages__message.receiver .DirectMessages__delete_button {
+    top: 5%;
+    right: -16%;
+  }
+
+  .DirectMessages__message.receiver .DirectMessages__edit_button {
+    top: 5%;
+    left: -16%;
+  }
   .DirectMessages__container {
     flex-direction: column;
     padding-top: 20%;
