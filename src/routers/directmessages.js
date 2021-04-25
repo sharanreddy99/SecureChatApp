@@ -22,6 +22,24 @@ router.post("/deletedirectmessage", async (req, res) => {
   }
 });
 
+router.post("/updatedirectmessage", async (req, res) => {
+  try {
+    const response = await DirectMessages.updateOne(
+      { _id: req.body.message._id, receiveremail: req.body.connectionemail },
+      { text: req.body.newmessage }
+    );
+
+    if (response.nModified === 1) {
+      const newMessage = { ...req.body.message, text: req.body.newmessage };
+      req.app.get("socketio").emit("directmessages__updatemessage", newMessage);
+    }
+
+    res.status(201).send({ msg: "success" });
+  } catch (e) {
+    res.status(401).send({ error: "error" });
+  }
+});
+
 router.post("/senddirectmessage", async (req, res) => {
   try {
     var data = {
