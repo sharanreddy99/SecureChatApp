@@ -28,6 +28,7 @@ const Connections = () => {
         ModalTitle: "LOL😂",
         ModalBody: "You can't send a connection request to yourself...",
       });
+      setModalTimeoutHandler();
       return;
     }
 
@@ -40,6 +41,13 @@ const Connections = () => {
       ModalTitle: response.data.ModalTitle,
       ModalBody: response.data.ModalBody,
     });
+    setModalTimeoutHandler();
+  };
+
+  const setModalTimeoutHandler = async () => {
+    setTimeout(() => {
+      setModal({ ...modal, isShown: false });
+    }, 2000);
   };
 
   const removeConnectionHandler = async () => {
@@ -49,6 +57,7 @@ const Connections = () => {
         ModalTitle: "LOL😂",
         ModalBody: "You can't remove a connection to yourself...",
       });
+      setModalTimeoutHandler();
       return;
     }
     const response = await axios.post("/removeconnection", {
@@ -60,6 +69,7 @@ const Connections = () => {
       ModalTitle: response.data.ModalTitle,
       ModalBody: response.data.ModalBody,
     });
+    setModalTimeoutHandler();
   };
 
   const acceptConnectionHandler = async (connection) => {
