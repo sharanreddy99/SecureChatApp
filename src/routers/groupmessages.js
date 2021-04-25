@@ -109,6 +109,45 @@ router.post("/deletegroup", async (req, res) => {
   }
 });
 
+router.post("/updategroupmessage", async (req, res) => {
+  try {
+    var groupChat = await GroupMessages.findOne({
+      _id: req.body.groupid,
+      name: req.body.groupname,
+    });
+
+    if (!groupChat) {
+      throw new Error("Group Chat not found");
+    }
+
+    var isChanged = false;
+    var updatedMessage = null;
+
+    groupChat.messages = groupChat.messages.map((message) => {
+      if (message._id == req.body.message._id) {
+        isChanged = true;
+        message.text = filter.clean(req.body.newmessage);
+        updatedMessage = message;
+      }
+      return message;
+    });
+
+    if (isChanged) {
+      await groupChat.save();
+
+      req.app.get("socketio").emit("groupmessages__updatemessage", {
+        _id: groupChat._id,
+        name: groupChat.name,
+        message: updatedMessage,
+      });
+    }
+    res.status(201).send({ msg: "success" });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
+  }
+});
+
 router.post("/addmembers", async (req, res) => {
   try {
     var groupChat = await GroupMessages.findOne({

@@ -26,7 +26,7 @@ router.post("/updatedirectmessage", async (req, res) => {
   try {
     const response = await DirectMessages.updateOne(
       { _id: req.body.message._id, receiveremail: req.body.connectionemail },
-      { text: req.body.newmessage }
+      { text: filter.clean(req.body.newmessage) }
     );
 
     if (response.nModified === 1) {
