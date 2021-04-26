@@ -136,10 +136,12 @@ router.post("/updategroupmessage", async (req, res) => {
     if (isChanged) {
       await groupChat.save();
 
+      updatedMessage.text = encryptor.decrypt(updatedMessage.text);
+
       req.app.get("socketio").emit("groupmessages__updatemessage", {
         _id: groupChat._id,
         name: groupChat.name,
-        message: encryptor.decrypt(updatedMessage),
+        message: updatedMessage,
       });
     }
     res.status(201).send({ msg: "success" });
