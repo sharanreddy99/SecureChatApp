@@ -9,6 +9,7 @@ import TimerModal from "./TimerModal";
 import DeleteMessageModal from "./DeleteMessageModal";
 import UpdateMessageModal from "./UpdateMessageModal";
 import socketIOClient from "socket.io-client";
+import EmojiPickerModal from "../Modals/EmojiPickerModal";
 
 const DirectMessages = () => {
   const location = useLocation();
@@ -27,6 +28,7 @@ const DirectMessages = () => {
   const [connectionEmail, setConnectionEmail] = useState(
     location.state.connectionemail ? location.state.connectionemail : ""
   );
+  const [emojiText, setEmojiText] = useState("");
   const [modal, setModal] = useState({
     isShown: false,
     ModalTitle: "",
@@ -45,6 +47,9 @@ const DirectMessages = () => {
   const [updateMessageModal, setUpdateMessageModal] = useState({
     isShown: false,
     message: "",
+  });
+  const [emojiPickerModal, setEmojiPickerModal] = useState({
+    isShown: false,
   });
 
   //Effects
@@ -351,7 +356,7 @@ const DirectMessages = () => {
                 setMessage(e.target.value);
               }}
               onKeyDown={(e) => {
-                if (e.keyCode == 13) {
+                if (e.key === "Enter") {
                   sendMessageHandler();
                 }
               }}
@@ -384,6 +389,13 @@ const DirectMessages = () => {
                   email: user.email,
                   connectionemail: connectionEmail,
                 });
+              }}
+            ></i>
+            <i
+              class="fa fa-smile-o"
+              onClick={() => {
+                setEmojiText("");
+                setEmojiPickerModal({ isShown: true });
               }}
             ></i>
           </div>
@@ -419,6 +431,14 @@ const DirectMessages = () => {
         setMessages={setMessages}
         editbutton={deleteMessageModal.editbutton}
         deletebutton={deleteMessageModal.deletebutton}
+      />
+      <EmojiPickerModal
+        isShown={emojiPickerModal.isShown}
+        setIsShown={setEmojiPickerModal}
+        message={message}
+        setMessage={setMessage}
+        emojiText={emojiText}
+        setEmojiText={setEmojiText}
       />
     </div>
   );

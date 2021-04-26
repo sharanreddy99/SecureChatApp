@@ -89,7 +89,7 @@
 .DirectMessages__inputarea .customform {
   background-color: var(--templateColor1);
   color: var(--logoTextColor);
-  padding-right: 14%;
+  padding-right: 23%;
 }
 
 .DirectMessages__inputarea .customform:focus {
@@ -235,7 +235,7 @@
   }
 
   .DirectMessages__inputarea .customform {
-    padding-right: 25%;
+    padding-right: 35%;
   }
 
   .DirectMessages .fa-bars {
