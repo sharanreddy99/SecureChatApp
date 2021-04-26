@@ -7,6 +7,7 @@ const GroupMessages = require("../models/groupmessages");
 const DelayGroupMessages = require("../models/delaygroupmessages");
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
+const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
 
 async function updateDelayedDirectMessages(socket) {
   try {
@@ -28,6 +29,7 @@ async function updateDelayedDirectMessages(socket) {
 
     var delayedMessages = DMS;
     for (var i = 0; i < delayedMessages.length; i++) {
+      delayedMessages[i].text = encryptor.decrypt(delayedMessages[i].text);
       delayedMessages[i].date = DateFormat(
         delayedMessages[i].date,
         "mmm dS, yyyy"
@@ -92,6 +94,7 @@ async function updateDelayedGroupMessages(socket) {
       await groupChat.save();
 
       for (var j = 0; j < newMessages.length; j++) {
+        newMessages[j].text = encryptor.decrypt(newMessages[j].text);
         newMessages[j].date = DateFormat(newMessages[j].date, "mmm dS, yyyy");
       }
 
@@ -111,6 +114,9 @@ async function updateDelayedGroupMessages(socket) {
           name: DGMS[i].name,
         });
       } else {
+        for (var j = 0; j < newMessages.length; j++) {
+          newMessages[j].text = encryptor.encrypt(newMessages[j].text);
+        }
         DGMS[i].messages = newMessages;
         await DGMS[i].save();
       }

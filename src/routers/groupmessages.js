@@ -7,6 +7,7 @@ const DelayGroupMessages = require("../models/delaygroupmessages");
 
 var Filter = require("bad-words");
 var filter = new Filter();
+const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
 
 router.post("/fetchgroups", async (req, res) => {
   try {
@@ -126,7 +127,7 @@ router.post("/updategroupmessage", async (req, res) => {
     groupChat.messages = groupChat.messages.map((message) => {
       if (message._id == req.body.message._id) {
         isChanged = true;
-        message.text = filter.clean(req.body.newmessage);
+        message.text = encryptor.encrypt(filter.clean(req.body.newmessage));
         updatedMessage = message;
       }
       return message;
@@ -138,7 +139,7 @@ router.post("/updategroupmessage", async (req, res) => {
       req.app.get("socketio").emit("groupmessages__updatemessage", {
         _id: groupChat._id,
         name: groupChat.name,
-        message: updatedMessage,
+        message: encryptor.decrypt(updatedMessage),
       });
     }
     res.status(201).send({ msg: "success" });
@@ -377,7 +378,7 @@ router.post("/sendgroupmessage", async (req, res) => {
     }
 
     var data = {
-      text: filter.clean(req.body.text),
+      text: encryptor.encrypt(filter.clean(req.body.text)),
       displayname: req.body.displayname,
       senderemail: req.body.senderemail,
       avatarUrl: req.body.avatarUrl,
@@ -396,7 +397,7 @@ router.post("/sendgroupmessage", async (req, res) => {
     req.app.get("socketio").emit("groupmessages__newmessage", {
       _id: groupChat._id,
       name: groupChat.name,
-      text: data.text,
+      text: encryptor.decrypt(data.text),
       displayname: data.displayname,
       senderemail: data.senderemail,
       avatarUrl: data.avatarUrl,
@@ -431,6 +432,7 @@ router.post("/fetchallgroupmessages", async (req, res) => {
     );
 
     var changeAllMessages = allMessages[0].messages.map((message) => {
+      message.text = encryptor.decrypt(message.text);
       message.date = DateFormat(message.date, "mmm dS, yyyy");
       return message;
     });
@@ -524,7 +526,7 @@ router.post("/delaygroupmessage", async (req, res) => {
         name: req.body.groupname,
         messages: [
           {
-            text: filter.clean(req.body.text),
+            text: encryptor.encrypt(filter.clean(req.body.text)),
             displayname: req.body.displayname,
             senderemail: req.body.senderemail,
             avatarUrl: req.body.avatarUrl,
@@ -546,7 +548,7 @@ router.post("/delaygroupmessage", async (req, res) => {
       await delayChat.save();
     } else {
       var data = {
-        text: filter.clean(req.body.text),
+        text: encryptor.encrypt(filter.clean(req.body.text)),
         displayname: req.body.displayname,
         senderemail: req.body.senderemail,
         avatarUrl: req.body.avatarUrl,

@@ -7,6 +7,7 @@ const DelayDirectMessages = require("../models/delaydirectmessages");
 
 var Filter = require("bad-words");
 var filter = new Filter();
+const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
 
 router.post("/deletedirectmessage", async (req, res) => {
   try {
@@ -26,7 +27,7 @@ router.post("/updatedirectmessage", async (req, res) => {
   try {
     const response = await DirectMessages.updateOne(
       { _id: req.body.message._id, receiveremail: req.body.connectionemail },
-      { text: filter.clean(req.body.newmessage) }
+      { text: encryptor.encrypt(filter.clean(req.body.newmessage)) }
     );
 
     if (response.nModified === 1) {
@@ -43,7 +44,7 @@ router.post("/updatedirectmessage", async (req, res) => {
 router.post("/senddirectmessage", async (req, res) => {
   try {
     var data = {
-      text: filter.clean(req.body.text),
+      text: encryptor.encrypt(filter.clean(req.body.text)),
       senderemail: req.body.email,
       receiveremail: req.body.connectionemail,
       date: req.body.date,
@@ -54,6 +55,7 @@ router.post("/senddirectmessage", async (req, res) => {
     await message.save();
 
     data.date = DateFormat(data.date, "mmm dS, yyyy");
+    data.text = encryptor.decrypt(data.text);
 
     req.app.get("socketio").emit("directmessages__newmessage", { ...data });
 
@@ -89,6 +91,7 @@ router.post("/fetchalldirectmessages", async (req, res) => {
     );
 
     var changeAllMessages = allMessages.map((message) => {
+      message.text = encryptor.decrypt(message.text);
       message.date = DateFormat(message.date, "mmm dS, yyyy");
       return message;
     });
@@ -150,7 +153,7 @@ router.post("/directmessagesseen", async (req, res) => {
 router.post("/delaydirectmessage", async (req, res) => {
   try {
     var data = {
-      text: filter.clean(req.body.text),
+      text: encryptor.encrypt(filter.clean(req.body.text)),
       senderemail: req.body.senderemail,
       receiveremail: req.body.receiveremail,
       date: req.body.date,
