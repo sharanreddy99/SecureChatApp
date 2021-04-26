@@ -63,12 +63,12 @@ const EmojiPickerModal = ({
         <input
           type="textarea"
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
+            backgroundColor: "var(--emojiBoxColor)",
+            color: "var(--emojiTextColor)",
           }}
           id="emojiTextInput"
           class="form-control"
-          placeholder="Enter New Message."
+          placeholder="No Emoji Chosen"
           value={emojiText}
           onChange={(e) => {
             setEmojiText(e.target.value);

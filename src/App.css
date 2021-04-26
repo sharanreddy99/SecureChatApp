@@ -8,6 +8,8 @@
   --notificationTextColor: white;
   --senderMessageColor: rgb(67, 184, 67);
   --receiverMessageColor: rgb(255, 0, 0);
+  --emojiBoxColor: #05386b;
+  --emojiTextColor: #fffffc;
 }
 
 .App__container {

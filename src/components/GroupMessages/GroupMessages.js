@@ -5,6 +5,7 @@ import "./GroupMessages.css";
 import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
 import DateFormat from "dateformat";
+import EmojiPickerModal from "../Modals/EmojiPickerModal";
 
 //Modals
 import TemplateModal from "../Modals/TemplateModal";
@@ -35,6 +36,7 @@ const GroupMessages = () => {
   );
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState(location.state.allMessages);
+  const [emojiText, setEmojiText] = useState("");
   const [modal, setModal] = useState({
     isShown: false,
     ModalTitle: "",
@@ -73,6 +75,9 @@ const GroupMessages = () => {
   const [updateMessageModal, setUpdateMessageModal] = useState({
     isShown: false,
     message: "",
+  });
+  const [emojiPickerModal, setEmojiPickerModal] = useState({
+    isShown: false,
   });
 
   //Effects
@@ -691,6 +696,13 @@ const GroupMessages = () => {
                 });
               }}
             ></i>
+            <i
+              class="fa fa-smile-o"
+              onClick={() => {
+                setEmojiText("");
+                setEmojiPickerModal({ isShown: true });
+              }}
+            ></i>
           </div>
         </div>
       </div>
@@ -771,6 +783,14 @@ const GroupMessages = () => {
         group={activeGroup}
         editbutton={deleteMessageModal.editbutton}
         deletebutton={deleteMessageModal.deletebutton}
+      />
+      <EmojiPickerModal
+        isShown={emojiPickerModal.isShown}
+        setIsShown={setEmojiPickerModal}
+        message={message}
+        setMessage={setMessage}
+        emojiText={emojiText}
+        setEmojiText={setEmojiText}
       />
     </div>
   );
