@@ -1,13 +1,13 @@
 :root {
-  --templateColor1: #5d001e;
-  --templateColor2: #e3afbc;
-  --templateColor3: #e3e2df;
+  --templateColor1: #05386b;
+  --templateColor2: #5cdb95;
+  --templateColor3: #edf5e1;
   --logoBgColor: black;
   --logoTextColor: white;
   --notificationBgColor: red;
   --notificationTextColor: white;
-  --senderMessageColor: green;
-  --receiverMessageColor: red;
+  --senderMessageColor: rgb(67, 184, 67);
+  --receiverMessageColor: rgb(255, 0, 0);
 }
 
 .App__container {

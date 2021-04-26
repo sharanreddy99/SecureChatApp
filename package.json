@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "dateformat": "^4.4.1",
+    "emoji-picker-react": "^3.4.4",
     "firebase": "^8.2.3",
     "generate-react-cli": "^5.2.3",
     "jquery": "^3.5.1",

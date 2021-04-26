@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
+import Logo from "../../assets/images/Logo.png";
 import "./PageTemplate.css";
 import axios from "axios";
 
@@ -126,7 +127,17 @@ const PageTemplate = (props) => {
         <nav className="navbar">
           <div className="container-fluid">
             <a className="navbar-brand" onClick={dashBoardLogoHandler}>
-              SecureEncryptChat
+              <img
+                src={Logo}
+                style={{
+                  display: "inline",
+                  width: "4%",
+                  height: "70%",
+                  left: "1.5%",
+                  position: "absolute",
+                }}
+              />
+              SecureChat
             </a>
             <div className="PageTemplate__navbar_icons">
               <i onClick={addConnectionHandler} className="fa fa-users"></i>
