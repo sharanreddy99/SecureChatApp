@@ -3,7 +3,7 @@
 .PageTemplate__container {
   border: 2px solid var(--templateColor1);
   width: 100vw;
-  height: 102.4vh;
+  height: 102vh;
   overflow: scroll;
   box-shadow: 0px 0px 10px var(--boxShadowColor),
     0px 0px 10px var(--boxShadowColor), 0px 0px 10px var(--boxShadowColor);
@@ -118,7 +118,7 @@
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .PageTemplate__container {
-    height: 100vh;
+    height: 98vh;
   }
 
   .navbar {
@@ -140,13 +140,13 @@
 
   .PageTemplate__navbar_icons {
     min-width: 8vw;
-    padding: 3% 10%;
+    padding: 2% 6%;
     border-radius: 20px;
   }
 
   .fa {
-    transform: scale(2, 2);
-    margin: 10% 50%;
+    transform: scale(1.6, 1.6);
+    margin: 10% 30%;
   }
 
   .PageTemplate__body {
@@ -207,11 +207,12 @@
 
   .navbar {
     padding: 0.5%;
-    padding-bottom: 1%;
+    padding-bottom: 0.5%;
   }
 
   .navbar-brand {
-    padding: 1%;
+    padding: 0.4%;
+    padding-right: 1%;
     font-size: 1.2em;
   }
 

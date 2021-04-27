@@ -10,6 +10,8 @@
   --logoHoverColor: white;
 
   /* Notification Symbol on Dashboard */
+  --notificationPopupBgColor: #05386b;
+  --notificationPopupHoverColor: black;
   --notificationBgColor: red;
   --notificationTextColor: white;
 
@@ -22,7 +24,8 @@
   --emojiTextColor: #fffffc;
 
   /* Shadows */
-  --boxShadowColor: #5f001e;
+  --notificationPopupShadowColor: #5d001e;
+  --boxShadowShadowColor: #5d001e;
 }
 
 .App__container {
