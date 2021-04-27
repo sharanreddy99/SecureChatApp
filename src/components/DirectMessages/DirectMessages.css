@@ -7,6 +7,13 @@
   overflow: scroll;
 }
 
+.DirectMessages__oldmessage {
+  user-select: all;
+  -moz-user-select: all;
+  -khtml-user-select: all;
+  -webkit-user-select: all;
+}
+
 .DirectMessages .fa-bars {
   position: absolute;
   top: 3%;

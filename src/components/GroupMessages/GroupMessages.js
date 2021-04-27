@@ -85,6 +85,7 @@ const GroupMessages = () => {
     if (active != -1) {
       setActiveGroup(location.state.activeGroup);
       $("#connection" + active).addClass("GroupMessages__connections_active");
+      focusLastDiv();
     }
   }, []);
 

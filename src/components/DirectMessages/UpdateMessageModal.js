@@ -62,8 +62,8 @@ const UpdateMessageModal = ({
           <Modal.Title>Update the Message</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h4>Enter the updated message: </h4>
-          <b style={{ padding: "2%" }}>
+          <h4>Old Message: </h4>
+          <b className="DirectMessages__oldmessage" style={{ padding: "2%" }}>
             {typeof message === "object" ? message.text : ""}
           </b>
           <hr />
@@ -78,6 +78,11 @@ const UpdateMessageModal = ({
             value={newMessage}
             onChange={(e) => {
               setNewMessage(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                updateMessageHandler();
+              }
             }}
           />
         </Modal.Body>

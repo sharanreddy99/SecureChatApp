@@ -56,6 +56,7 @@ const DirectMessages = () => {
   useEffect(() => {
     if (active != -1) {
       $("#connection" + active).addClass("DirectMessages__connections_active");
+      focusLastDiv();
     }
   }, []);
 
