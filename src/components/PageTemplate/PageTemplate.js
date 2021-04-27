@@ -127,16 +127,7 @@ const PageTemplate = (props) => {
         <nav className="navbar">
           <div className="container-fluid">
             <a className="navbar-brand" onClick={dashBoardLogoHandler}>
-              <img
-                src={Logo}
-                style={{
-                  display: "inline",
-                  width: "4%",
-                  height: "70%",
-                  left: "1.5%",
-                  position: "absolute",
-                }}
-              />
+              <img src={Logo} className="PageTemplate__logo" />
               SecureChat
             </a>
             <div className="PageTemplate__navbar_icons">
@@ -149,10 +140,7 @@ const PageTemplate = (props) => {
       </div>
       <div className="PageTemplate__body">{props.children}</div>
       <div className="PageTemplate__footer">
-        <b>
-          ⓒ 2020 - {new Date().getFullYear()} SECURE ENCRYPT CHAT, Inc. All
-          rights reserved.
-        </b>
+        <b>ⓒ 2020 - {new Date().getFullYear()} Secure Chat </b>
       </div>
     </div>
   );

@@ -1,15 +1,28 @@
 :root {
+  /*Main */
   --templateColor1: #05386b;
   --templateColor2: #5cdb95;
   --templateColor3: #edf5e1;
+
+  /* Logo */
   --logoBgColor: black;
   --logoTextColor: white;
+  --logoHoverColor: white;
+
+  /* Notification Symbol on Dashboard */
   --notificationBgColor: red;
   --notificationTextColor: white;
+
+  /* Message */
   --senderMessageColor: rgb(67, 184, 67);
   --receiverMessageColor: rgb(255, 0, 0);
+
+  /* Emoji */
   --emojiBoxColor: #05386b;
   --emojiTextColor: #fffffc;
+
+  /* Shadows */
+  --boxShadowColor: #5f001e;
 }
 
 .App__container {
