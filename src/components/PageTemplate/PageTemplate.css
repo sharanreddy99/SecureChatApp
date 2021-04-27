@@ -3,7 +3,7 @@
 .PageTemplate__container {
   border: 2px solid var(--templateColor1);
   width: 100vw;
-  height: 100vh;
+  height: 102.4vh;
   box-shadow: 0px 0px 10px var(--boxShadowColor),
     0px 0px 10px var(--boxShadowColor), 0px 0px 10px var(--boxShadowColor);
 }
@@ -14,7 +14,7 @@
   width: 100%;
   padding: 0%;
   padding-top: 1%;
-  padding-bottom: 3%;
+  padding-bottom: 2%;
 }
 
 .navbar-brand {
@@ -74,8 +74,58 @@
   font-size: 0.5em;
 }
 
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .PageTemplate__container {
+    height: 107.5vh;
+  }
+
+  .navbar {
+    padding: 0%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+  }
+
+  .navbar-brand {
+    padding: 2%;
+    padding-left: 8.5%;
+    padding-right: 3%;
+    font-size: 1em;
+  }
+
+  .PageTemplate__logo {
+    width: 8%;
+    height: 10vh;
+    left: 2%;
+    top: 25%;
+  }
+
+  .PageTemplate__navbar_icons {
+    min-width: 8vw;
+    padding: 2% 5%;
+    border-radius: 20px;
+  }
+
+  .fa {
+    transform: scale(1.4, 1.4);
+    margin: 10% 18%;
+  }
+
+  .PageTemplate__body {
+    height: 84vh;
+  }
+
+  .PageTemplate__footer {
+    font-size: 0.8em;
+  }
+}
+
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  .PageTemplate__container {
+    height: 100vh;
+  }
+
   .navbar {
     padding: 0%;
     padding-top: 2%;
@@ -96,6 +146,12 @@
     top: 25%;
   }
 
+  .PageTemplate__navbar_icons {
+    min-width: 8vw;
+    padding: 3% 10%;
+    border-radius: 20px;
+  }
+
   .fa {
     transform: scale(2, 2);
     margin: 10% 50%;
@@ -112,10 +168,13 @@
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
+  .PageTemplate__container {
+    height: 100vh;
+  }
+
   .navbar {
     padding: 0.5%;
     padding-bottom: 1%;
-    height: 7vh;
   }
 
   .navbar-brand {
@@ -144,7 +203,7 @@
   }
 
   .PageTemplate__body {
-    height: 92.5vh;
+    height: 94vh;
   }
 
   .PageTemplate__footer {
@@ -154,6 +213,10 @@
 
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+  .PageTemplate__container {
+    height: 103vh;
+  }
+
   .navbar {
     padding: 0.5%;
     padding-bottom: 1%;
