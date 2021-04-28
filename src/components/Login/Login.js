@@ -105,7 +105,7 @@ const Login = () => {
         <div className="Login__header">
           <img src={ProfileImage} alt="Image" />
           <br />
-          <h4>SecureEncrypt Chat</h4>
+          <h4>SecureChat</h4>
         </div>
         <div className="Login__footer">
           <button class="Login__button" type="submit" onClick={signInHandler}>
