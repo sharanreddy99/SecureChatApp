@@ -52,9 +52,9 @@ const EmojiPickerModal = ({
       <Modal.Header
         closeButton
         style={{
-          backgroundColor: "var(--templateColor1)",
-          color: "var(--logoTextColor)",
-          textShadow: "2px 2px var(--logoBgColor)",
+          backgroundColor: "var(--modalHeaderBackground)",
+          color: "var(--modalHeaderText)",
+          textShadow: "2px 2px var(--modalTextShadow)",
         }}
       >
         <Modal.Title>Emoji Picker</Modal.Title>
@@ -84,8 +84,8 @@ const EmojiPickerModal = ({
       <Modal.Footer>
         <Button
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
+            backgroundColor: "var(--modalButtonBackground)",
+            color: "var(--modalButtonText)",
             fontWeight: "bold",
           }}
           onClick={addEmojiHandler}
@@ -94,8 +94,8 @@ const EmojiPickerModal = ({
         </Button>
         <Button
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
+            backgroundColor: "var(--modalButtonBackground)",
+            color: "var(--modalButtonText)",
             fontWeight: "bold",
           }}
           onClick={handleClose}

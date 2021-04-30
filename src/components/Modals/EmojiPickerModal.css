@@ -1,9 +1,11 @@
+/* Extra small devices (portrait phones, less than 576px) */
+
 unicode-emoji-picker {
   margin: auto;
   --border-radius: 0;
-  --min-width: 19.4em;
+  --min-width: 100%;
   --min-height: 11.5em;
-  --max-width: 19.4em;
+  --max-width: 100%;
   --max-height: 11.5em;
   --fill-color: var(--emojiBoxColor);
   --text-color: var(--emojiTextColor);
@@ -23,13 +25,37 @@ unicode-emoji-picker {
 }
 
 /* Small devices (landscape phones, 576px and up) */
-@media (min-width: 200px) and (max-width: 700px) {
+@media (min-width: 576px) {
   unicode-emoji-picker {
-    margin: auto;
-    --border-radius: 0;
-    --min-width: 15.1em;
-    --min-height: 11.5em;
-    --max-width: 15.1em;
-    --max-height: 11.5em;
+    --min-height: 5.5em;
+    --max-height: 5.5em;
+    font-size: 1.2em;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  unicode-emoji-picker {
+    --min-height: 15.5em;
+    --max-height: 15.5em;
+    font-size: 2em;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  unicode-emoji-picker {
+    --min-height: 15.5em;
+    --max-height: 15.5em;
+    font-size: 2.5em;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  unicode-emoji-picker {
+    --min-height: 12.5em;
+    --max-height: 12.5em;
+    font-size: 1.4em;
   }
 }

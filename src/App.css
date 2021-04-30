@@ -26,6 +26,13 @@
   /* Shadows */
   --notificationPopupShadowColor: #5d001e;
   --boxShadowShadowColor: #5d001e;
+
+  /* Modal */
+  --modalHeaderBackground: #05386b;
+  --modalHeaderText: white;
+  --modalTextShadow: black;
+  --modalButtonBackground: #05386b;
+  --modalButtonText: white;
 }
 
 .App__container {
