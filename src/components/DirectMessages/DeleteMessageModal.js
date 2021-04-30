@@ -51,23 +51,23 @@ const DeleteMessageModal = ({
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
-            textShadow: "2px 2px var(--logoBgColor)",
+            backgroundColor: "var(--modalHeaderBackground)",
+            color: "var(--modalHeaderText)",
+            textShadow: "2px 2px var(--modalTextShadow)",
           }}
         >
           <Modal.Title>Delete the Message</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+          <h5 style={{ textShadow: "1px 1px var(--modalTextShadow)" }}>
             Are you sure you want to delete the message?
           </h5>
         </Modal.Body>
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={deleteMessageHandler}
@@ -76,8 +76,8 @@ const DeleteMessageModal = ({
           </Button>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

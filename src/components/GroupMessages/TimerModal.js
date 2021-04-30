@@ -73,23 +73,23 @@ const TimerModal = ({
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
-            textShadow: "2px 2px var(--logoBgColor)",
+            backgroundColor: "var(--modalHeaderBackground)",
+            color: "var(--modalHeaderText)",
+            textShadow: "2px 2px var(--modalTextShadow)",
           }}
         >
           <Modal.Title>Delayed Message</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+          <h5 style={{ textShadow: "1px 1px var(--modalTextShadow)" }}>
             Choose Date
           </h5>
           <input
             type="date"
             name="date"
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalHeaderBackground)",
+              color: "var(--modalHeaderText)",
             }}
             class="form-control mb-4"
             value={date}
@@ -98,13 +98,13 @@ const TimerModal = ({
               setDate(e.target.value);
             }}
           />
-          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+          <h5 style={{ textShadow: "1px 1px var(--modalTextShadow)" }}>
             Choose Time
           </h5>
           <input
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalHeaderBackground)",
+              color: "var(--modalHeaderText)",
             }}
             class="form-control"
             type="time"
@@ -118,8 +118,8 @@ const TimerModal = ({
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={sendDelayedMessageHandler}
@@ -128,8 +128,8 @@ const TimerModal = ({
           </Button>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

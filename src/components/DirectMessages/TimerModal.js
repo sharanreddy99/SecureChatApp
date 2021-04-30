@@ -80,7 +80,7 @@ const TimerModal = ({
           <Modal.Title>Delayed Message</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+          <h5 style={{ textShadow: "1px 1px var(--modalTextShadow)" }}>
             Choose Date
           </h5>
           <input
