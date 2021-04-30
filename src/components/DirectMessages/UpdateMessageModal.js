@@ -54,9 +54,9 @@ const UpdateMessageModal = ({
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
-            textShadow: "2px 2px var(--logoBgColor)",
+            backgroundColor: "var(--modalHeaderBackground)",
+            color: "var(--modalHeaderText)",
+            textShadow: "2px 2px var(--modalTextShadow)",
           }}
         >
           <Modal.Title>Update the Message</Modal.Title>
@@ -70,8 +70,8 @@ const UpdateMessageModal = ({
           <input
             type="text"
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalHeaderBackground)",
+              color: "var(--modalHeaderText)",
             }}
             class="form-control"
             placeholder="Enter New Message."
@@ -89,8 +89,8 @@ const UpdateMessageModal = ({
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={updateMessageHandler}
@@ -99,8 +99,8 @@ const UpdateMessageModal = ({
           </Button>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

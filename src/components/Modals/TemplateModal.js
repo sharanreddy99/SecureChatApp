@@ -17,9 +17,9 @@ const TemplateModal = ({ isShown, setIsShown, ModalTitle, ModalBody }) => {
       <Modal.Header
         closeButton
         style={{
-          backgroundColor: "var(--templateColor1)",
-          color: "var(--logoTextColor)",
-          textShadow: "2px 2px var(--logoBgColor)",
+          backgroundColor: "var(--modalHeaderBackground)",
+          color: "var(--modalHeaderText)",
+          textShadow: "2px 2px var(--modalTextShadow)",
         }}
       >
         <Modal.Title>{ModalTitle}</Modal.Title>
@@ -28,8 +28,8 @@ const TemplateModal = ({ isShown, setIsShown, ModalTitle, ModalBody }) => {
       <Modal.Footer>
         <Button
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
+            backgroundColor: "var(--modalButtonBackground)",
+            color: "var(--modalButtonText)",
             fontWeight: "bold",
           }}
           onClick={handleClose}
