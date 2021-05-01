@@ -67,15 +67,15 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
-            textShadow: "2px 2px var(--logoBgColor)",
+            backgroundColor: "var(--modalHeaderBackground)",
+            color: "var(--modalHeaderText)",
+            textShadow: "2px 2px var(--modalTextShadow)",
           }}
         >
           <Modal.Title>Delete Group</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontWeight: "bold" }}>
-          <h5 style={{ textShadow: "1px 1px var(--templateColor1)" }}>
+          <h5 style={{ textShadow: "1px 1px var(--modalTextShadow)" }}>
             Please type the following text <br />
             <b style={{ color: "red" }}>{group.name}</b>
             <br /> to confirm deletion...
@@ -84,8 +84,8 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
             type="text"
             name="groupname"
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalHeaderBackground)",
+              color: "var(--modalHeaderText)",
             }}
             class="form-control mb-4"
             onChange={(e) => {
@@ -96,8 +96,8 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             disabled={group.name !== groupName}
@@ -107,8 +107,8 @@ const DeleteGroupModal = ({ isShown, setIsShown, user, group }) => {
           </Button>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

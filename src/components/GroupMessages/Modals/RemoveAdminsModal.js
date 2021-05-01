@@ -147,8 +147,8 @@ const RemoveAdminsModal = ({
           </Button>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

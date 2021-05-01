@@ -48,9 +48,9 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
-            textShadow: "2px 2px var(--logoBgColor)",
+            backgroundColor: "var(--modalHeaderBackground)",
+            color: "var(--modalHeaderText)",
+            textShadow: "2px 2px var(--modalTextShadow)",
           }}
         >
           <Modal.Title>{group.name}</Modal.Title>
@@ -58,20 +58,10 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
         <Modal.Body style={{ fontWeight: "bold" }}>
           <div className="row">
             <div className="col">
-              <img
-                src={group.pictureUrl}
-                style={{
-                  width: "30vh",
-                  height: "30vh",
-                  borderRadius: "100%",
-                  display: "block",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-              />
+              <img src={group.pictureUrl} className="GroupInfoModal__picture" />
             </div>
           </div>
-          <div className="row m-4">
+          <div className="row mt-4">
             <div className="col">
               <div className="input-group">
                 <div
@@ -83,8 +73,8 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
                   <span
                     className="input-group-text"
                     style={{
-                      backgroundColor: "var(--templateColor1)",
-                      color: "var(--logoTextColor)",
+                      backgroundColor: "var(--modalHeaderBackground)",
+                      color: "var(--modalHeaderText)",
                     }}
                   >
                     Owner
@@ -99,13 +89,13 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
               </div>
             </div>
           </div>
-          <div className="row m-4">
+          <div className="row mt-4">
             <div className="col">
               <select
                 class="form-control GroupMessages__info_select"
                 style={{
-                  backgroundColor: "var(--templateColor1)",
-                  color: "var(--logoTextColor)",
+                  backgroundColor: "var(--modalHeaderBackground)",
+                  color: "var(--modalHeaderText)",
                 }}
                 onChange={(e) => {
                   chooseRoleHandler(e.target.value);
@@ -182,8 +172,8 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

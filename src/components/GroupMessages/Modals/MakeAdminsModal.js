@@ -106,9 +106,9 @@ const MakeAdminsModal = ({ isShown, setIsShown, user, group, connections }) => {
         <Modal.Header
           closeButton
           style={{
-            backgroundColor: "var(--templateColor1)",
-            color: "var(--logoTextColor)",
-            textShadow: "2px 2px var(--logoBgColor)",
+            backgroundColor: "var(--modalHeaderBackground)",
+            color: "var(--modalHeaderText)",
+            textShadow: "2px 2px var(--modalTextShadow)",
           }}
         >
           <Modal.Title>
@@ -130,8 +130,8 @@ const MakeAdminsModal = ({ isShown, setIsShown, user, group, connections }) => {
         <Modal.Footer>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             disabled={selectedMembers.length === 0}
@@ -141,8 +141,8 @@ const MakeAdminsModal = ({ isShown, setIsShown, user, group, connections }) => {
           </Button>
           <Button
             style={{
-              backgroundColor: "var(--templateColor1)",
-              color: "var(--logoTextColor)",
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
             onClick={handleClose}

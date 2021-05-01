@@ -1,3 +1,5 @@
+/* Extra small devices (portrait phones, less than 576px) */
+
 .GroupMessages {
   width: 100%;
   height: 100%;
@@ -7,6 +9,18 @@
   overflow: scroll;
 }
 
+.GroupMessages__container {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  height: 100%;
+  padding: 1%;
+  padding-top: 20%;
+  border: 1px solid var(--templateColor1);
+  border-radius: 10px;
+  box-shadow: 3px 5px 20px var(--templateColor1);
+}
+
 .GroupMessages__oldmessage {
   user-select: all;
   -moz-user-select: all;
@@ -14,130 +28,32 @@
   -webkit-user-select: all;
 }
 
-.GroupInfoModal__container {
-  max-height: 40vh;
-  overflow: scroll;
-}
-
-.GroupInfoModal__container h4 {
-  font-weight: bold;
-  margin-left: 7%;
-  text-shadow: 0px 0px 2px var(--templateColor1),
-    0px 0px 1px var(--templateColor1);
-}
-
-.GroupInfoModal__container h6 {
-  font-weight: bold;
-  margin-left: 7%;
-  margin-top: 0%;
-}
-
-.GroupMessages__info_select:focus {
-  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor);
-}
-
-.GroupMessages__info_owner:disabled {
-  text-transform: uppercase;
-  background-color: var(--templateColor1);
-  color: var(--logoTextColor);
-  font-weight: bold;
-  /* box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor); */
-  border-left: none;
-}
-
-.GroupMessages__button {
-  background-color: var(--templateColor1);
-  margin-bottom: 10%;
-  color: var(--logoTextColor);
-  border: 1px solid var(--logoTextColor);
-  padding: 3%;
-  border-radius: 5px;
-  margin-left: 10%;
-  width: 80%;
-  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 10px var(--logoBgColor),
-    0px 0px 50px var(--logoBgColor);
-}
-
-.GroupMessages__button:hover {
-  background-color: var(--logoBgColor);
-  color: var(--logoTextColor);
-  box-shadow: 0px 0px 10px var(--templateColor1),
-    0px 0px 10px var(--templateColor1), 0px 0px 50px var(--templateColor1);
-}
-
-.GroupMessages__info_button {
-  position: relative;
-  top: 10%;
-  left: 50%;
-}
-
-.GroupMessages__info_button:hover {
-  position: relative;
-  top: 11%;
-  left: 51%;
-  cursor: help;
-}
-
 .GroupMessages .fa-bars {
   position: absolute;
-  top: 3%;
-  left: 50%;
-  background-color: var(--templateColor1);
-  color: var(--logoTextColor);
-}
-
-.GroupMessages__container {
-  display: flex;
-  border: 1px solid var(--templateColor1);
-  width: 95%;
-  height: 100%;
-  padding: 1%;
-  border-radius: 10px;
-  box-shadow: 3px 5px 20px var(--templateColor1);
-}
-
-.GroupMessages__sidebar {
-  box-shadow: 5px 10px 20px var(--logoBgColor);
-  height: 100%;
-  overflow: scroll;
-}
-
-.GroupMessages__sidebar_top {
-  height: 60%;
-  overflow: scroll;
-}
-.GroupMessages__sidebar_bottom {
-  height: 40%;
-}
-
-.GroupMessages__chat {
-  box-shadow: 5px 10px 20px var(--logoBgColor);
-  height: 100%;
-  padding: 2%;
-  overflow: scroll;
-  padding-bottom: 0%;
-}
-
-.GroupMessages__connections {
-  border: 2px solid var(--logoBgColor);
+  top: 6%;
+  left: -5%;
+  background-color: var(--templateColor3);
+  color: var(--logoBgColor);
 }
 
 .GroupMessages__connections {
   margin-bottom: 2%;
   padding: 1%;
   background-color: var(--logoTextColor);
-  box-shadow: 0px 6px 10px var(--logoBgColor);
+  box-shadow: 0px 4px 15px var(--logoBgColor);
+  border: 2px solid var(--logoBgColor);
   border-radius: 10px;
 }
 
 .GroupMessages__connections img {
   border-radius: 100%;
-  width: 10vw;
-  height: 6vh;
+  width: 35px;
+  height: 35px;
   float: left;
 }
 
 .GroupMessages__connections h5 {
+  font-size: 0.8em;
   font-weight: bold;
   width: 80%;
   float: left;
@@ -160,6 +76,46 @@
   box-shadow: 20px 20px 40px var(--templateColor1);
 }
 
+.GroupMessages__button {
+  font-size: 0.8em;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  width: 80%;
+  padding: 3%;
+  margin: 10% 0% 5% 10%;
+  border: 1px solid var(--logoTextColor);
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 10px var(--logoBgColor),
+    0px 0px 50px var(--logoBgColor);
+}
+
+.GroupMessages__button:hover {
+  background-color: var(--logoBgColor);
+  color: var(--logoTextColor);
+  box-shadow: 0px 0px 10px var(--templateColor1),
+    0px 0px 10px var(--templateColor1), 0px 0px 50px var(--templateColor1);
+}
+
+.GroupMessages__sidebar {
+  box-shadow: 5px 10px 20px var(--logoBgColor);
+  height: 100%;
+  overflow: scroll;
+}
+
+.GroupMessages__sidebar_top {
+  height: 40%;
+  overflow: scroll;
+}
+.GroupMessages__sidebar_bottom {
+  height: 40%;
+}
+
+.GroupMessages__chat {
+  height: 100%;
+  overflow: scroll;
+  box-shadow: 5px 10px 20px var(--logoBgColor);
+}
+
 .GroupMessages__chatarea {
   height: 90%;
   overflow: scroll;
@@ -167,9 +123,10 @@
 }
 
 .GroupMessages__inputarea .customform {
+  font-size: 0.8em;
   background-color: var(--templateColor1);
   color: var(--logoTextColor);
-  padding-right: 23%;
+  padding-right: 28%;
 }
 
 .GroupMessages__inputarea .customform:focus {
@@ -179,11 +136,12 @@
 }
 
 .GroupMessages__inputarea .fa {
-  float: right;
   position: relative;
   bottom: 28px;
+  float: right;
   color: var(--logoTextColor);
-  margin: 0px 15px 0px 5px;
+  transform: scale(0.9, 0.9);
+  margin: 4px 6px 0px 3px;
 }
 
 .GroupMessages__message {
@@ -193,21 +151,22 @@
   padding-right: 30px;
   border-radius: 10px;
   width: fit-content;
-  color: var(--logoBgColor);
-  font-weight: bold;
   max-width: 50%;
+  font-size: 0.7em;
+  font-weight: bold;
   overflow-wrap: break-word;
+  color: var(--logoBgColor);
   box-shadow: 5px 5px 10px var(--templateColor1);
 }
 
 .GroupMessages__date {
   position: relative;
-  font-size: 10px;
+  font-size: 0.6em;
   font-weight: bold;
 }
 
 .GroupMessages__time {
-  font-size: 10px;
+  font-size: 0.6em;
   font-weight: bold;
 }
 
@@ -256,97 +215,719 @@
 .GroupMessages__message.sender .GroupMessages__delete_button {
   position: absolute;
   float: right;
-  top: 45%;
-  right: 5%;
+  top: auto;
+  right: -10%;
 }
 
 .GroupMessages__message.sender .GroupMessages__edit_button {
   position: absolute;
   float: left;
-  top: 45%;
-  left: 5%;
+  top: auto;
+  left: -10%;
 }
 
 .GroupMessages__message.receiver .GroupMessages__delete_button {
   position: absolute;
   float: right;
-  top: 45%;
-  right: 5%;
+  top: auto;
+  right: -10%;
 }
 
 .GroupMessages__message.receiver .GroupMessages__edit_button {
   position: absolute;
   float: left;
-  top: 45%;
-  left: 5%;
+  top: auto;
+  left: -10%;
 }
 
-@media (max-width: 900px) {
-  .GroupMessages__message.sender .GroupMessages__delete_button {
-    top: 15%;
-    right: -12%;
-  }
+.GroupInfoModal__picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  .GroupMessages__message.sender .GroupMessages__edit_button {
-    top: 15%;
-    left: -12%;
-  }
+.GroupInfoModal__container {
+  max-height: 30vh;
+  overflow: scroll;
+}
 
-  .GroupMessages__message.receiver .GroupMessages__delete_button {
-    top: 5%;
-    right: -16%;
-  }
+.GroupMessages__info_select {
+  font-size: 0.8em;
+}
 
-  .GroupMessages__message.receiver .GroupMessages__edit_button {
-    top: 5%;
-    left: -16%;
-  }
+.GroupMessages__info_select:focus {
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor);
+}
 
-  .GroupMessages__info_button {
-    left: 20%;
-  }
+.GroupMessages__info_owner:disabled {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  padding-top: 6%;
+  padding-bottom: 6%;
+  font-weight: bold;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  border-left: none;
+}
 
-  .GroupMessages__info_button:hover {
-    left: 21%;
-  }
-  .GroupMessages__container {
-    flex-direction: column;
-    padding-top: 20%;
-  }
+.GroupInfoModal__container h4 {
+  font-size: 1em;
+  font-weight: bold;
+  margin-left: 7%;
+  text-shadow: 0px 0px 2px var(--templateColor1),
+    0px 0px 1px var(--templateColor1);
+}
 
-  .GroupMessages__connections {
-    margin-bottom: 2%;
-  }
-  .GroupMessages__chat {
-    padding-top: 5%;
-    padding-bottom: 0%;
-  }
+.GroupInfoModal__container h6 {
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 7%;
+  margin-top: 0%;
+}
 
-  .GroupMessages__inputarea .customform {
-    padding-right: 35%;
-  }
+.GroupMessages__info_button {
+  position: relative;
+  top: 10%;
+  left: 10%;
+}
 
-  .GroupMessages .fa-bars {
-    position: absolute;
-    top: 6%;
-    left: -12%;
-    background-color: var(--templateColor3);
-    color: var(--logoBgColor);
-  }
+.GroupMessages__info_button:hover {
+  transform: scale(1.4, 1.4);
+  cursor: help;
+}
+
+.GroupInfoModal__container img {
+  width: 80px;
+  height: 80px;
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
+  .GroupMessages__container {
+    display: flex;
+    flex-direction: row;
+    padding: 1%;
+  }
+
+  .GroupMessages .fa-bars {
+    position: absolute;
+    top: -10%;
+    left: 30%;
+    background-color: var(--templateColor1);
+    color: var(--logoTextColor);
+  }
+
+  .GroupMessages__connections {
+    margin-bottom: 2%;
+    padding: 1%;
+  }
+
   .GroupMessages__connections img {
-    width: 10vw;
-    height: 7vh;
+    width: 25px;
+    height: 25px;
+  }
+
+  .GroupMessages__connections h5 {
+    font-size: 0.7em;
+    top: 20%;
+    left: 2%;
+  }
+
+  .GroupMessages__button {
+    font-size: 0.6em;
+  }
+
+  .GroupMessages__sidebar {
+    height: 100%;
+  }
+
+  .GroupMessages__sidebar_top {
+    height: 50%;
+    overflow: scroll;
+  }
+  .GroupMessages__sidebar_bottom {
+    height: 50%;
+  }
+
+  .GroupMessages__chat {
+    padding: 2%;
+  }
+
+  .GroupMessages__chatarea {
+    padding: 2%;
+  }
+
+  .GroupMessages__inputarea .customform {
+    font-size: 0.6em;
+    padding-right: 28%;
+  }
+
+  .GroupMessages__inputarea .fa {
+    position: relative;
+    bottom: 26px;
+    transform: scale(0.8, 0.8);
+    margin: 4px 6px 0px 0px;
+  }
+
+  .GroupMessages__message {
+    font-size: 0.6em;
+  }
+
+  .GroupMessages__date {
+    font-size: 0.5em;
+  }
+
+  .GroupMessages__time {
+    font-size: 0.5em;
+  }
+
+  .GroupMessages__message_hover {
+    font-size: 0.8em;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -10%;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -10%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -10%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -10%;
+  }
+
+  .GroupInfoModal__picture {
+    width: 100px;
+    height: 100px;
+  }
+
+  .GroupInfoModal__container {
+    max-height: 30vh;
+  }
+
+  .GroupMessages__info_select {
+    font-size: 0.8em;
+  }
+
+  .GroupMessages__info_owner:disabled {
+    font-size: 0.7em;
+    padding-top: 6%;
+    padding-bottom: 6%;
+  }
+
+  .GroupInfoModal__container h4 {
+    font-size: 1em;
+  }
+
+  .GroupInfoModal__container h6 {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 7%;
+    margin-top: 0%;
+  }
+
+  .GroupMessages__info_button {
+    position: relative;
+    transform: scale(1, 1);
+    top: 4%;
+    left: -20%;
+  }
+
+  .GroupMessages__info_button:hover {
+    transform: scale(1.2, 1.2);
+  }
+
+  .GroupInfoModal__container img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .GroupMessages__container {
+    display: flex;
+    flex-direction: row;
+    padding: 1%;
+  }
+
+  .GroupMessages .fa-bars {
+    position: absolute;
+    top: -5.5%;
+    left: 18%;
+  }
+
+  .GroupMessages__connections {
+    margin-bottom: 2%;
+    padding: 1%;
+  }
+
+  .GroupMessages__connections img {
+    width: 55px;
+    height: 55px;
+  }
+
+  .GroupMessages__connections h5 {
+    font-size: 1.3em;
+    top: 20%;
+    left: 2%;
+  }
+
+  .GroupMessages__button {
+    font-size: 1.3em;
+  }
+
+  .GroupMessages__sidebar {
+    height: 100%;
+  }
+
+  .GroupMessages__sidebar_top {
+    height: 60%;
+    overflow: scroll;
+  }
+  .GroupMessages__sidebar_bottom {
+    height: 40%;
+  }
+
+  .GroupMessages__chat {
+    padding: 2%;
+  }
+
+  .GroupMessages__chatarea {
+    height: 96%;
+    padding: 2%;
+  }
+
+  .GroupMessages__inputarea .customform {
+    font-size: 1.3em;
+    padding-right: 36%;
+  }
+
+  .GroupMessages__inputarea .fa {
+    position: relative;
+    bottom: 30px;
+    transform: scale(1.6, 1.6);
+    margin: 0px 20px 0px 0px;
+  }
+
+  .GroupMessages__message {
+    padding-left: 15%;
+    padding-right: 15%;
+    font-size: 1.3em;
+  }
+
+  .GroupMessages__date {
+    font-size: 1em;
+  }
+
+  .GroupMessages__time {
+    font-size: 1em;
+  }
+
+  .GroupMessages__message_hover {
+    font-size: 0.7em;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -20%;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -20%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -20%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -20%;
+  }
+
+  .GroupInfoModal__picture {
+    width: 100px;
+    height: 100px;
+  }
+
+  .GroupInfoModal__container {
+    max-height: 30vh;
+    overflow: scroll;
+  }
+
+  .GroupMessages__info_select {
+    font-size: 1.5em;
+  }
+
+  .GroupMessages__info_owner:disabled {
+    font-size: 1.3em;
+  }
+
+  .GroupInfoModal__container h4 {
+    font-size: 1.8em;
+  }
+
+  .GroupInfoModal__container h6 {
+    font-size: 1.5em;
+  }
+
+  .GroupMessages__info_button {
+    position: relative;
+    transform: scale(1.5, 1.5);
+    top: 20%;
+    left: -20%;
+  }
+
+  .GroupMessages__info_button:hover {
+    transform: scale(2, 2);
+  }
+
+  .GroupInfoModal__container img {
+    width: 80px;
+    height: 80px;
   }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
+  .GroupMessages__container {
+    display: flex;
+    flex-direction: row;
+    padding: 1%;
+  }
+
+  .GroupMessages .fa-bars {
+    position: absolute;
+    top: -5.5%;
+    left: 8%;
+  }
+
+  .GroupMessages__connections {
+    margin-bottom: 2%;
+    padding: 1%;
+  }
+
   .GroupMessages__connections img {
-    width: 5vw;
-    height: 8vh;
+    width: 70px;
+    height: 70px;
+  }
+
+  .GroupMessages__connections h5 {
+    font-size: 1.7em;
+    top: 20%;
+    left: 2%;
+  }
+
+  .GroupMessages__button {
+    font-size: 1.5em;
+  }
+
+  .GroupMessages__sidebar {
+    height: 100%;
+  }
+
+  .GroupMessages__sidebar_top {
+    height: 70%;
+    overflow: scroll;
+  }
+  .GroupMessages__sidebar_bottom {
+    height: 30%;
+  }
+
+  .GroupMessages__chat {
+    padding: 2%;
+  }
+
+  .GroupMessages__chatarea {
+    height: 96%;
+    padding: 2%;
+  }
+
+  .GroupMessages__inputarea .customform {
+    font-size: 1.8em;
+    padding-right: 36%;
+  }
+
+  .GroupMessages__inputarea .fa {
+    position: relative;
+    bottom: 35px;
+    transform: scale(2, 2);
+    margin: 0px 30px 0px 0px;
+  }
+
+  .GroupMessages__message {
+    padding-left: 15%;
+    padding-right: 15%;
+    font-size: 1.7em;
+  }
+
+  .GroupMessages__date {
+    font-size: 1.4em;
+  }
+
+  .GroupMessages__time {
+    font-size: 1.4em;
+  }
+
+  .GroupMessages__message_hover {
+    font-size: 0.5em;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -30%;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -30%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -30%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -30%;
+  }
+
+  .GroupInfoModal__picture {
+    width: 200px;
+    height: 200px;
+  }
+
+  .GroupInfoModal__container {
+    max-height: 30vh;
+    overflow: scroll;
+  }
+
+  .GroupMessages__info_select {
+    font-size: 1.8em;
+  }
+
+  .GroupMessages__info_owner:disabled {
+    font-size: 1.5em;
+  }
+
+  .GroupInfoModal__container h4 {
+    font-size: 2em;
+  }
+
+  .GroupInfoModal__container h6 {
+    font-size: 1.7em;
+  }
+
+  .GroupMessages__info_button {
+    position: relative;
+    transform: scale(2, 2);
+    top: 25%;
+    left: -20%;
+  }
+
+  .GroupMessages__info_button:hover {
+    transform: scale(2.5, 2.5);
+  }
+
+  .GroupInfoModal__container img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .GroupMessages__container {
+    display: flex;
+    flex-direction: row;
+    padding: 1%;
+  }
+
+  .GroupMessages .fa-bars {
+    position: absolute;
+    top: -16%;
+    left: 29%;
+  }
+
+  .GroupMessages__connections {
+    margin-bottom: 2%;
+    padding: 1%;
+  }
+
+  .GroupMessages__connections img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .GroupMessages__connections h5 {
+    font-size: 1.2em;
+    top: 20%;
+    left: 2%;
+  }
+
+  .GroupMessages__button {
+    font-size: 1em;
+  }
+
+  .GroupMessages__sidebar {
+    height: 100%;
+  }
+
+  .GroupMessages__sidebar_top {
+    height: 55%;
+  }
+  .GroupMessages__sidebar_bottom {
+    height: 45%;
+  }
+
+  .GroupMessages__chat {
+    padding: 2%;
+  }
+
+  .GroupMessages__chatarea {
+    height: 96%;
+    padding: 2%;
+  }
+
+  .GroupMessages__inputarea .customform {
+    font-size: 1em;
+    padding-right: 36%;
+  }
+
+  .GroupMessages__inputarea .fa {
+    position: relative;
+    bottom: 27px;
+    transform: scale(1.3, 1.3);
+    margin: 0px 16px 0px 0px;
+  }
+
+  .GroupMessages__message {
+    padding-left: 7%;
+    padding-right: 7%;
+    font-size: 1em;
+  }
+
+  .GroupMessages__date {
+    font-size: 0.8em;
+  }
+
+  .GroupMessages__time {
+    font-size: 0.8em;
+  }
+
+  .GroupMessages__message_hover {
+    font-size: 0.8em;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -15%;
+  }
+
+  .GroupMessages__message.sender .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -15%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__delete_button {
+    position: absolute;
+    float: right;
+    top: auto;
+    right: -15%;
+  }
+
+  .GroupMessages__message.receiver .GroupMessages__edit_button {
+    position: absolute;
+    float: left;
+    top: auto;
+    left: -15%;
+  }
+
+  .GroupInfoModal__picture {
+    width: 140px;
+    height: 140px;
+  }
+
+  .GroupInfoModal__container {
+    max-height: 30vh;
+    overflow: scroll;
+  }
+
+  .GroupMessages__info_select {
+    font-size: 1em;
+  }
+
+  .GroupMessages__info_owner:disabled {
+    font-size: 1em;
+  }
+
+  .GroupInfoModal__container h4 {
+    margin-left: 0%;
+    font-size: 1.3em;
+  }
+
+  .GroupInfoModal__container h6 {
+    margin-left: 0%;
+    font-size: 1em;
+  }
+
+  .GroupMessages__info_button {
+    position: relative;
+    transform: scale(1.5, 1.5);
+    top: 25%;
+    left: 20%;
+  }
+
+  .GroupMessages__info_button:hover {
+    transform: scale(1.8, 1.8);
+  }
+
+  .GroupInfoModal__container img {
+    width: 80px;
+    height: 80px;
   }
 }
