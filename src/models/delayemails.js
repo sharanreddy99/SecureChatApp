@@ -9,10 +9,12 @@ const delayEmailsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  receiveremail: {
-    type: String,
-    required: true,
-  },
+  receiveremails: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   subject: {
     type: String,
     required: true,
@@ -25,10 +27,18 @@ const delayEmailsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  seen: {
-    type: Boolean,
-    default: false,
-  },
+  seenArr: [
+    {
+      email: {
+        type: String,
+        required: true,
+      },
+      seen: {
+        default: false,
+        type: Boolean,
+      },
+    },
+  ],
 });
 
 const DelayEmails = mongoose.model("delayemails", delayEmailsSchema);
