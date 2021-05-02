@@ -1,135 +1,123 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useLocation } from "react-router-dom";
 import "./Emails.css";
-import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
+import EmojiPickerModal from "../Modals/EmojiPickerModal";
+import axios from "axios";
+import Select from "react-select";
 import TemplateModal from "../Modals/TemplateModal";
-import TimerModal from "./TimerModal";
 import DateFormat from "dateformat";
-import DeleteMessageModal from "./DeleteMessageModal";
-import socketIOClient from "socket.io-client";
+import CreateGroupModal from "./Modals/CreateGroupModal";
+import DeleteGroupModal from "./Modals/DeleteGroupModal";
 
 const Emails = () => {
   const location = useLocation();
-  const history = useHistory();
   const user = location.state.user;
-
-  //States
   const [connections, setConnections] = useState(location.state.connections);
-  const [active, setActive] = useState(-1);
-  const [connectionEmail, setConnectionEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [emailMessages, setEmailMessages] = useState(
-    location.state.emailMessages
-  );
-  const [deleteMessageModal, setDeleteMessageModal] = useState({
-    isShown: false,
-    message: "",
-  });
   const [modal, setModal] = useState({
     isShown: false,
     ModalTitle: "",
     ModalBody: "",
   });
-  const [timermodal, setTimerModal] = useState({
+  const [allEmails, setAllEmails] = useState([]);
+
+  const [showMenu, setShowMenu] = useState(false);
+  const [showNewMail, setShowNewMail] = useState(true);
+  const [showInbox, setShowInbox] = useState(false);
+  const [showSent, setShowSent] = useState(false);
+  const [timermodal, setTimerModal] = useState({});
+  const [emojiText, setEmojiText] = useState("");
+  const [emojiPickerModal, setEmojiPickerModal] = useState({
     isShown: false,
-    message: message,
-    email: user.email,
-    connectionemail: connectionEmail,
-    subject: subject,
+  });
+
+  const [newMailBody, setNewMailBody] = useState("");
+  const [newMailAttachments, setNewMailAttachments] = useState([]);
+  const [toEmails, setToEmails] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [createGroupModal, setCreateGroupModal] = useState({ isShown: false });
+  const [deleteGroupModal, setDeleteGroupModal] = useState({
+    isShown: false,
+    allgroups: [],
   });
 
   //Effects
-
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:4201");
-    socket.on("users__removeconnection", (data) => {
-      const newConnections = connections.filter((connection) => {
-        return connection.email !== data.email;
-      });
+    setAllEmails(
+      connections.map((connection) => {
+        return {
+          value: connection.email,
+          label: connection.email,
+          isGroup: connection.isGroup,
+        };
+      })
+    );
+  }, [connections]);
 
-      history.replace({
-        ...history.location,
-        state: { ...location.state, connections: newConnections },
-      });
-      setConnections(newConnections);
-    });
-
-    socket.on("emails__newemail", (data) => {
-      if (
-        (user.email == data.senderemail || user.email == data.receiveremail) &&
-        (connectionEmail == data.senderemail ||
-          connectionEmail == data.receiveremail)
-      ) {
-        history.replace({
-          ...history.location,
-          state: {
-            ...location.state,
-            emailMessages: [...emailMessages, { ...data }],
-          },
-        });
-        setEmailMessages([...emailMessages, { ...data }]);
-      }
-    });
-
-    socket.on("emails__deleteemail", (data) => {
-      const newEmails = emailMessages.filter((row) => row._id !== data._id);
-      history.replace({
-        ...history.location,
-        state: { ...location.state, emailMessages: newEmails },
-      });
-      setEmailMessages(newEmails);
-    });
-
-    socket.on("emails__delayedemails", (data) => {
-      const newMessages = data.delayedEmails.filter((message) => {
-        return (
-          (user.email === message.senderemail ||
-            user.email === message.receiveremail) &&
-          (connectionEmail === message.senderemail ||
-            connectionEmail === message.receiveremail)
-        );
-      });
-      setEmailMessages([...emailMessages, ...newMessages]);
-    });
-
-    return () => {
-      socket.disconnect();
-      focusLastDiv();
-    };
-  });
-
-  //Handlers
-  const fetchEmails = async (email, connectionemail) => {
-    const response = await axios.post("/fetchallemails", {
-      email: email,
-      connectionemail: connectionemail,
-    });
-
-    setEmailMessages(response.data.emailMessages);
-
-    await axios.post("/emailsseen", {
-      email: email,
-      connectionemail: connectionemail,
-    });
+  //Styles
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      background: "var(--templateColor2)",
+      borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
+      borderColor: state.isFocused
+        ? "var(--templateColor1)"
+        : "var(--templateColor2)",
+      boxShadow: state.isFocused ? null : null,
+      "&:hover": { backgroundColor: "var(--templateColor3)" },
+    }),
+    option: (base) => ({
+      ...base,
+      backgroundColor: "var(--templateColor1)",
+      color: "var(--logoTextColor)",
+      "&:hover": {
+        backgroundColor: "var(--templateColor3)",
+        color: "var(--logoBgColor)",
+      },
+    }),
+    noOptionsMessage: (base) => ({
+      ...base,
+      color: "var(--logoTextColor)",
+    }),
+    menu: (base) => ({
+      ...base,
+      borderRadius: 0,
+      marginTop: 0,
+    }),
+    menuList: (base) => ({
+      ...base,
+      background: "var(--templateColor1)",
+      color: "var(--logoTextColor)",
+      padding: 0,
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: "var(--logoTextColor)",
+      fontWeight: "bold",
+    }),
+    multiValue: (base) => ({
+      ...base,
+      background: "var(--templateColor1)",
+      color: "var(--logoTextColor)",
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: "var(--logoTextColor)",
+    }),
+    input: (base) => ({
+      ...base,
+      color: "var(--logoTextColor)",
+    }),
   };
 
-  const sendEmailHandler = async () => {
-    if (connectionEmail == "") {
-      setModal({
-        isShown: true,
-        ModalTitle: "Choose a Recepient...",
-        ModalBody: "Please Choose a User to chat with...",
-      });
-      return;
-    }
+  //Handlers
 
-    if (message === "") {
+  const sendMailHandler = async () => {
+    if (toEmails.length == 0) {
       setModal({
         isShown: true,
-        ModalTitle: "Type a Message Body...",
-        ModalBody: "Please type something to send...",
+        ModalTitle: "Empty Recipients",
+        ModalBody: "Please choose some Recipients to send mail to.",
       });
       return;
     }
@@ -137,248 +125,218 @@ const Emails = () => {
     const date = DateFormat(new Date(), "yyyy-mm-dd");
     const time = DateFormat(new Date(), "HH:MM");
 
-    const data = {
-      text: message,
-      email: user.email,
-      connectionemail: connectionEmail,
-      date: date,
-      time: time,
-      subject: subject,
-    };
-    await axios.post("/sendemail", data);
-    setMessage("");
-    setSubject("");
-  };
-
-  const sendDelayEmailHandler = async () => {
-    if (connectionEmail == "") {
-      setModal({
-        isShown: true,
-        ModalTitle: "Choose a Recepient...",
-        ModalBody: "Please Choose a User to chat with...",
-      });
-      return;
+    const formData = new FormData();
+    for (let i = 0; i < newMailAttachments.length; i++) {
+      formData.append("customfiles", newMailAttachments[i]);
     }
+    formData.append("email", user.email);
+    formData.append(
+      "toemails",
+      JSON.stringify(toEmails.map((email) => email.value))
+    );
+    formData.append("date", date);
+    formData.append("time", time);
+    formData.append("subject", subject);
+    formData.append("text", newMailBody);
 
-    if (message === "") {
-      setModal({
-        isShown: true,
-        ModalTitle: "Type a Message...",
-        ModalBody: "Please type something to send...",
-      });
-      return;
-    }
-
-    setTimerModal({
-      isShown: true,
-      message: message,
-      email: user.email,
-      connectionemail: connectionEmail,
-      subject: subject,
+    axios.post("/sendmail", formData, {
+      "content-type": "multipart/form-data",
     });
-  };
-
-  const focusLastDiv = () => {
-    var objDiv = document.getElementsByClassName("Emails__chatarea")[0];
-    if (objDiv) {
-      objDiv.scrollTop = objDiv.scrollHeight;
-    }
   };
 
   return (
     <div className="Emails">
-      <i
-        class="fa fa-bars"
-        onClick={() => {
-          $(".Emails__sidebar").toggle(500);
-        }}
-      ></i>
-      <div className="Emails__container">
-        <div className="Emails__sidebar w-100 ">
-          {connections.map((connection, ind) => {
-            return (
-              <div
-                id={"connection" + ind}
-                className={`DirectMessages__connections `}
-                onClick={() => {
-                  if (active != -1) {
-                    $("#connection" + active).removeClass(
-                      "DirectMessages__connections_active"
-                    );
-                  }
-                  setActive(ind);
-                  $("#connection" + ind).addClass(
-                    "DirectMessages__connections_active"
-                  );
+      <div className="Emails__expand_icon">
+        <i
+          class="fa fa-bars"
+          onClick={() => {
+            setShowMenu(!showMenu);
+          }}
+        ></i>
+      </div>
+      <div className="Emails__icon_header" hidden={!showMenu}>
+        <i
+          class="fa fa-plus"
+          title="New Mail"
+          onClick={() => {
+            setShowNewMail(true);
+            setShowInbox(false);
+            setShowSent(false);
+          }}
+        ></i>
+        <i
+          class="fa fa-inbox"
+          title="Inbox"
+          onClick={() => {
+            setShowNewMail(false);
+            setShowInbox(true);
+            setShowSent(false);
+          }}
+        ></i>
+        <i
+          class="fa fa-paper-plane"
+          title="Sent"
+          onClick={() => {
+            setShowNewMail(false);
+            setShowInbox(false);
+            setShowSent(true);
+          }}
+        ></i>
+        <i
+          class="fa fa-users"
+          title="Create Email-Group"
+          onClick={() => {
+            setCreateGroupModal({ isShown: true });
+          }}
+        ></i>
+        <i
+          class="fa fa-trash-o"
+          title="Delete Email Group"
+          onClick={async () => {
+            const response = await axios.post("/getemailgroups", {
+              owner: user.email,
+            });
+            const allgroups = response.data.allgroups.map((row) => ({
+              name: row.name,
+              owner: row.owner,
+              recipients: row.receiveremails,
+              label: row.name,
+              value: row.name,
+            }));
+            setDeleteGroupModal({
+              isShown: true,
+              allgroups: allgroups,
+            });
+          }}
+        ></i>
+      </div>
 
-                  setConnectionEmail(connection.email);
-
-                  fetchEmails(user.email, connection.email);
-                }}
-                key={ind}
-              >
-                <div className="row">
-                  <div className="col">
-                    <img
-                      src={connection.avatarUrl}
-                      alt={connection.displayname}
-                    />
-                    <h5>{connection.email}</h5>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="Emails__chat w-100 ">
-          <div className="Emails__chatarea">
-            {emailMessages.map((message, ind) => {
-              return (
-                <div className="row" key={ind}>
-                  <div
-                    className="col"
-                    onClick={() => {
-                      setDeleteMessageModal({
-                        isShown: true,
-                        message: message,
-                      });
-                    }}
-                  >
-                    <p
-                      className={`DirectMessages__message ${
-                        message.senderemail == user.email
-                          ? "sender"
-                          : "receiver"
-                      }`}
-                    >
-                      Subject:
-                      <br />
-                      {message.subject}
-                      <br />
-                      <br />
-                      Body:
-                      <br />
-                      {message.text}
-                    </p>
-                    {message.senderemail == user.email ? (
-                      <>
-                        <p
-                          className={`DirectMessages__time ${
-                            message.senderemail == user.email
-                              ? "sender"
-                              : "receiver"
-                          }`}
-                        >
-                          {message.time}
-                        </p>
-                        <p
-                          className={`DirectMessages__date ${
-                            message.senderemail == user.email
-                              ? "sender"
-                              : "receiver"
-                          }`}
-                        >
-                          {message.date} &nbsp;&nbsp;
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <p
-                          className={`DirectMessages__date ${
-                            message.senderemail == user.email
-                              ? "sender"
-                              : "receiver"
-                          }`}
-                        >
-                          {message.date} &nbsp;&nbsp;
-                        </p>
-                        <p
-                          className={`DirectMessages__time ${
-                            message.senderemail == user.email
-                              ? "sender"
-                              : "receiver"
-                          }`}
-                        >
-                          {message.time}
-                        </p>{" "}
-                      </>
-                    )}
-                  </div>
-                </div>
+      <div className="Emails__NewMail_container" hidden={!showNewMail}>
+        <b className="toText">To: </b>
+        <Select
+          styles={customStyles}
+          isMulti={true}
+          isSearchable={true}
+          placeholder="To: "
+          noOptionsMessage={() => "No Recipients."}
+          onChange={(e) => {
+            setToEmails(e);
+          }}
+          options={allEmails}
+        />
+        <b className="subjectText">Subject :</b>
+        <input
+          type="text"
+          value={subject}
+          onChange={(e) => {
+            setSubject(e.target.value);
+          }}
+          className="form-control"
+        />
+        <textarea
+          className="form-control body"
+          rows={17}
+          placeholder="Body: "
+          value={newMailBody}
+          onChange={(e) => {
+            setNewMailBody(e.target.value);
+          }}
+        />
+        <div className="Emails__NewMail_bottombar">
+          <input
+            type="file"
+            className="form-control attachments"
+            onChange={(e) => {
+              if (typeof e.target.files[0] !== "undefined") {
+                setNewMailAttachments([
+                  ...newMailAttachments,
+                  e.target.files[0],
+                ]);
+                setNewMailBody(
+                  newMailBody + "\nAttachment: " + e.target.files[0].name + "\n"
+                );
+              }
+            }}
+          />
+          <i
+            class="fa fa-paperclip"
+            title="Attachments"
+            onClick={() => {
+              $(".attachments").trigger("click");
+            }}
+          ></i>
+          <i
+            class="fa fa-trash"
+            title="Delete Attachments"
+            onClick={() => {
+              $(".attachments").val(null);
+              setNewMailAttachments([]);
+              setNewMailBody(
+                newMailBody
+                  .split("\n")
+                  .filter((line) => {
+                    return line.indexOf("Attachment: ") == -1;
+                  })
+                  .filter((line) => {
+                    return line !== "";
+                  })
+                  .join("\n")
               );
-            })}
-          </div>
-          <div className="Emails__inputarea">
-            <div className="row">
-              <div className="col">
-                <input
-                  type="email"
-                  name="email"
-                  disabled={true}
-                  value={connectionEmail}
-                  onChange={(e) => {
-                    setConnectionEmail(e.target.value);
-                  }}
-                  className="form-control customform"
-                  placeholder="Enter Recipient Email"
-                />
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control customform"
-                  placeholder="Enter Subject"
-                  name="subject"
-                  value={subject}
-                  onChange={(e) => {
-                    setSubject(e.target.value);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col">
-                <textarea
-                  name="message"
-                  value={message}
-                  onChange={(e) => {
-                    setMessage(e.target.value);
-                  }}
-                  class="form-control customform"
-                  placeholder="Enter message to be sent..."
-                  rows="3"
-                ></textarea>
-                <i class="fa fa-paper-plane" onClick={sendEmailHandler}></i>
-                <i class="fa fa-clock-o" onClick={sendDelayEmailHandler}></i>
-              </div>
-            </div>
-          </div>
+            }}
+          ></i>
+          <i
+            class="fa fa-smile-o"
+            title="Emojis"
+            onClick={() => {
+              setEmojiText("");
+              setEmojiPickerModal({ isShown: true });
+            }}
+          ></i>
+          <i class="fa fa-clock-o" title="Send Delay Email"></i>
+          <i
+            class="fa fa-arrow-right"
+            onClick={sendMailHandler}
+            title="Send Email"
+          ></i>
         </div>
       </div>
+
+      <div hidden={!showInbox}>
+        <h1>Inbox</h1>
+      </div>
+
+      <div hidden={!showSent}>
+        <h1>Sent Mail</h1>
+      </div>
+      <EmojiPickerModal
+        isShown={emojiPickerModal.isShown}
+        setIsShown={setEmojiPickerModal}
+        message={newMailBody}
+        setMessage={setNewMailBody}
+        emojiText={emojiText}
+        setEmojiText={setEmojiText}
+      />
+      <CreateGroupModal
+        isShown={createGroupModal.isShown}
+        setIsShown={setCreateGroupModal}
+        email={user.email}
+        allEmails={allEmails.filter((email) => {
+          return email.isGroup !== true;
+        })}
+        setConnections={setConnections}
+      />
+      <DeleteGroupModal
+        isShown={deleteGroupModal.isShown}
+        setIsShown={setDeleteGroupModal}
+        email={user.email}
+        allgroups={deleteGroupModal.allgroups}
+        setConnections={setConnections}
+      />
       <TemplateModal
         isShown={modal.isShown}
         setIsShown={setModal}
         ModalTitle={modal.ModalTitle}
         ModalBody={modal.ModalBody}
-      />
-      <TimerModal
-        isShown={timermodal.isShown}
-        setIsShown={setTimerModal}
-        message={timermodal.message}
-        setMessage={setMessage}
-        subject={timermodal.subject}
-        setSubject={setSubject}
-        email={timermodal.email}
-        connectionemail={timermodal.connectionemail}
-      />
-      <DeleteMessageModal
-        isShown={deleteMessageModal.isShown}
-        setIsShown={setDeleteMessageModal}
-        message={deleteMessageModal.message}
-        messages={emailMessages}
-        setMessages={setEmailMessages}
       />
     </div>
   );

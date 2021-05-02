@@ -1,101 +1,129 @@
+/* Extra small devices (portrait phones, less than 576px) */
+
 .Emails {
-  width: 100%;
-  height: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   overflow: scroll;
 }
 
-.Emails .fa-bars {
+.Emails__expand_icon {
   position: absolute;
-  top: 3%;
-  left: 50%;
-  background-color: var(--templateColor1);
-  color: var(--logoTextColor);
-}
-
-.Emails__container {
-  display: flex;
-  border: 1px solid var(--templateColor1);
-  width: 95%;
-  height: 100%;
+  top: 40%;
+  left: 0.1%;
+  z-index: 2;
   padding: 1%;
+  padding-right: 1.5%;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
   border-radius: 10px;
-  box-shadow: 3px 5px 20px var(--templateColor1);
 }
 
-.Emails__sidebar {
-  box-shadow: 5px 10px 20px var(--logoBgColor);
-  height: 100%;
-  overflow: scroll;
+.Emails__expand_icon:hover .fa {
+  transform: scale(1.8, 1.8);
 }
 
-.Emails__chat {
-  box-shadow: 5px 10px 20px var(--logoBgColor);
-  height: 100%;
-  padding: 2%;
-  overflow: scroll;
-  padding-bottom: 0%;
-}
-
-.Emails__chatarea {
-  height: 60%;
-  overflow: scroll;
-  padding: 2%;
-  margin-bottom: 2%;
-  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor);
-}
-
-.Emails__chatarea .customtext {
+.Emails__icon_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  left: 3.5%;
+  top: 20%;
+  width: 50px;
+  height: 270px;
+  border-radius: 10px;
   background-color: var(--templateColor1);
   color: var(--logoTextColor);
-  width: 10vw;
 }
 
-.Emails__inputarea .customform {
+.Emails__icon_header .fa:hover {
+  transform: scale(1.8, 1.8);
+}
+
+.Emails__NewMail_container {
+  width: 90%;
+  height: 86vh;
+  overflow: scroll;
+  border-radius: 10px;
+  background-color: var(--templateColor2);
+  box-shadow: 5px 10px 40px var(--logoBgColor);
+}
+
+.Emails__NewMail_container .form-control {
+  background-color: var(--templateColor2);
+  color: var(--logoTextColor);
+  border: none;
+  padding-left: 8%;
+}
+
+.Emails__NewMail_container .form-control::selection {
   background-color: var(--templateColor1);
   color: var(--logoTextColor);
-  padding-right: 14%;
 }
 
-.Emails__inputarea .customform:focus {
-  outline: none;
-  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
-    0px 0px 20px var(--logoBgColor);
+.Emails__NewMail_container .form-control:focus {
+  box-shadow: 3px 5px 20px var(--logoBgColor);
+  border: 1px solid var(--templateColor1);
 }
 
-.Emails__inputarea .fa {
-  float: right;
-  position: relative;
-  bottom: 28px;
+.Emails__NewMail_container .toText {
+  position: absolute;
   color: var(--logoTextColor);
-  margin: 0px 15px 0px 5px;
+  margin-left: 1%;
+  margin-top: 0.5%;
 }
 
-@media (max-width: 768px) {
-  .Emails__container {
-    flex-direction: column;
-    padding-top: 20%;
-  }
+.Emails__NewMail_container .subjectText {
+  position: absolute;
+  color: var(--logoTextColor);
+  margin-left: 1%;
+  margin-top: 0.5%;
+}
 
-  .Emails__connections {
-    margin-bottom: 2%;
-  }
-  .Emails__chat {
-    padding-top: 5%;
-    padding-bottom: 0%;
-  }
+.Emails__NewMail_container .body {
+  padding: 1%;
+}
 
-  .Emails__inputarea .customform {
-    padding-right: 25%;
-  }
+.Emails__NewMail_container .body::placeholder {
+  font-weight: bold;
+  color: var(--logoTextColor);
+}
 
-  .Emails .fa-bars {
-    position: absolute;
-    top: 6%;
-    left: -12%;
-    background-color: var(--templateColor3);
-    color: var(--logoBgColor);
-  }
+.Emails__NewMail_bottombar {
+  background-color: var(--templateColor1);
+  height: 8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Emails__NewMail_bottombar .fa {
+  color: white;
+  margin: 6%;
+}
+
+.Emails__NewMail_bottombar .attachments {
+  display: none;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
 }

@@ -64,11 +64,17 @@ const Dashboard = () => {
   };
 
   const goToEmails = async () => {
+    const response = await axios.post("/getemailgroups", { owner: user.email });
+    const allgroups = response.data.allgroups.map((group) => ({
+      email: group.name,
+      isGroup: true,
+    }));
+
     history.push({
       pathname: "/emails",
       state: {
         user: user,
-        connections: location.state.emailconnections,
+        connections: [...location.state.emailconnections, ...allgroups],
         emailMessages: [],
       },
     });
