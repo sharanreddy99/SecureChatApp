@@ -28,6 +28,7 @@
 }
 
 .Emails__icon_header {
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -46,13 +47,64 @@
   transform: scale(1.8, 1.8);
 }
 
-.Emails__NewMail_container {
+.Emails__NewMail_container,
+.Emails__SentMail_container,
+.Emails__Inbox_container {
   width: 90%;
   height: 86vh;
   overflow: scroll;
   border-radius: 10px;
   background-color: var(--templateColor2);
   box-shadow: 5px 10px 40px var(--logoBgColor);
+}
+
+.Emails__emptymail {
+  display: inline;
+  position: relative;
+  font-size: 5em;
+  left: 35%;
+  top: 150px;
+  text-shadow: 0px 0px 10px var(--logoTextColor),
+    0px 0px 20px var(--logoBgColor), 0px 0px 40px var(--logoBgColor);
+}
+
+.Emails__SentMail_container .customform,
+.Emails__Inbox_container .customform {
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+}
+
+.Emails__SentMail_container .customform:hover,
+.Emails__Inbox_container .customform:hover {
+  box-shadow: 0px 0px 10px var(--logoTextColor),
+    0px 0px 20px var(--logoTextColor), 0px 0px 20px var(--logoTextColor);
+}
+
+.Emails__SentMail_container .customform:focus,
+.Emails__Inbox_container .customform:focus {
+  outline: none;
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
+    0px 0px 20px var(--logoBgColor);
+}
+
+.Emails__SentMail_row {
+  position: relative;
+  margin: 3%;
+  padding: 2%;
+  border-radius: 10px;
+  background-color: var(--templateColor3);
+  z-index: 1;
+}
+
+.Emails__SentMail_row .fa {
+  position: absolute;
+  transform: scale(1.7, 1.7);
+  right: -10%;
+  top: 5%;
+}
+
+.Emails__SentMail_row .fa:hover {
+  transform: scale(1.9, 1.9);
 }
 
 .Emails__NewMail_container .form-control {

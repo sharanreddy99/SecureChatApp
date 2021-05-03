@@ -174,6 +174,7 @@ const DeleteGroupModal = ({
             onChange={(e) => {
               setGroupNames(e);
             }}
+            value={groupNames}
             options={allgroups}
           />
           {groupNames.map((group) => (

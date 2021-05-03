@@ -197,6 +197,7 @@ const CreateGroupModal = ({
             onChange={(e) => {
               setGroupEmails(e);
             }}
+            value={groupEmails}
             options={allEmails}
           />
         </Modal.Body>

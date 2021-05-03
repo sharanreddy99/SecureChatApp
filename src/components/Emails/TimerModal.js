@@ -8,12 +8,15 @@ import TemplateModal from "../Modals/TemplateModal";
 const TimerModal = ({
   isShown,
   setIsShown,
-  message,
-  setMessage,
+  email,
+  toEmails,
+  setToEmails,
   subject,
   setSubject,
-  email,
-  connectionemail,
+  newMailBody,
+  setNewMailBody,
+  newMailAttachments,
+  setNewMailAttachments,
 }) => {
   const todaydate = DateFormat(new Date(), "yyyy-mm-dd");
 
@@ -27,14 +30,22 @@ const TimerModal = ({
   });
 
   const sendDelayedEmailHandler = async () => {
-    const response = await axios.post("/delayemail", {
-      text: message,
-      senderemail: email,
-      receiveremail: connectionemail,
-      subject: subject,
-      date: date,
-      time: time,
-    });
+    const formData = new FormData();
+    for (let i = 0; i < newMailAttachments.length; i++) {
+      formData.append("customfiles", newMailAttachments[i]);
+    }
+
+    formData.append("text", newMailBody);
+    formData.append("email", email);
+    formData.append(
+      "toemails",
+      JSON.stringify(toEmails.map((email) => email.value))
+    );
+    formData.append("subject", subject);
+    formData.append("date", date);
+    formData.append("time", time);
+
+    const response = await axios.post("/delaymail", formData);
 
     setResultModal({
       ...resultModal,
@@ -44,8 +55,10 @@ const TimerModal = ({
     });
 
     if (response.data.status === "success") {
-      setMessage("");
-      setSubject("");
+      setToEmails([]);
+      setSubject([]);
+      setNewMailBody([]);
+      setNewMailAttachments([]);
     }
 
     setTimeout(() => {
@@ -62,9 +75,6 @@ const TimerModal = ({
     setIsShown({
       isShown: false,
       message: "",
-      email: email,
-      subject: subject,
-      connectionemail: connectionemail,
     });
 
     setDate("");

@@ -9,6 +9,7 @@ import TemplateModal from "../Modals/TemplateModal";
 import DateFormat from "dateformat";
 import CreateGroupModal from "./Modals/CreateGroupModal";
 import DeleteGroupModal from "./Modals/DeleteGroupModal";
+import TimerModal from "./TimerModal";
 
 const Emails = () => {
   const location = useLocation();
@@ -22,10 +23,10 @@ const Emails = () => {
   const [allEmails, setAllEmails] = useState([]);
 
   const [showMenu, setShowMenu] = useState(false);
-  const [showNewMail, setShowNewMail] = useState(true);
+  const [showNewMail, setShowNewMail] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
-  const [showSent, setShowSent] = useState(false);
-  const [timermodal, setTimerModal] = useState({});
+  const [showSent, setShowSent] = useState(true);
+  const [timerModal, setTimerModal] = useState({ isShown: false });
   const [emojiText, setEmojiText] = useState("");
   const [emojiPickerModal, setEmojiPickerModal] = useState({
     isShown: false,
@@ -40,6 +41,8 @@ const Emails = () => {
     isShown: false,
     allgroups: [],
   });
+  const [sentMails, setSentMails] = useState([]);
+  const [inboxMails, setInboxMails] = useState([]);
 
   //Effects
   useEffect(() => {
@@ -139,9 +142,40 @@ const Emails = () => {
     formData.append("subject", subject);
     formData.append("text", newMailBody);
 
-    axios.post("/sendmail", formData, {
+    await axios.post("/sendmail", formData, {
       "content-type": "multipart/form-data",
     });
+
+    setModal({
+      isShown: true,
+      ModalTitle: "Email Sent",
+      ModalBody: "Email has been sent successfully",
+    });
+
+    setToEmails([]);
+    setSubject([]);
+    setNewMailAttachments([]);
+    setNewMailBody("");
+  };
+
+  const deleteSentMailHandler = async (mailid) => {
+    await axios.post("deletesentmail", { mailid: mailid });
+    setSentMails(sentMails.filter((mail) => mail._id !== mailid));
+  };
+
+  const deleteAllSentMailsHandler = async () => {
+    await axios.post("deleteallsentmails", { email: user.email });
+    setSentMails([]);
+  };
+
+  const deleteInboxMailHandler = async (mailid) => {
+    await axios.post("deleteinboxmail", { mailid: mailid, email: user.email });
+    setInboxMails(inboxMails.filter((mail) => mail._id !== mailid));
+  };
+
+  const deleteAllInboxMailsHandler = async () => {
+    await axios.post("deleteallinboxmails", { email: user.email });
+    setInboxMails([]);
   };
 
   return (
@@ -162,24 +196,38 @@ const Emails = () => {
             setShowNewMail(true);
             setShowInbox(false);
             setShowSent(false);
+            setShowMenu(false);
           }}
         ></i>
         <i
           class="fa fa-inbox"
           title="Inbox"
-          onClick={() => {
+          onClick={async () => {
+            const response = await axios.post("/fetchinboxmail", {
+              email: user.email,
+            });
+
+            setInboxMails(response.data.emails);
             setShowNewMail(false);
             setShowInbox(true);
             setShowSent(false);
+            setShowMenu(false);
           }}
         ></i>
         <i
           class="fa fa-paper-plane"
           title="Sent"
-          onClick={() => {
+          onClick={async () => {
+            const response = await axios.post("/fetchsentmail", {
+              email: user.email,
+            });
+
+            setSentMails(response.data.emails);
+
             setShowNewMail(false);
             setShowInbox(false);
             setShowSent(true);
+            setShowMenu(false);
           }}
         ></i>
         <i
@@ -222,6 +270,7 @@ const Emails = () => {
           onChange={(e) => {
             setToEmails(e);
           }}
+          value={toEmails}
           options={allEmails}
         />
         <b className="subjectText">Subject :</b>
@@ -292,7 +341,13 @@ const Emails = () => {
               setEmojiPickerModal({ isShown: true });
             }}
           ></i>
-          <i class="fa fa-clock-o" title="Send Delay Email"></i>
+          <i
+            class="fa fa-clock-o"
+            title="Send Delay Email"
+            onClick={() => {
+              setTimerModal({ isShown: true });
+            }}
+          ></i>
           <i
             class="fa fa-arrow-right"
             onClick={sendMailHandler}
@@ -301,12 +356,84 @@ const Emails = () => {
         </div>
       </div>
 
-      <div hidden={!showInbox}>
-        <h1>Inbox</h1>
+      <div className="Emails__Inbox_container" hidden={!showInbox}>
+        <button
+          type="button"
+          onClick={() => {
+            deleteAllInboxMailsHandler();
+          }}
+          className="form-control customform"
+        >
+          Clear Inbox
+        </button>
+        <div>
+          {inboxMails.length === 0 ? (
+            <h1 className="Emails__emptymail">No Mails</h1>
+          ) : (
+            inboxMails.map((mail) => {
+              return (
+                <div className="Emails__SentMail_row">
+                  <b>From:</b>
+                  <h6>{mail.senderemail}</h6>
+                  <b>Subject:</b>
+                  <h6>{mail.subject}</h6>
+                  <b>Body:</b>
+                  <h6>{mail.text}</h6>
+                  <b>Date and Time:</b>
+                  <h6>{mail.date + " -- " + mail.time}</h6>
+                  <i
+                    class="fa fa-trash-o"
+                    onClick={() => {
+                      deleteInboxMailHandler(mail._id);
+                    }}
+                    title="Delete Mail"
+                  ></i>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
 
-      <div hidden={!showSent}>
-        <h1>Sent Mail</h1>
+      <div className="Emails__SentMail_container" hidden={!showSent}>
+        <button
+          type="button"
+          onClick={() => {
+            deleteAllSentMailsHandler();
+          }}
+          className="form-control customform"
+        >
+          Clear Sent Mails
+        </button>
+        <div>
+          {sentMails.length === 0 ? (
+            <h1 className="Emails__emptymail">No Mails</h1>
+          ) : (
+            sentMails.map((mail) => {
+              return (
+                <div className="Emails__SentMail_row">
+                  <b>To:</b>
+                  {mail.receiveremails.map((receivermail) => (
+                    <h6>{receivermail}</h6>
+                  ))}
+                  <b>Subject:</b>
+                  <h6>{mail.subject}</h6>
+                  <b>Body:</b>
+                  <h6>{mail.text}</h6>
+                  <b>Date and Time:</b>
+                  <h6>{mail.date + " -- " + mail.time}</h6>
+                  <i
+                    class="fa fa-trash-o"
+                    onClick={() => {
+                      deleteSentMailHandler(mail._id);
+                    }}
+                    title="Delete Mail"
+                  ></i>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
       <EmojiPickerModal
         isShown={emojiPickerModal.isShown}
@@ -331,6 +458,19 @@ const Emails = () => {
         email={user.email}
         allgroups={deleteGroupModal.allgroups}
         setConnections={setConnections}
+      />
+      <TimerModal
+        isShown={timerModal.isShown}
+        setIsShown={setTimerModal}
+        email={user.email}
+        toEmails={toEmails}
+        setToEmails={setToEmails}
+        subject={subject}
+        setSubject={setSubject}
+        newMailBody={newMailBody}
+        setNewMailBody={setNewMailBody}
+        newMailAttachments={newMailAttachments}
+        setNewMailAttachments={setNewMailAttachments}
       />
       <TemplateModal
         isShown={modal.isShown}
