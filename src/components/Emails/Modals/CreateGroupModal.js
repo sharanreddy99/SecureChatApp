@@ -189,6 +189,7 @@ const CreateGroupModal = ({
             }}
           />
           <Select
+            maxMenuHeight="35vh"
             styles={customStyles}
             isMulti={true}
             isSearchable={true}

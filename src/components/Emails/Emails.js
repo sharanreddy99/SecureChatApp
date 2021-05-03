@@ -260,8 +260,9 @@ const Emails = () => {
       </div>
 
       <div className="Emails__NewMail_container" hidden={!showNewMail}>
-        <b className="toText">To: </b>
         <Select
+          maxMenuHeight="35vh"
+          className="customselect"
           styles={customStyles}
           isMulti={true}
           isSearchable={true}
@@ -271,20 +272,45 @@ const Emails = () => {
             setToEmails(e);
           }}
           value={toEmails}
-          options={allEmails}
+          options={[
+            ...allEmails,
+            {
+              value: "samplelargettedfasdasdfasfsfsafs1",
+              label: "samplelargettedfasdasdfasfsfsafs1",
+            },
+            {
+              value: "samplelargettedfasdasdfasfsfsafs2",
+              label: "samplelargettedfasdasdfasfsfsafs2",
+            },
+            {
+              value: "samplelargettedfasdasdfasfsfsafs3",
+              label: "samplelargettedfasdasdfasfsfsafs3",
+            },
+            {
+              value: "samplelargettedfasdasdfasfsfsafs4",
+              label: "samplelargettedfasdasdfasfsfsafs4",
+            },
+            {
+              value: "samplelargettedfasdasdfasfsfsafs5",
+              label: "samplelargettedfasdasdfasfsfsafs5",
+            },
+            {
+              value: "samplelargettedfasdasdfasfsfsafs6",
+              label: "samplelargettedfasdasdfasfsfsafs6",
+            },
+          ]}
         />
-        <b className="subjectText">Subject :</b>
         <input
           type="text"
           value={subject}
           onChange={(e) => {
             setSubject(e.target.value);
           }}
+          placeholder="Subject: "
           className="form-control"
         />
         <textarea
           className="form-control body"
-          rows={17}
           placeholder="Body: "
           value={newMailBody}
           onChange={(e) => {
