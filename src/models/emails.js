@@ -15,6 +15,18 @@ const emailsSchema = mongoose.Schema({
       required: true,
     },
   ],
+  attachments: [
+    {
+      oldfilename: {
+        type: String,
+        required: true,
+      },
+      newfilename: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   subject: {
     type: String,
     required: true,
@@ -37,8 +49,16 @@ const emailsSchema = mongoose.Schema({
         default: false,
         type: Boolean,
       },
+      isInboxDeleted: {
+        default: false,
+        type: Boolean,
+      },
     },
   ],
+  isSentDeleted: {
+    default: false,
+    type: Boolean,
+  },
 });
 
 const Emails = mongoose.model("emails", emailsSchema);

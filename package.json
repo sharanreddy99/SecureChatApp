@@ -22,6 +22,7 @@
     "nodemailer": "^6.6.0",
     "nodemon": "^2.0.7",
     "pusher": "^4.0.2",
+    "randomstring": "^1.1.5",
     "simple-encryptor": "^4.0.0",
     "socket.io": "^4.0.1"
   }

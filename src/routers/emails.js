@@ -7,11 +7,18 @@ const fs = require("fs-extra");
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
 const EmailGroups = require("../models/emailgroups");
+const randomstring = require("randomstring");
+
+var filenames = [];
 
 const storage = multer.diskStorage({
   destination: "./src/files/",
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+  filename: (req, file, cb) => {
+    filenames.push({
+      oldfilename: file.originalname,
+      newfilename: randomstring.generate(10),
+    });
+    cb(null, filenames[filenames.length - 1].newfilename);
   },
 });
 
@@ -102,7 +109,8 @@ router.post("/sendmail", (req, res) => {
       const newMail = new Emails({
         text: req.body.text,
         senderemail: req.body.email,
-        receiveremail: newEmails,
+        receiveremails: newEmails,
+        attachments: filenames,
         subject: req.body.subject,
         date: req.body.date,
         time: req.body.time,
@@ -110,6 +118,7 @@ router.post("/sendmail", (req, res) => {
           return { email: row, seen: false };
         }),
       });
+
       await newMail.save();
 
       const mailOptions = {
@@ -117,92 +126,120 @@ router.post("/sendmail", (req, res) => {
         to: newEmails,
         subject: req.body.subject,
         text: req.body.text,
-        attachments: req.files.map((file) => ({
-          filename: file.originalname,
-          path: file.path,
+        attachments: filenames.map((file) => ({
+          filename: file.oldfilename,
+          path: "./src/files/" + file.oldfilename,
         })),
       };
+
+      filenames.forEach((file) =>
+        fs.rename(
+          "./src/files/" + file.newfilename,
+          "./src/files/" + file.oldfilename
+        )
+      );
 
       transporter.sendMail(mailOptions, async function (err, data) {
         if (err) {
           console.log(err);
-          await fs.emptyDirSync("./src/files/");
+          await filenames.forEach((file) =>
+            fs.unlinkSync("./src/files/" + file.oldfilename)
+          );
           return res.status(500).send({ msg: "Can't send email right now." });
         }
-        console.log("success");
-        await fs.emptyDir("./src/files/");
+        await filenames.forEach((file) =>
+          fs.unlinkSync("./src/files/" + file.oldfilename)
+        );
         res.status(201).send("Email Sent Successfully");
+      });
+
+      filenames = [];
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
+  }
+});
+
+router.post("/delaymail", (req, res) => {
+  try {
+    upload(req, res, async () => {
+      const toEmails = JSON.parse(req.body.toemails);
+
+      const emailGroups = await EmailGroups.find({
+        owner: req.body.email,
+      });
+
+      let newEmails = {};
+      for (let i = 0; i < toEmails.length; i++) {
+        let group = emailGroups.filter((row) => {
+          return row.name === toEmails[i];
+        });
+        if (group.length > 0) {
+          for (let j = 0; j < group[0].receiveremails.length; j++) {
+            newEmails[group[0].receiveremails[j]] = true;
+          }
+        } else {
+          newEmails[toEmails[i]] = true;
+        }
+      }
+
+      newEmails = Object.keys(newEmails);
+
+      const newMail = new DelayEmails({
+        text: req.body.text,
+        senderemail: req.body.email,
+        receiveremails: newEmails,
+        attachments: filenames,
+        subject: req.body.subject,
+        date: req.body.date,
+        time: req.body.time,
+        seenArr: newEmails.map((row) => {
+          return { email: row, seen: false };
+        }),
+      });
+
+      if (DateFormat(req.body.date + " " + req.body.time) <= DateFormat()) {
+        return res.status(200).send({
+          status: "failure",
+          ModalTitle: "Past Date and Time Chosen...",
+          ModalBody: "Please choose a valid date and time in the future...",
+        });
+      }
+
+      await newMail.save();
+      filenames = [];
+      res.status(201).send({
+        status: "success",
+        ModalTitle: "Email Sent...",
+        ModalBody:
+          "Email will be sent at " +
+          DateFormat(
+            req.body.date + " " + req.body.time,
+            "mmm dS, yyyy hh:MM TT"
+          ),
       });
     });
   } catch (e) {
     console.log(e);
-    res.status(401).send({ error: "error" });
-  }
-});
-
-router.post("/deleteemail", async (req, res) => {
-  try {
-    await Emails.deleteOne({ _id: req.body.message._id });
-    req.app
-      .get("socketio")
-      .emit("emails__deleteemail", { _id: req.body.message._id });
-
-    res.status(201).send({ msg: "success" });
-  } catch (e) {
-    console.log(e);
-    res.status(401).send({ error: "error" });
-  }
-});
-
-router.post("/sendemail", async (req, res) => {
-  try {
-    var data = {
-      text: req.body.text,
-      senderemail: req.body.email,
-      receiveremail: req.body.connectionemail,
-      subject: req.body.subject,
-      date: req.body.date,
-      time: req.body.time,
-    };
-
-    const email = new Emails(data);
-    await email.save();
-
-    data.date = DateFormat(data.date, "mmm dS, yyyy");
-
-    req.app.get("socketio").emit("emails__newemail", {
-      ...data,
+    res.status(401).send({
+      status: "failure",
+      ModalTitle: "Server Error...",
+      ModalBody: "Internal Server Error Occured...",
     });
-
-    res.status(201).send({ msg: "success" });
-  } catch (e) {
-    console.log(e);
-    res.status(401).send({ error: "error" });
   }
 });
 
-router.post("/fetchallemails", async (req, res) => {
+router.post("/fetchsentmail", async (req, res) => {
   try {
     const allEmails = await Emails.find(
       {
-        $or: [
-          {
-            $and: [
-              { senderemail: req.body.email },
-              { receiveremail: req.body.connectionemail },
-            ],
-          },
-          {
-            $and: [
-              { senderemail: req.body.connectionemail },
-              { receiveremail: req.body.email },
-            ],
-          },
-        ],
+        senderemail: req.body.email,
+        isSentDeleted: false,
       },
       null,
       {
-        sort: { date: 1, time: 1 },
+        sort: { date: -1, time: -1 },
       }
     );
 
@@ -211,8 +248,140 @@ router.post("/fetchallemails", async (req, res) => {
       return email;
     });
 
-    res.status(201).send({ emailMessages: changeAllEmails });
+    res.status(201).send({ emails: changeAllEmails });
   } catch (e) {
+    res.status(401).send({ status: "failure" });
+  }
+});
+
+router.post("/deletesentmail", async (req, res) => {
+  try {
+    var email = await Emails.findOne({
+      _id: req.body.mailid,
+    });
+
+    email.isSentDeleted = true;
+    if (email.seenArr.every((row) => row.isInboxDeleted)) {
+      await email.remove();
+    } else {
+      await email.save();
+    }
+
+    res.status(201).send({ status: "success" });
+  } catch (e) {
+    res.status(401).send({ status: "failure" });
+  }
+});
+
+router.post("/deleteallsentmails", async (req, res) => {
+  try {
+    var allEmails = await Emails.find({
+      senderemail: req.body.email,
+    });
+
+    for (let i = 0; i < allEmails.length; i++) {
+      allEmails[i].isSentDeleted = true;
+      if (allEmails[i].seenArr.every((row) => row.isInboxDeleted)) {
+        await allEmails[i].remove();
+      } else {
+        await allEmails[i].save();
+      }
+    }
+
+    res.status(201).send({ status: "success" });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ status: "failure" });
+  }
+});
+
+router.post("/fetchinboxmail", async (req, res) => {
+  try {
+    const allEmails = await Emails.find(
+      {
+        receiveremails: req.body.email,
+        seenArr: {
+          $elemMatch: {
+            email: req.body.email,
+            isInboxDeleted: false,
+          },
+        },
+      },
+      null,
+      {
+        sort: { date: -1, time: -1 },
+      }
+    );
+
+    var inboxMails = allEmails.map((email) => ({
+      senderemail: email.senderemail,
+      subject: email.subject,
+      text: email.text,
+      date: email.date,
+      time: email.time,
+      _id: email._id,
+    }));
+
+    res.status(201).send({ emails: inboxMails });
+  } catch (e) {
+    res.status(401).send({ status: "failure" });
+  }
+});
+
+router.post("/deleteinboxmail", async (req, res) => {
+  try {
+    var email = await Emails.findOne({
+      _id: req.body.mailid,
+    });
+
+    email.seenArr.map((row) => {
+      if (row.email == req.body.email) {
+        row.isInboxDeleted = true;
+      }
+      return row;
+    });
+
+    if (
+      email.seenArr.every((row) => row.isInboxDeleted) &&
+      email.isSentDeleted
+    ) {
+      await email.remove();
+    } else {
+      await email.save();
+    }
+
+    res.status(201).send({ status: "success" });
+  } catch (e) {
+    res.status(401).send({ status: "failure" });
+  }
+});
+
+router.post("/deleteallinboxmails", async (req, res) => {
+  try {
+    var allEmails = await Emails.find({
+      receiveremails: req.body.email,
+    });
+
+    for (let i = 0; i < allEmails.length; i++) {
+      allEmails[i].seenArr.map((row) => {
+        if (row.email == req.body.email) {
+          row.isInboxDeleted = true;
+        }
+        return row;
+      });
+      if (
+        allEmails[i].seenArr.every((row) => row.isInboxDeleted) &&
+        allEmails[i].isSentDeleted
+      ) {
+        await allEmails[i].remove();
+      } else {
+        await allEmails[i].save();
+      }
+    }
+
+    res.status(201).send({ status: "success" });
+  } catch (e) {
+    console.log(e);
     res.status(401).send({ status: "failure" });
   }
 });
@@ -261,44 +430,6 @@ router.post("/emailsseen", async (req, res) => {
     res.status(201).send({ status: "success" });
   } catch (e) {
     res.status(401).send({ status: "failure" });
-  }
-});
-
-router.post("/delayemail", async (req, res) => {
-  try {
-    var data = {
-      text: req.body.text,
-      senderemail: req.body.senderemail,
-      receiveremail: req.body.receiveremail,
-      subject: req.body.subject,
-      date: req.body.date,
-      time: req.body.time,
-    };
-
-    if (DateFormat(data.date + " " + data.time) <= DateFormat()) {
-      return res.status(200).send({
-        status: "failure",
-        ModalTitle: "Past Date and Time Chosen...",
-        ModalBody: "Please choose a valid date and time in the future...",
-      });
-    }
-
-    const delayEmail = new DelayEmails(data);
-    await delayEmail.save();
-
-    res.status(201).send({
-      status: "success",
-      ModalTitle: "Email Sent...",
-      ModalBody:
-        "Email will be sent at " +
-        DateFormat(data.date + " " + data.time, "mmm dS, yyyy hh:MM TT"),
-    });
-  } catch (e) {
-    res.status(200).send({
-      status: "failure",
-      ModalTitle: "Server Error...",
-      ModalBody: "Internal Server Error Occured...",
-    });
   }
 });
 

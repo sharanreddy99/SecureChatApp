@@ -8,6 +8,7 @@ const DelayGroupMessages = require("../models/delaygroupmessages");
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
 const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
+const fs = require("fs-extra");
 
 async function updateDelayedDirectMessages(socket) {
   try {
@@ -139,22 +140,47 @@ async function updateDelayedEmails(socket) {
       var email = new Emails({
         text: emails[i].text,
         senderemail: emails[i].senderemail,
-        receiveremail: emails[i].receiveremail,
+        receiveremails: emails[i].receiveremails,
         date: emails[i].date,
         time: emails[i].time,
         subject: emails[i].subject,
+        seenArr: emails[i].seenArr,
+        attachments: emails[i].attachments,
       });
       await email.save();
-    }
 
-    var delayedEmails = emails;
-    for (var i = 0; i < delayedEmails.length; i++) {
-      delayedEmails[i].date = DateFormat(delayedEmails[i].date, "mmm dS, yyyy");
-    }
+      const transporter = require("../miscellaneous/email");
+      const mailOptions = {
+        from: "sharanreddyfake@gmail.com",
+        to: email.receiveremails,
+        subject: email.subject,
+        text: email.text,
+        attachments: email.attachments.map((file) => ({
+          filename: file.oldfilename,
+          path: "./src/files/" + file.oldfilename,
+        })),
+      };
 
-    socket.emit("emails__delayedemails", {
-      delayedEmails: delayedEmails,
-    });
+      email.attachments.forEach((file) =>
+        fs.rename(
+          "./src/files/" + file.newfilename,
+          "./src/files/" + file.oldfilename
+        )
+      );
+
+      transporter.sendMail(mailOptions, async function (err, data) {
+        if (err) {
+          console.log(err);
+          await email.attachments.forEach((file) =>
+            fs.unlinkSync("./src/files/" + file.oldfilename)
+          );
+        } else {
+          await email.attachments.forEach((file) =>
+            fs.unlinkSync("./src/files/" + file.oldfilename)
+          );
+        }
+      });
+    }
 
     await DelayEmails.deleteMany({
       date: date,

@@ -9,6 +9,18 @@ const delayEmailsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  attachments: [
+    {
+      oldfilename: {
+        type: String,
+        required: true,
+      },
+      newfilename: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   receiveremails: [
     {
       type: String,
@@ -37,8 +49,16 @@ const delayEmailsSchema = mongoose.Schema({
         default: false,
         type: Boolean,
       },
+      isInboxDeleted: {
+        default: false,
+        type: Boolean,
+      },
     },
   ],
+  isSentDeleted: {
+    default: false,
+    type: Boolean,
+  },
 });
 
 const DelayEmails = mongoose.model("delayemails", delayEmailsSchema);
