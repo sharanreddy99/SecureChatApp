@@ -328,6 +328,40 @@ router.post("/fetchinboxmail", async (req, res) => {
   }
 });
 
+router.post("/fetchspecificinboxmail", async (req, res) => {
+  try {
+    const allEmails = await Emails.find(
+      {
+        receiveremails: req.body.email,
+        senderemail: req.body.connectionemail,
+        seenArr: {
+          $elemMatch: {
+            email: req.body.email,
+            isInboxDeleted: false,
+          },
+        },
+      },
+      null,
+      {
+        sort: { date: -1, time: -1 },
+      }
+    );
+
+    var inboxMails = allEmails.map((email) => ({
+      senderemail: email.senderemail,
+      subject: email.subject,
+      text: email.text,
+      date: email.date,
+      time: email.time,
+      _id: email._id,
+    }));
+
+    res.status(201).send({ emails: inboxMails });
+  } catch (e) {
+    res.status(401).send({ status: "failure" });
+  }
+});
+
 router.post("/deleteinboxmail", async (req, res) => {
   try {
     var email = await Emails.findOne({
@@ -390,8 +424,13 @@ router.post("/fetchunseenemailscount", async (req, res) => {
   try {
     const allEmails = await Emails.find(
       {
-        receiveremail: req.body.email,
-        seen: false,
+        receiveremails: req.body.email,
+        seenArr: {
+          $elemMatch: {
+            email: req.body.email,
+            seen: false,
+          },
+        },
       },
       {
         senderemail: 1,
@@ -416,13 +455,23 @@ router.post("/fetchunseenemailscount", async (req, res) => {
 router.post("/emailsseen", async (req, res) => {
   try {
     const allEmails = await Emails.find({
-      receiveremail: req.body.email,
+      receiveremails: req.body.email,
       senderemail: req.body.connectionemail,
-      seen: false,
+      seenArr: {
+        $elemMatch: {
+          email: req.body.email,
+          seen: false,
+        },
+      },
     });
 
     var seeAllEmails = allEmails.map(async (email) => {
-      email.seen = true;
+      email.seenArr.map((row) => {
+        if (row.email === req.body.email) {
+          row.seen = true;
+        }
+        return row;
+      });
       await email.save();
       return email;
     });
