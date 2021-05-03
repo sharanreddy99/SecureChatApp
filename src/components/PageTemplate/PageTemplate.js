@@ -110,7 +110,9 @@ const PageTemplate = (props) => {
     }
   };
 
-  const settingsHandler = () => {};
+  const aboutUsHandler = () => {
+    history.push("/aboutus");
+  };
 
   const logoutHandler = () => {
     dispatch({
@@ -132,7 +134,7 @@ const PageTemplate = (props) => {
             </a>
             <div className="PageTemplate__navbar_icons">
               <i onClick={addConnectionHandler} className="fa fa-users"></i>
-              <i onClick={settingsHandler} className="fa fa-cog"></i>
+              <i onClick={aboutUsHandler} className="fa fa-cog"></i>
               <i onClick={logoutHandler} className="fa fa-sign-out"></i>
             </div>
           </div>

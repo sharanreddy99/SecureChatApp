@@ -14,6 +14,7 @@ import Connections from "./components/Connections/Connections";
 import DirectMessages from "./components/DirectMessages/DirectMessages";
 import GroupMessages from "./components/GroupMessages/GroupMessages";
 import Emails from "./components/Emails/Emails";
+import AboutUs from "./components/AboutUs/AboutUs";
 
 const RouterSetup = () => {
   return (
@@ -25,6 +26,11 @@ const RouterSetup = () => {
           </Route>
           <Route exact path="/login">
             <Login />
+          </Route>
+          <Route exact path="/aboutus">
+            <PageTemplate>
+              <AboutUs />
+            </PageTemplate>
           </Route>
           <Route exact path="/dashboard">
             <PageTemplate>
