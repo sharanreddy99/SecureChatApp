@@ -70,12 +70,16 @@ const Dashboard = () => {
       isGroup: true,
     }));
 
+    const response2 = await axios.post("/fetchinboxmail", {
+      email: user.email,
+    });
+
     history.push({
       pathname: "/emails",
       state: {
         user: user,
         connections: [...location.state.emailconnections, ...allgroups],
-        emailMessages: [],
+        inboxMails: response2.data.emails,
       },
     });
   };
@@ -147,7 +151,7 @@ const Dashboard = () => {
   };
 
   const fetchEmail = async (email, connectionemail) => {
-    const response = await axios.post("/fetchallemails", {
+    const response = await axios.post("/fetchspecificinboxmail", {
       email: email,
       connectionemail: connectionemail,
     });
@@ -162,7 +166,7 @@ const Dashboard = () => {
       state: {
         user: user,
         connections: location.state.emailconnections,
-        emailMessages: response.data.emailMessages,
+        inboxMails: response.data.emails,
       },
     });
   };

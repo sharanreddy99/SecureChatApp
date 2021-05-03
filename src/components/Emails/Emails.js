@@ -24,8 +24,8 @@ const Emails = () => {
 
   const [showMenu, setShowMenu] = useState(false);
   const [showNewMail, setShowNewMail] = useState(false);
-  const [showInbox, setShowInbox] = useState(false);
-  const [showSent, setShowSent] = useState(true);
+  const [showInbox, setShowInbox] = useState(true);
+  const [showSent, setShowSent] = useState(false);
   const [timerModal, setTimerModal] = useState({ isShown: false });
   const [emojiText, setEmojiText] = useState("");
   const [emojiPickerModal, setEmojiPickerModal] = useState({
@@ -42,7 +42,7 @@ const Emails = () => {
     allgroups: [],
   });
   const [sentMails, setSentMails] = useState([]);
-  const [inboxMails, setInboxMails] = useState([]);
+  const [inboxMails, setInboxMails] = useState(location.state.inboxMails);
 
   //Effects
   useEffect(() => {
