@@ -272,33 +272,7 @@ const Emails = () => {
             setToEmails(e);
           }}
           value={toEmails}
-          options={[
-            ...allEmails,
-            {
-              value: "samplelargettedfasdasdfasfsfsafs1",
-              label: "samplelargettedfasdasdfasfsfsafs1",
-            },
-            {
-              value: "samplelargettedfasdasdfasfsfsafs2",
-              label: "samplelargettedfasdasdfasfsfsafs2",
-            },
-            {
-              value: "samplelargettedfasdasdfasfsfsafs3",
-              label: "samplelargettedfasdasdfasfsfsafs3",
-            },
-            {
-              value: "samplelargettedfasdasdfasfsfsafs4",
-              label: "samplelargettedfasdasdfasfsfsafs4",
-            },
-            {
-              value: "samplelargettedfasdasdfasfsfsafs5",
-              label: "samplelargettedfasdasdfasfsfsafs5",
-            },
-            {
-              value: "samplelargettedfasdasdfasfsfsafs6",
-              label: "samplelargettedfasdasdfasfsfsafs6",
-            },
-          ]}
+          options={allEmails}
         />
         <input
           type="text"
