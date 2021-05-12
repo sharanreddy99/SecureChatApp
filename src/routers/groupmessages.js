@@ -9,6 +9,42 @@ var Filter = require("bad-words");
 var filter = new Filter();
 const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
 
+router.post("/exitgroup", async (req, res) => {
+  try {
+    var groupChat = await GroupMessages.findOne(
+      {
+        _id: req.body.groupid,
+        name: req.body.groupname,
+      },
+      null
+    );
+
+    if (groupChat.owner === req.body.email) {
+      if (groupChat.admin.length <= 1) {
+        throw new Error();
+      }
+      groupChat.members = groupChat.members.filter(
+        (member) => member.email !== req.body.email
+      );
+      groupChat.admin = groupChat.admin.filter(
+        (row) => row.email !== req.body.email
+      );
+      groupChat.owner = groupChat.admin[0].email;
+    } else {
+      groupChat.members = groupChat.members.filter(
+        (member) => member.email !== req.body.email
+      );
+      groupChat.admin = groupChat.admin.filter(
+        (row) => row.email !== req.body.email
+      );
+    }
+    await groupChat.save();
+    res.status(200).send({ status: "success" });
+  } catch (e) {
+    res.status(401).send({ status: "failure" });
+  }
+});
+
 router.post("/fetchgroups", async (req, res) => {
   try {
     const groups = await GroupMessages.find(
