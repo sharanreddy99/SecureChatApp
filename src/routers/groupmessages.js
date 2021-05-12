@@ -125,7 +125,10 @@ router.post("/updategroupmessage", async (req, res) => {
     var updatedMessage = null;
 
     groupChat.messages = groupChat.messages.map((message) => {
-      if (message._id == req.body.message._id) {
+      if (
+        message._id == req.body.message._id &&
+        message.senderemail == req.body.senderemail
+      ) {
         isChanged = true;
         message.text = encryptor.encrypt(filter.clean(req.body.newmessage));
         updatedMessage = message;
@@ -349,14 +352,33 @@ router.post("/deletegroupmessage", async (req, res) => {
       name: req.body.groupname,
     });
 
+    var oldLen = groupChat.messages.length;
     groupChat.messages = groupChat.messages.filter((message) => {
-      return message._id != req.body.messageid;
+      if (message._id == req.body.messageid) {
+        if (groupChat.owner === req.body.email) {
+          return false;
+        }
+        if (message.senderemail === req.body.email) {
+          return false;
+        }
+        if (message.senderemail === groupChat.owner) {
+          return true;
+        }
+        if (groupChat.admin.some((row) => row.email === req.body.email)) {
+          return false;
+        }
+      }
+      return true;
     });
     await groupChat.save();
 
-    req.app.get("socketio").emit("groupmessages__deletemessage", {
-      _id: req.body.messageid,
-    });
+    if (oldLen != groupChat.messages.length) {
+      req.app.get("socketio").emit("groupmessages__deletemessage", {
+        _id: req.body.messageid,
+      });
+    } else {
+      throw new Error("Nothing deleted");
+    }
 
     res.status(201).send({ msg: "success" });
   } catch (e) {
@@ -379,8 +401,15 @@ router.post("/sendgroupmessage", async (req, res) => {
       return res.status(201).send({ msg: "success" });
     }
 
+    var rawtext = null;
+    try {
+      rawtext = encryptor.encrypt(filter.clean(req.body.text));
+    } catch (e) {
+      rawtext = encryptor.encrypt(req.body.text);
+    }
+
     var data = {
-      text: encryptor.encrypt(filter.clean(req.body.text)),
+      text: rawtext,
       displayname: req.body.displayname,
       senderemail: req.body.senderemail,
       avatarUrl: req.body.avatarUrl,
@@ -523,12 +552,18 @@ router.post("/delaygroupmessage", async (req, res) => {
     });
 
     if (delayGroupChat === null) {
+      let rawtext = null;
+      try {
+        rawtext = encryptor.encrypt(filter.clean(req.body.text));
+      } catch (e) {
+        rawtext = encryptor.encrypt(req.body.text);
+      }
       var data = {
         groupid: req.body.groupid,
         name: req.body.groupname,
         messages: [
           {
-            text: encryptor.encrypt(filter.clean(req.body.text)),
+            text: rawtext,
             displayname: req.body.displayname,
             senderemail: req.body.senderemail,
             avatarUrl: req.body.avatarUrl,
@@ -549,8 +584,14 @@ router.post("/delaygroupmessage", async (req, res) => {
       const delayChat = new DelayGroupMessages(data);
       await delayChat.save();
     } else {
+      let rawtext = null;
+      try {
+        rawtext = encryptor.encrypt(filter.clean(req.body.text));
+      } catch (e) {
+        rawtext = encryptor.encrypt(req.body.text);
+      }
       var data = {
-        text: encryptor.encrypt(filter.clean(req.body.text)),
+        text: rawtext,
         displayname: req.body.displayname,
         senderemail: req.body.senderemail,
         avatarUrl: req.body.avatarUrl,

@@ -32,6 +32,10 @@ const usersSchema = mongoose.Schema({
         type: Boolean,
         default: false,
       },
+      isSender: {
+        type: Boolean,
+        required: true,
+      },
     },
   ],
 });

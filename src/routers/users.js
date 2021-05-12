@@ -108,12 +108,14 @@ router.post("/addconnection", async (req, res) => {
         email: updatecurrentuser.email,
         displayname: updatecurrentuser.displayname,
         avatarUrl: updatecurrentuser.avatarUrl,
+        isSender: false,
       });
 
       updatecurrentuser.connections.push({
         email: updateconnectionuser.email,
         displayname: updateconnectionuser.displayname,
         avatarUrl: updateconnectionuser.avatarUrl,
+        isSender: true,
       });
 
       await updateconnectionuser.save();
@@ -140,7 +142,7 @@ router.post("/newconnections", async (req, res) => {
     const user = await Users.findOne({ email: email }, { connections: 1 });
 
     var unreadconnections = user.connections.filter((connection) => {
-      return connection.accepted === false;
+      return connection.accepted === false && connection.isSender === false;
     });
 
     res.status(201).send({ unreadconnections });

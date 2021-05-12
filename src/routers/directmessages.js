@@ -43,8 +43,14 @@ router.post("/updatedirectmessage", async (req, res) => {
 
 router.post("/senddirectmessage", async (req, res) => {
   try {
+    var rawtext = null;
+    try {
+      rawtext = encryptor.encrypt(filter.clean(req.body.text));
+    } catch (e) {
+      rawtext = encryptor.encrypt(req.body.text);
+    }
     var data = {
-      text: encryptor.encrypt(filter.clean(req.body.text)),
+      text: rawtext,
       senderemail: req.body.email,
       receiveremail: req.body.connectionemail,
       date: req.body.date,
@@ -152,8 +158,15 @@ router.post("/directmessagesseen", async (req, res) => {
 
 router.post("/delaydirectmessage", async (req, res) => {
   try {
+    var rawtext = null;
+    try {
+      rawtext = encryptor.encrypt(filter.clean(req.body.text));
+    } catch (e) {
+      rawtext = encryptor.encrypt(req.body.text);
+    }
+
     var data = {
-      text: encryptor.encrypt(filter.clean(req.body.text)),
+      text: rawtext,
       senderemail: req.body.senderemail,
       receiveremail: req.body.receiveremail,
       date: req.body.date,
