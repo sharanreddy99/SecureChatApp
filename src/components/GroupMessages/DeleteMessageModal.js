@@ -7,6 +7,7 @@ import axios from "axios";
 import TemplateModal from "../Modals/TemplateModal";
 
 const DeleteMessageModal = ({
+  email,
   isShown,
   setIsShown,
   message,
@@ -20,18 +21,23 @@ const DeleteMessageModal = ({
   const history = useHistory();
 
   const deleteMessageHandler = async () => {
-    await axios.post("/deletegroupmessage", {
-      groupid: group._id,
-      groupname: group.name,
-      messageid: message._id,
-    });
-    const updatedMessages = messages.filter((row) => row._id !== message._id);
-    history.replace({
-      ...history.location,
-      state: { ...location.state, allMessages: updatedMessages },
-    });
-    setMessages(updatedMessages);
-    handleClose();
+    try {
+      await axios.post("/deletegroupmessage", {
+        groupid: group._id,
+        groupname: group.name,
+        messageid: message._id,
+        email: email,
+      });
+      const updatedMessages = messages.filter((row) => row._id !== message._id);
+      history.replace({
+        ...history.location,
+        state: { ...location.state, allMessages: updatedMessages },
+      });
+      setMessages(updatedMessages);
+      handleClose();
+    } catch (e) {
+      handleClose();
+    }
   };
 
   const removeHoverClass = () => {

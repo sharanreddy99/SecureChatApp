@@ -111,7 +111,12 @@ const PageTemplate = (props) => {
   };
 
   const aboutUsHandler = () => {
-    history.push("/aboutus");
+    history.push({
+      pathname: "/aboutus",
+      state: {
+        user: location.state.user,
+      },
+    });
   };
 
   const logoutHandler = () => {

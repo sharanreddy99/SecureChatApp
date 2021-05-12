@@ -782,6 +782,7 @@ const GroupMessages = () => {
         messages={messages}
         setMessages={setMessages}
         group={activeGroup}
+        email={user.email}
         editbutton={deleteMessageModal.editbutton}
         deletebutton={deleteMessageModal.deletebutton}
       />
