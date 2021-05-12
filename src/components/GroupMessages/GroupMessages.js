@@ -765,6 +765,12 @@ const GroupMessages = () => {
         isShown={groupInfoModal.isShown}
         setIsShown={setGroupInfoModal}
         group={activeGroup}
+        email={user.email}
+        groups={groups}
+        setGroups={setGroups}
+        setActiveGroup={setActiveGroup}
+        setActive={setActive}
+        setMessages={setMessages}
       />
       <UpdateMessageModal
         isShown={updateMessageModal.isShown}

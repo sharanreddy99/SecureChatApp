@@ -1,8 +1,19 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
-const GroupInfoModal = ({ isShown, setIsShown, group }) => {
+const GroupInfoModal = ({
+  isShown,
+  setIsShown,
+  group,
+  email,
+  groups,
+  setGroups,
+  setActiveGroup,
+  setActive,
+  setMessages,
+}) => {
   //States
   const [showAdmin, setShowAdmin] = useState(false);
   const [showMembers, setShowMembers] = useState(false);
@@ -25,6 +36,29 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
     } else {
       setShowAdmin(false);
       setShowMembers(false);
+    }
+  };
+
+  const exitGroupHandler = async () => {
+    try {
+      if (window.confirm("Are you sure?")) {
+        await axios.post("/exitgroup", {
+          groupid: group._id,
+          groupname: group.name,
+          email: email,
+        });
+
+        var newGroups = groups.filter(
+          (row) => !(row._id == group._id && row.name == group.name)
+        );
+        setGroups(newGroups);
+        setActiveGroup({});
+        setMessages([]);
+        setActive(-1);
+        handleClose();
+      }
+    } catch (e) {
+      handleClose();
     }
   };
 
@@ -170,6 +204,16 @@ const GroupInfoModal = ({ isShown, setIsShown, group }) => {
           ) : null}
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            style={{
+              backgroundColor: "var(--modalButtonBackground)",
+              color: "var(--modalButtonText)",
+              fontWeight: "bold",
+            }}
+            onClick={exitGroupHandler}
+          >
+            Exit Group
+          </Button>
           <Button
             style={{
               backgroundColor: "var(--modalButtonBackground)",
