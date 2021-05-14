@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.14c0a16d.chunk.css",
+    "main.js": "/static/js/main.b7c099c9.chunk.js",
+    "main.js.map": "/static/js/main.b7c099c9.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.890ea52f.js",
+    "runtime-main.js.map": "/static/js/runtime-main.890ea52f.js.map",
+    "static/css/2.ae9f1eb3.chunk.css": "/static/css/2.ae9f1eb3.chunk.css",
+    "static/js/2.154024da.chunk.js": "/static/js/2.154024da.chunk.js",
+    "static/js/2.154024da.chunk.js.map": "/static/js/2.154024da.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.ae9f1eb3.chunk.css.map": "/static/css/2.ae9f1eb3.chunk.css.map",
+    "static/css/main.14c0a16d.chunk.css.map": "/static/css/main.14c0a16d.chunk.css.map",
+    "static/js/2.154024da.chunk.js.LICENSE.txt": "/static/js/2.154024da.chunk.js.LICENSE.txt",
+    "static/media/Logo.54e9af26.png": "/static/media/Logo.54e9af26.png",
+    "static/media/Roshan.34179e4b.jpg": "/static/media/Roshan.34179e4b.jpg",
+    "static/media/Sharan.ddcac13f.JPG": "/static/media/Sharan.ddcac13f.JPG",
+    "static/media/Sunil.f0bc7d63.jpg": "/static/media/Sunil.f0bc7d63.jpg",
+    "static/media/profile.d39ee9e2.png": "/static/media/profile.d39ee9e2.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.890ea52f.js",
+    "static/css/2.ae9f1eb3.chunk.css",
+    "static/js/2.154024da.chunk.js",
+    "static/css/main.14c0a16d.chunk.css",
+    "static/js/main.b7c099c9.chunk.js"
+  ]
+}
