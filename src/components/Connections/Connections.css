@@ -1,0 +1,344 @@
+/* Extra small devices (portrait phones, less than 576px) */
+.Connections {
+  background-color: var(--templateColor3);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
+}
+
+.Connections__addconnections {
+  background-color: var(--templateColor2);
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  box-shadow: 0px 0px 10px var(--boxShadowShadowColor),
+    0px 0px 20px var(--boxShadowShadowColor),
+    0px 0px 40px var(--boxShadowShadowColor);
+  margin-bottom: 10%;
+}
+
+.Connections__incomingconnections {
+  background-color: var(--templateColor2);
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  box-shadow: 0px 0px 10px var(--boxShadowShadowColor),
+    0px 0px 20px var(--boxShadowShadowColor),
+    0px 0px 40px var(--boxShadowShadowColor);
+}
+
+.Connections__addconnections h1 {
+  position: sticky;
+  top: 0%;
+  z-index: 1;
+  text-align: center;
+  font-size: 1.8em;
+  padding: 3%;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  text-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
+    0px 0px 40px var(--logoBgColor);
+}
+
+.Connections__addconnections h3 {
+  font-weight: bold;
+  font-size: 1.5em;
+  text-shadow: 1px 1px var(--templateColor1), 2px 2px var(--logoTextColor);
+}
+
+.Connections__addconnections_body {
+  padding: 3%;
+  padding-top: 1%;
+}
+
+.Connections__addconnections_body .row {
+  padding: 2%;
+}
+
+.Connections__addconnections_body .form-control {
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  box-shadow: 0px 0px 1px var(--templateColor1),
+    0px 0px 10px var(--templateColor1), 0px 0px 10px var(--templateColor1);
+}
+
+.Connections__addconnections_body .form-control::placeholder {
+  color: var(--logoTextColor);
+}
+
+.Connections__addconnections_body .form-control:focus {
+  box-shadow: 0px 0px 1px var(--logoTextColor), 0px 0px 1px var(--logoTextColor),
+    0px 0px 10px var(--logoTextColor);
+}
+
+.Connections__addconnections_body .btn {
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  border: 1px solid var(--logoTextColor);
+}
+
+.Connections__addconnections_body .btn:hover {
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  border: 1px solid var(--logoTextColor);
+  box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
+    0px 0px 40px var(--logoBgColor);
+  font-weight: bold;
+}
+
+.Connections__incomingconnections h1 {
+  position: sticky;
+  top: 0%;
+  z-index: 1;
+  text-align: center;
+  font-size: 1.8em;
+  padding: 3%;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  text-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 20px var(--logoBgColor),
+    0px 0px 40px var(--logoBgColor);
+}
+
+.Connections__incomingconnections_body {
+  padding: 6%;
+}
+
+.Connections__unreadconnections {
+  margin-bottom: 10%;
+  padding: 2%;
+  background-color: var(--logoTextColor);
+  box-shadow: 0px 6px 10px var(--logoBgColor);
+  border-radius: 10px;
+}
+
+.Connections__unreadconnections img {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  float: left;
+}
+
+.Connections__unreadconnections h5 {
+  font-weight: bold;
+  font-size: 1.1em;
+  width: 80%;
+  float: left;
+  position: relative;
+  top: 20%;
+  left: 2%;
+  text-shadow: 1px 1px var(--logoTextColor), 2px 2px var(--templateColor1);
+  overflow: scroll;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .Connections {
+    flex-direction: row;
+    padding: 3%;
+  }
+
+  .Connections__addconnections {
+    margin-right: 4%;
+  }
+
+  .Connections__addconnections h1 {
+    font-size: 1.6em;
+  }
+
+  .Connections__addconnections h3 {
+    font-size: 1.3em;
+  }
+
+  .Connections__incomingconnections h1 {
+    font-size: 1.6em;
+  }
+
+  .Connections__incomingconnections_body {
+    padding: 5%;
+  }
+
+  .Connections__unreadconnections {
+    margin-bottom: 6%;
+    padding: 2%;
+  }
+
+  .Connections__unreadconnections img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .Connections__unreadconnections h5 {
+    font-size: 1em;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .Connections {
+    flex-direction: column;
+    padding: 3%;
+  }
+
+  .Connections__addconnections {
+    margin-right: 4%;
+  }
+
+  .Connections__addconnections h1 {
+    font-size: 2.5em;
+  }
+
+  .Connections__addconnections h3 {
+    font-size: 1.6em;
+  }
+
+  .Connections__addconnections_body .btn {
+    font-size: 1.6em;
+  }
+
+  .Connections__addconnections_body .btn:hover {
+    font-size: 1.7em;
+  }
+
+  .Connections__incomingconnections h1 {
+    font-size: 2.5em;
+  }
+
+  .Connections__incomingconnections_body {
+    padding: 6%;
+  }
+
+  .Connections__unreadconnections {
+    margin-bottom: 6%;
+    padding: 2%;
+  }
+
+  .Connections__unreadconnections img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .Connections__unreadconnections h5 {
+    font-size: 2em;
+  }
+
+  .Connections__unreadconnections button {
+    font-size: 1.4em;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .Connections {
+    flex-direction: column;
+    padding: 8%;
+  }
+
+  .Connections__addconnections {
+    margin-right: 4%;
+  }
+
+  .Connections__addconnections h1 {
+    font-size: 2.5em;
+  }
+
+  .Connections__addconnections h3 {
+    font-size: 2.6em;
+  }
+
+  .Connections__addconnections_body .btn {
+    font-size: 2em;
+  }
+
+  .Connections__addconnections_body .btn:hover {
+    font-size: 2.2em;
+  }
+
+  .Connections__incomingconnections h1 {
+    font-size: 2.5em;
+  }
+
+  .Connections__incomingconnections_body {
+    padding: 6%;
+  }
+
+  .Connections__unreadconnections {
+    margin-bottom: 6%;
+    padding: 2%;
+  }
+
+  .Connections__unreadconnections img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .Connections__unreadconnections h5 {
+    font-size: 2em;
+  }
+
+  .Connections__unreadconnections button {
+    font-size: 1.4em;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .Connections {
+    flex-direction: row;
+    padding: 4%;
+  }
+
+  .Connections__addconnections {
+    width: 50%;
+    height: 100%;
+  }
+
+  .Connections__incomingconnections {
+    width: 50%;
+    height: 100%;
+  }
+
+  .Connections__addconnections h1 {
+    font-size: 2em;
+  }
+
+  .Connections__addconnections h3 {
+    font-size: 1.8em;
+  }
+
+  .Connections__addconnections_body {
+    padding: 2%;
+  }
+
+  .Connections__addconnections_body .row {
+    padding: 2%;
+  }
+
+  .Connections__addconnections_body .btn {
+    font-size: 1em;
+  }
+
+  .Connections__addconnections_body .btn:hover {
+    font-size: 1em;
+    box-shadow: 0px 0px 10px var(--logoBgColor), 0px 0px 10px var(--logoBgColor),
+      0px 0px 20px var(--logoBgColor);
+  }
+
+  .Connections__incomingconnections h1 {
+    font-size: 2em;
+  }
+
+  .Connections__incomingconnections_body {
+    padding: 5%;
+  }
+
+  .Connections__unreadconnections img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .Connections__unreadconnections h5 {
+    font-size: 1.4em;
+  }
+}

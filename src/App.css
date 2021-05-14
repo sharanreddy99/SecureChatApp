@@ -1,0 +1,53 @@
+:root {
+  /*Main */
+  --templateColor1: #05386b;
+  --templateColor2: #5cdb95;
+  --templateColor3: #edf5e1;
+
+  /* Logo */
+  --logoBgColor: black;
+  --logoTextColor: white;
+  --logoHoverColor: white;
+
+  /* Notification Symbol on Dashboard */
+  --notificationPopupBgColor: #05386b;
+  --notificationPopupHoverColor: black;
+  --notificationBgColor: red;
+  --notificationTextColor: white;
+
+  /* Message */
+  --senderMessageColor: rgb(67, 184, 67);
+  --receiverMessageColor: rgb(255, 0, 0);
+
+  /* Emoji */
+  --emojiBoxColor: #05386b;
+  --emojiTextColor: #fffffc;
+
+  /* Shadows */
+  --notificationPopupShadowColor: #5d001e;
+  --boxShadowShadowColor: #5d001e;
+
+  /* Modal */
+  --modalHeaderBackground: #05386b;
+  --modalHeaderText: white;
+  --modalTextShadow: black;
+  --modalButtonBackground: #05386b;
+  --modalButtonText: white;
+}
+
+.App__container {
+  background-color: var(--templateColor3);
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+}

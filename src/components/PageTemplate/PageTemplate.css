@@ -1,0 +1,242 @@
+/* Extra small devices (portrait phones, less than 576px) */
+
+.PageTemplate__container {
+  border: 2px solid var(--templateColor1);
+  width: 100vw;
+  height: 102vh;
+  overflow: scroll;
+  box-shadow: 0px 0px 10px var(--boxShadowColor),
+    0px 0px 10px var(--boxShadowColor), 0px 0px 10px var(--boxShadowColor);
+}
+
+.navbar {
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  width: 100%;
+  padding: 0%;
+  padding-top: 1%;
+  padding-bottom: 2%;
+}
+
+.navbar-brand {
+  background-color: var(--logoBgColor);
+  color: var(--logoTextColor);
+  padding: 2%;
+  padding-left: 1%;
+  font-size: 0.8em;
+  border-radius: 20px;
+}
+
+.navbar-brand:hover {
+  color: var(--logoTextColor);
+  box-shadow: 0px 0px 10px var(--logoHoverColor),
+    0px 0px 10px var(--logoHoverColor), 0px 0px 10px var(--logoHoverColor);
+  cursor: pointer;
+}
+
+.PageTemplate__logo {
+  display: inline;
+  width: 40px;
+  height: 23px;
+  position: relative;
+}
+
+.PageTemplate__navbar_icons {
+  background-color: var(--logoBgColor);
+  color: var(--logoTextColor);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 10vw;
+  padding: 2% 7%;
+  border-radius: 20px;
+}
+
+.fa {
+  transform: scale(1.2, 1.2);
+  cursor: pointer;
+  margin: 10% 15%;
+}
+
+.PageTemplate__body {
+  width: 100vw;
+  height: 94vh;
+  overflow: scroll;
+}
+
+.PageTemplate__footer {
+  display: flex;
+  justify-content: center;
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  font-size: 0.5em;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .PageTemplate__container {
+    height: 107.5vh;
+  }
+
+  .navbar {
+    padding: 0%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+  }
+
+  .navbar-brand {
+    padding: 2%;
+    padding-left: 1%;
+    font-size: 0.8em;
+  }
+
+  .PageTemplate__logo {
+    width: 40px;
+    height: 23px;
+  }
+
+  .PageTemplate__navbar_icons {
+    min-width: 8vw;
+    padding: 2% 5%;
+    border-radius: 20px;
+  }
+
+  .fa {
+    transform: scale(1.4, 1.4);
+    margin: 10% 18%;
+  }
+
+  .PageTemplate__body {
+    height: 84vh;
+  }
+
+  .PageTemplate__footer {
+    font-size: 0.8em;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .PageTemplate__container {
+    height: 98vh;
+  }
+
+  .navbar {
+    padding: 0%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+  }
+
+  .navbar-brand {
+    padding: 2%;
+    padding-left: 1%;
+    font-size: 1.2em;
+  }
+
+  .PageTemplate__logo {
+    width: 50px;
+    height: 33px;
+  }
+
+  .PageTemplate__navbar_icons {
+    min-width: 8vw;
+    padding: 2% 6%;
+    border-radius: 20px;
+  }
+
+  .fa {
+    transform: scale(1.6, 1.6);
+    margin: 10% 30%;
+  }
+
+  .PageTemplate__body {
+    height: 90vh;
+  }
+
+  .PageTemplate__footer {
+    font-size: 0.8em;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .PageTemplate__container {
+    height: 100vh;
+  }
+
+  .navbar {
+    padding: 0.5%;
+    padding-bottom: 1%;
+  }
+
+  .navbar-brand {
+    padding: 1%;
+    font-size: 1.2em;
+  }
+
+  .PageTemplate__logo {
+    width: 50px;
+    height: 33px;
+  }
+
+  .PageTemplate__navbar_icons {
+    min-width: 8vw;
+    padding: 2% 6%;
+    border-radius: 20px;
+  }
+
+  .fa {
+    transform: scale(2, 2);
+    margin: 10% 40%;
+  }
+
+  .PageTemplate__body {
+    height: 94vh;
+  }
+
+  .PageTemplate__footer {
+    font-size: 0.8em;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .PageTemplate__container {
+    height: 101vh;
+  }
+
+  .navbar {
+    padding: 0.5%;
+    padding-bottom: 0.5%;
+  }
+
+  .navbar-brand {
+    padding: 0.4%;
+    padding-right: 1%;
+    font-size: 1.2em;
+  }
+
+  .PageTemplate__logo {
+    width: 50px;
+    height: 33px;
+  }
+
+  .PageTemplate__navbar_icons {
+    min-width: 8vw;
+    padding: 1% 3%;
+    border-radius: 20px;
+  }
+
+  .fa {
+    transform: scale(1.4, 1.4);
+    margin: 10% 20%;
+  }
+
+  .PageTemplate__body {
+    height: 91vh;
+  }
+
+  .PageTemplate__footer {
+    font-size: 0.8em;
+  }
+}

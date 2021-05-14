@@ -1,0 +1,27 @@
+.AboutUs {
+  width: 100vw;
+  height: 90vh;
+  overflow: scroll;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.AboutUs .card {
+  background-color: #fdfdfd;
+  margin: 1%;
+  width: 30vw;
+  height: 80vh;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px var(--notificationPopupShadowColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AboutUs .card img {
+  width: 80%;
+  height: 250px;
+  margin-bottom: 35%;
+  border-radius: 10px;
+}

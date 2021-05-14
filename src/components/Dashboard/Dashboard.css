@@ -1,0 +1,284 @@
+/* Extra small devices (portrait phones, less than 576px) */
+
+.Dashboard__container {
+  background-color: var(--templateColor3);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 150%;
+  flex-direction: column;
+  padding: 0%;
+  padding-top: 5%;
+}
+
+.Dashboard__row {
+  border-radius: 20px;
+  box-shadow: 0px 5px 10px var(--logoBgColor);
+  background-color: var(--templateColor2);
+  overflow: scroll;
+  width: 90%;
+  height: 40%;
+  margin-bottom: 10%;
+}
+
+.Dashboard__row_header {
+  background-color: var(--templateColor1);
+  color: var(--logoTextColor);
+  width: 100%;
+  position: sticky;
+  top: 0%;
+  left: 0%;
+  z-index: 1;
+}
+
+.Dashboard__row h3 {
+  padding-top: 4%;
+  padding-bottom: 2%;
+  font-size: 1.4em;
+  color: var(--logoTextColor);
+  text-shadow: 1px 1px var(--logoBgColor), 2px 2px var(--logoBgColor);
+}
+
+.Dashboard__row_icon {
+  position: relative;
+  top: 1.5vh;
+}
+
+.Dashboard__row .fa {
+  transform: scale(2, 2);
+}
+
+.Dashboard__row .fa:hover {
+  transform: scale(2.2, 2.2);
+  box-shadow: 0px 0px 10px var(--logoBgColor);
+}
+
+.Dashboard__DM_container {
+  width: 95%;
+  margin: 4% 0% 0% 3%;
+  background-color: var(--notificationPopupBgColor);
+  border-radius: 20px;
+  color: var(--notificationTextColor);
+  box-shadow: 0px 0px 20px var(--notificationPopupShadowColor);
+}
+
+.Dashboard__DM_container:hover {
+  width: 95%;
+  margin: 4.1% 0% 0% 3.1%;
+  background-color: var(--notificationPopupHoverColor);
+  border-radius: 20px;
+  color: var(--logoTextColor);
+  box-shadow: 0px 0px 20px var(--notificationPopupShadowColor);
+  cursor: pointer;
+}
+
+.Dashboard__DM_container img {
+  margin-top: 20%;
+  margin-left: -50%;
+  width: 10vw;
+  height: 6vh;
+  border-radius: 100%;
+}
+
+.Dashboard__DM_container h5 {
+  position: relative;
+  top: 20%;
+  overflow: scroll;
+  font-size: 1.2em;
+}
+
+.Dashboard__DM_container p {
+  position: relative;
+  top: 20%;
+  background-color: var(--notificationBgColor);
+  color: var(--notificationTextColor);
+  padding: 1vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  font-size: 1.2em;
+  border-radius: 100%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .Dashboard__container {
+    width: 100%;
+    height: 100%;
+    min-height: 300%;
+  }
+
+  .Dashboard__row {
+    width: 70%;
+  }
+
+  .Dashboard__row h3 {
+    font-size: 1.4em;
+  }
+
+  .Dashboard__row_icon {
+    top: 3vh;
+    right: -2vw;
+  }
+
+  .Dashboard__DM_container img {
+    margin-top: 10%;
+    margin-left: -10%;
+    width: 7vw;
+    height: 12vh;
+    border-radius: 100%;
+  }
+
+  .Dashboard__DM_container p {
+    top: 10%;
+    padding: 1vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    font-size: 1em;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .Dashboard__container {
+    width: 100%;
+    height: 100%;
+    min-height: 290%;
+  }
+
+  .Dashboard__row {
+    width: 70%;
+  }
+
+  .Dashboard__row h3 {
+    font-size: 1.8em;
+  }
+
+  .Dashboard__row_icon {
+    position: relative;
+    top: 15px;
+    right: -2vw;
+  }
+
+  .Dashboard__DM_container {
+    font-size: 1.3em;
+  }
+
+  .Dashboard__DM_container img {
+    margin-top: 10%;
+    margin-left: -10%;
+    width: 60px;
+    height: 70px;
+  }
+
+  .Dashboard__DM_container p {
+    top: 15%;
+    padding: 1vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    font-size: 1em;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .Dashboard__container {
+    min-height: 220%;
+  }
+
+  .Dashboard__row {
+    width: 70%;
+  }
+
+  .Dashboard__row h3 {
+    font-size: 2.5em;
+  }
+
+  .Dashboard__row_icon {
+    top: 25px;
+  }
+
+  .Dashboard__row .fa {
+    transform: scale(2.6, 2.6);
+  }
+
+  .Dashboard__row .fa:hover {
+    transform: scale(2.8, 2.8);
+  }
+
+  .Dashboard__DM_container {
+    font-size: 1.6em;
+  }
+
+  .Dashboard__DM_container img {
+    margin-top: 10%;
+    margin-left: -10%;
+    width: 60px;
+    height: 70px;
+    border-radius: 100%;
+  }
+
+  .Dashboard__DM_container p {
+    top: 15%;
+    font-size: 1em;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .Dashboard__container {
+    flex-direction: row;
+    padding: 5%;
+    width: 100%;
+    height: 100%;
+    min-height: 40%;
+  }
+
+  .Dashboard__row {
+    width: 30%;
+    height: 90%;
+  }
+
+  .Dashboard__row_header {
+    width: 104%;
+  }
+
+  .Dashboard__row h3 {
+    padding-top: 4%;
+    font-size: 1.4em;
+  }
+
+  .Dashboard__row_icon {
+    position: relative;
+    top: 13px;
+    right: 1vw;
+  }
+
+  .Dashboard__row .fa {
+    transform: scale(2, 2);
+  }
+
+  .Dashboard__row .fa:hover {
+    transform: scale(2.2, 2.2);
+  }
+
+  .Dashboard__DM_container {
+    font-size: 0.8em;
+  }
+
+  .Dashboard__DM_container img {
+    margin-top: 20%;
+    margin-left: -10%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .Dashboard__DM_container p {
+    top: 10%;
+    padding: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 1.2em;
+  }
+}
