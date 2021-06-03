@@ -98,7 +98,7 @@ const DeleteGroupModal = ({
           isShown: false,
         });
 
-        handleClose();
+        handleClose(true);
       }, 1500);
     } catch (e) {
       setResultModal({
@@ -112,34 +112,35 @@ const DeleteGroupModal = ({
           isShown: false,
         });
 
-        handleClose();
+        handleClose(false);
       }, 2500);
     }
   };
 
-  const handleClose = () => {
-    const temp = location.state.connections;
-    history.replace({
-      ...history.location,
-      state: {
-        ...location.state,
-        connections: temp.filter((connection) => {
+  const handleClose = (flag) => {
+    if(flag) {
+      const temp = location.state.connections;
+      history.replace({
+        ...history.location,
+        state: {
+          ...location.state,
+          connections: temp.filter((connection) => {
+            return !groupNames.some((group) => {
+              return group.value === connection.email;
+            });
+          }),
+        },
+      });
+      setConnections(
+        temp.filter((connection) => {
           return !groupNames.some((group) => {
             return group.value === connection.email;
           });
-        }),
-      },
-    });
-    setConnections(
-      temp.filter((connection) => {
-        return !groupNames.some((group) => {
-          return group.value === connection.email;
-        });
-      })
-    );
+        })
+      );
+    }
     setGroupNames([]);
     setIsShown({
-      ...isShown,
       isShown: false,
     });
   };
@@ -211,7 +212,7 @@ const DeleteGroupModal = ({
               color: "var(--modalButtonText)",
               fontWeight: "bold",
             }}
-            onClick={handleClose}
+            onClick={()=>handleClose(false)}
           >
             Close
           </Button>

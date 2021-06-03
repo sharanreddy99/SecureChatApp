@@ -19,6 +19,8 @@ import RemoveAdminsModal from "./Modals/RemoveAdminsModal";
 import GroupInfoModal from "./Modals/GroupInfoModal";
 import DeleteMessageModal from "./DeleteMessageModal";
 import UpdateMessageModal from "./UpdateMessageModal";
+import CreatePollModal from "./Modals/CreatePollModal";
+import ViewPollModal from "./Modals/ViewPollModal";
 
 const GroupMessages = () => {
   const location = useLocation();
@@ -78,6 +80,13 @@ const GroupMessages = () => {
   });
   const [emojiPickerModal, setEmojiPickerModal] = useState({
     isShown: false,
+  });
+  const [createPollModal, setCreatePollModal] = useState({
+    isShown: false,
+  });
+  const [viewPollModal, setViewPollModal] = useState({
+    isShown: false,
+    responses: [],
   });
 
   //Effects
@@ -278,6 +287,23 @@ const GroupMessages = () => {
           state: { ...location.state, allMessages: newMessages },
         });
         setMessages([...messages, ...newMessages]);
+      }
+    });
+
+    socket.on("groupmessages__newpoll", (data) => {
+      if (activeGroup._id == data._id && activeGroup.name == data.name) {
+        setMessages([
+          ...messages,
+          {
+            text: data.text,
+            displayname: data.displayname,
+            senderemail: data.senderemail,
+            avatarUrl: data.avatarUrl,
+            date: data.date,
+            time: data.time,
+            _id: data.messageid,
+          },
+        ]);
       }
     });
 
@@ -543,6 +569,90 @@ const GroupMessages = () => {
         <div className="GroupMessages__chat w-100 ">
           <div className="GroupMessages__chatarea">
             {messages.map((message, ind) => {
+              let temparr = message.text.split("==|--");
+              if (temparr.length == 3 && temparr[0] == "thispoll") {
+                return (
+                  <div className="row" key={ind}>
+                    <div className="col">
+                      <p className={`GroupMessages__poll`}>
+                        <img src={message.avatarUrl} />
+                        <p className="email">{message.senderemail}</p>
+                        <h5 className="title">{temparr[1]}</h5>
+                        <p className="description">
+                          <b>{temparr[2]}</b>
+                        </p>
+                        <button
+                          type="button"
+                          className="form-control"
+                          onClick={async () => {
+                            await axios.post("/updatepoll", {
+                              pollid: message._id,
+                              email: user.email,
+                              pollresponse: "yes",
+                            });
+                          }}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          className="form-control mt-2"
+                          onClick={async () => {
+                            await axios.post("/updatepoll", {
+                              pollid: message._id,
+                              email: user.email,
+                              pollresponse: "no",
+                            });
+                          }}
+                        >
+                          No
+                        </button>
+                        <p className="date">
+                          Deadline:{"  "}
+                          {message.date + " " + message.time}
+                        </p>
+                        <i
+                          class="fa fa-trash GroupMessages__delete_button"
+                          onClick={() => {
+                            setDeleteMessageModal({
+                              isShown: true,
+                              message: message,
+                              editbutton: editbutton,
+                              deletebutton: deletebutton,
+                            });
+                          }}
+                        ></i>
+                        <i
+                          className="fa fa-info-circle GroupMessages__info_button"
+                          onClick={async () => {
+                            const response = await axios.post(
+                              "/fetchpollresult",
+                              { pollid: message._id }
+                            );
+                            let responses = [];
+                            let n1 = response.data.responses.yes.length;
+                            let n2 = response.data.responses.no.length;
+                            let n = n1 > n2 ? n1 : n2;
+                            for (let i = 0; i < n; i++) {
+                              responses.push(["-", "-"]);
+                            }
+                            for (let i = 0; i < n1; i++) {
+                              responses[i][0] = response.data.responses.yes[i];
+                            }
+                            for (let i = 0; i < n2; i++) {
+                              responses[i][1] = response.data.responses.no[i];
+                            }
+                            setViewPollModal({
+                              isShown: true,
+                              responses: responses,
+                            });
+                          }}
+                        ></i>
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
               return (
                 <div className="row" key={ind}>
                   <div className="col">
@@ -704,6 +814,23 @@ const GroupMessages = () => {
                 setEmojiPickerModal({ isShown: true });
               }}
             ></i>
+            <i
+              class="fa fa-bar-chart"
+              onClick={() => {
+                if (JSON.stringify(activeGroup) === JSON.stringify({})) {
+                  setModal({
+                    isShown: true,
+                    ModalTitle: "Choose a Group...",
+                    ModalBody: "Please Choose a Group to chat with...",
+                  });
+                  return;
+                }
+
+                setCreatePollModal({
+                  isShown: true,
+                });
+              }}
+            ></i>
           </div>
         </div>
       </div>
@@ -799,6 +926,17 @@ const GroupMessages = () => {
         setMessage={setMessage}
         emojiText={emojiText}
         setEmojiText={setEmojiText}
+      />
+      <CreatePollModal
+        isShown={createPollModal.isShown}
+        setIsShown={setCreatePollModal}
+        group={activeGroup}
+        user={user}
+      />
+      <ViewPollModal
+        isShown={viewPollModal.isShown}
+        setIsShown={setViewPollModal}
+        responses={viewPollModal.responses}
       />
     </div>
   );

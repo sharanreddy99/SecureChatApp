@@ -62,6 +62,7 @@ router.post("/senddirectmessage", async (req, res) => {
 
     data.date = DateFormat(data.date, "mmm dS, yyyy");
     data.text = encryptor.decrypt(data.text);
+    data._id  = message._id
 
     req.app.get("socketio").emit("directmessages__newmessage", { ...data });
 

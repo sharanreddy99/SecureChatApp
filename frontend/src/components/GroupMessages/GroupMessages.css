@@ -126,7 +126,7 @@
   font-size: 0.8em;
   background-color: var(--templateColor1);
   color: var(--logoTextColor);
-  padding-right: 28%;
+  padding-right: 30%;
 }
 
 .GroupMessages__inputarea .customform:focus {
@@ -157,6 +157,79 @@
   overflow-wrap: break-word;
   color: var(--logoBgColor);
   box-shadow: 5px 5px 10px var(--templateColor1);
+}
+
+.GroupMessages__poll {
+  position: relative;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 10px;
+  width: fit-content;
+  background-color: var(--pollMessageColor);
+  width: 100%;
+  font-size: 0.7em;
+  font-weight: bold;
+  overflow-wrap: break-word;
+  color: var(--logoBgColor);
+  box-shadow: 5px 5px 10px var(--templateColor1);
+}
+
+.GroupMessages__poll img {
+  width: 10%;
+  margin-right: 2%;
+  border-radius: 20%;
+  float: left;
+}
+
+.GroupMessages__poll .email {
+  position: relative;
+  top: 8px;
+}
+
+.GroupMessages__poll .title {
+  display: block;
+  text-shadow: 1px 1px white, 2px 2px red;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.GroupMessages__poll .description {
+  display: block;
+  text-align: center;
+}
+
+.GroupMessages__poll .date {
+  margin-top: 2%;
+  margin-bottom: 0%;
+  display: block;
+  text-align: center;
+}
+
+.GroupMessages__poll .form-control {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
+.GroupMessages__poll .GroupMessages__delete_button {
+  transform: scale(1.5, 1.5);
+  color: red;
+  position: absolute;
+  right: 2%;
+  top: 90%;
+  margin: 0%;
+  float: right;
+}
+
+.GroupMessages__poll .GroupMessages__info_button {
+  color: red;
+  position: absolute;
+  left: 2%;
+  top: 90%;
+  transform: scale(1.5, 1.5);
+  float: left;
+  margin: 0%;
 }
 
 .GroupMessages__date {
@@ -362,7 +435,7 @@
 
   .GroupMessages__inputarea .customform {
     font-size: 0.6em;
-    padding-right: 28%;
+    padding-right: 34%;
   }
 
   .GroupMessages__inputarea .fa {
@@ -373,6 +446,10 @@
   }
 
   .GroupMessages__message {
+    font-size: 0.6em;
+  }
+
+  .GroupMessages__poll {
     font-size: 0.6em;
   }
 
@@ -520,7 +597,7 @@
 
   .GroupMessages__inputarea .customform {
     font-size: 1.3em;
-    padding-right: 36%;
+    padding-right: 46%;
   }
 
   .GroupMessages__inputarea .fa {
@@ -531,6 +608,12 @@
   }
 
   .GroupMessages__message {
+    padding-left: 15%;
+    padding-right: 15%;
+    font-size: 1.3em;
+  }
+
+  .GroupMessages__poll {
     padding-left: 15%;
     padding-right: 15%;
     font-size: 1.3em;
@@ -676,7 +759,7 @@
 
   .GroupMessages__inputarea .customform {
     font-size: 1.8em;
-    padding-right: 36%;
+    padding-right: 44%;
   }
 
   .GroupMessages__inputarea .fa {
@@ -687,6 +770,12 @@
   }
 
   .GroupMessages__message {
+    padding-left: 15%;
+    padding-right: 15%;
+    font-size: 1.7em;
+  }
+
+  .GroupMessages__poll {
     padding-left: 15%;
     padding-right: 15%;
     font-size: 1.7em;
@@ -831,7 +920,7 @@
 
   .GroupMessages__inputarea .customform {
     font-size: 1em;
-    padding-right: 36%;
+    padding-right: 26%;
   }
 
   .GroupMessages__inputarea .fa {
@@ -842,6 +931,12 @@
   }
 
   .GroupMessages__message {
+    padding-left: 7%;
+    padding-right: 7%;
+    font-size: 1em;
+  }
+
+  .GroupMessages__poll {
     padding-left: 7%;
     padding-right: 7%;
     font-size: 1em;

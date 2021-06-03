@@ -18,6 +18,7 @@
   /* Message */
   --senderMessageColor: rgb(67, 184, 67);
   --receiverMessageColor: rgb(255, 0, 0);
+  --pollMessageColor: gold;
 
   /* Emoji */
   --emojiBoxColor: #05386b;

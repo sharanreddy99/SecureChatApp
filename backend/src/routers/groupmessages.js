@@ -6,6 +6,7 @@ const GroupMessages = require("../models/groupmessages");
 const DelayGroupMessages = require("../models/delaygroupmessages");
 
 var Filter = require("bad-words");
+const PollMessages = require("../models/pollmessages");
 var filter = new Filter();
 const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
 
@@ -407,6 +408,7 @@ router.post("/deletegroupmessage", async (req, res) => {
       return true;
     });
     await groupChat.save();
+    await PollMessages.deleteOne({ pollid: req.body.messageid });
 
     if (oldLen != groupChat.messages.length) {
       req.app.get("socketio").emit("groupmessages__deletemessage", {
@@ -452,7 +454,11 @@ router.post("/sendgroupmessage", async (req, res) => {
       date: req.body.date,
       time: req.body.time,
       seenArr: groupChat.members.map((member) => {
-        return { email: member.email, seen: false };
+          let isSeen = false 
+          if(member.email === req.body.senderemail) {
+            isSeen = true
+          }
+          return {email: member.email, seen: isSeen };
       }),
     };
 
@@ -663,6 +669,114 @@ router.post("/delaygroupmessage", async (req, res) => {
       ModalTitle: "Server Error...",
       ModalBody: "Internal Server Error Occured...",
     });
+  }
+});
+
+router.post("/createpoll", async (req, res) => {
+  try {
+    let groupid = req.body.groupid;
+    let groupname = req.body.groupname;
+    let pollname = req.body.pollname;
+    let polldescription = req.body.polldescription;
+    let expirydate = req.body.expirydate;
+    let expirytime = req.body.expirytime;
+    message = ["thispoll", pollname, polldescription].join("==|--");
+
+    var groupChat = await GroupMessages.findOne(
+      {
+        _id: groupid,
+        name: groupname,
+      },
+      null
+    );
+
+    var data = {
+      text: encryptor.encrypt(message),
+      displayname: req.body.displayname,
+      senderemail: req.body.email,
+      avatarUrl: req.body.avatarUrl,
+      date: expirydate,
+      time: expirytime,
+      seenArr: groupChat.members.map((member) => {
+        return { email: member.email, seen: false };
+      }),
+    };
+
+    groupChat.messages.push(data);
+    await groupChat.save();
+    var pollMessage = new PollMessages({
+      pollid: groupChat.messages[groupChat.messages.length - 1]["_id"],
+      responses: { yes: [], no: [] },
+    });
+    await pollMessage.save();
+
+    data.date = DateFormat(data.date, "mmm dS, yyyy");
+
+    req.app.get("socketio").emit("groupmessages__newpoll", {
+      _id: groupChat._id,
+      name: groupChat.name,
+      text: encryptor.decrypt(data.text),
+      displayname: data.displayname,
+      senderemail: data.senderemail,
+      avatarUrl: data.avatarUrl,
+      date: data.date,
+      time: data.time,
+      messageid: groupChat.messages[groupChat.messages.length - 1]["_id"],
+    });
+    res.status(201).send("success");
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
+  }
+});
+
+router.post("/updatepoll", async (req, res) => {
+  try {
+    let pollid = req.body.pollid;
+    let pollresponse = req.body.pollresponse;
+    let email = req.body.email;
+
+    var pollMessage = await PollMessages.findOne(
+      {
+        pollid: pollid,
+      },
+      null
+    );
+
+    pollMessage.responses.yes = pollMessage.responses.yes.filter(
+      (row) => row !== email
+    );
+    pollMessage.responses.no = pollMessage.responses.no.filter(
+      (row) => row !== email
+    );
+    if (pollresponse === "yes") {
+      pollMessage.responses.yes.push(email);
+    } else {
+      pollMessage.responses.no.push(email);
+    }
+
+    await pollMessage.save();
+    res.status(201).send("success");
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
+  }
+});
+
+router.post("/fetchpollresult", async (req, res) => {
+  try {
+    let pollid = req.body.pollid;
+
+    var pollMessage = await PollMessages.findOne(
+      {
+        pollid: pollid,
+      },
+      null
+    );
+    res.status(201).send({ responses: pollMessage.responses });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "error" });
   }
 });
 

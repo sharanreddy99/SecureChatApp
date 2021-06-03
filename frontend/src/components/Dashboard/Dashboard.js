@@ -27,11 +27,15 @@ const Dashboard = () => {
       const newConnections = DMSConnections.filter((connection) => {
         return connection.email !== data.email;
       });
+      const newEmailConnections = EmailConnections.filter((connection) => {
+        return connection.email !== data.email;
+      });
       history.replace({
         ...history.location,
-        state: { ...location.state, connections: newConnections },
+        state: { ...location.state, connections: newConnections,emailconnections: newEmailConnections },
       });
       setDMSConnections(newConnections);
+      setEmailConnections(newEmailConnections);
     });
 
     return () => {
@@ -161,11 +165,17 @@ const Dashboard = () => {
       connectionemail: connectionemail,
     });
 
+    const response2 = await axios.post("/getemailgroups", { owner: user.email });
+    const allgroups = response2.data.allgroups.map((group) => ({
+      email: group.name,
+      isGroup: true,
+    }));
+
     history.push({
       pathname: "/emails",
       state: {
         user: user,
-        connections: location.state.emailconnections,
+        connections: [...location.state.emailconnections, ...allgroups],
         inboxMails: response.data.emails,
       },
     });
