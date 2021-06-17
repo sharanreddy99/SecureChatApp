@@ -8,7 +8,7 @@ const DelayGroupMessages = require("../models/delaygroupmessages");
 var Filter = require("bad-words");
 const PollMessages = require("../models/pollmessages");
 var filter = new Filter();
-const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
+const encryptor = require("simple-encryptor")(process.env.SECURECHAT_NODE_SECRET_KEY);
 
 router.post("/exitgroup", async (req, res) => {
   try {

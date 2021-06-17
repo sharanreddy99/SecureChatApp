@@ -7,10 +7,10 @@ let transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     type: "Oauth2",
-    user: process.env.NODEMAILER_EMAIL,
-    clientId: process.env.NODEMAILER_CLIENT_ID,
-    clientSecret: process.env.NODEMAILER_CLIENT_SECRET,
-    refreshToken: process.env.NODEMAILER_REFRESH_TOKEN,
+    user: process.env.SECURECHAT_NODE_EMAIL,
+    clientId: process.env.SECURECHAT_NODE_CLIENT_ID,
+    clientSecret: process.env.SECURECHAT_NODE_CLIENT_SECRET,
+    refreshToken: process.env.SECURECHAT_NODE_REFRESH_TOKEN,
   },
 });
 

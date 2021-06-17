@@ -7,7 +7,7 @@ const DelayDirectMessages = require("../models/delaydirectmessages");
 
 var Filter = require("bad-words");
 var filter = new Filter();
-const encryptor = require("simple-encryptor")(process.env.SECRET_KEY);
+const encryptor = require("simple-encryptor")(process.env.SECURECHAT_NODE_SECRET_KEY);
 
 router.post("/deletedirectmessage", async (req, res) => {
   try {
