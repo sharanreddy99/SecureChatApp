@@ -35,9 +35,6 @@ services:
         
     node:
       volumes:
-        - type: bind
-          source: ./backend
-          target: /app/backend
         - frontend-content:/app/backend/src/build
         
       container_name: securechat_backend
