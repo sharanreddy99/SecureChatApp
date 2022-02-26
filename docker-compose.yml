@@ -2,55 +2,66 @@ version: "3.9"
 volumes:
   frontend-content:
 services:
-    mongo:
-      container_name: securechat_db
-      image: mongo
-      environment:
-        MONGO_INITDB_DATABASE: ${SECURECHAT_MONGO_DATABASE}
-      ports:
-        - 27017:27017
+  mongo:
+    container_name: securechat_db
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: ${SECURECHAT_MONGO_DATABASE}
+    ports:
+      - 27017:27017
 
-    mongo-express:
-      container_name: securechat_db_fe
-      image: mongo-express
-      ports:
-        - ${SECURECHAT_MONGO_FE_PORT}:8081
-      depends_on:
-        - mongo
+  mongo-express:
+    container_name: securechat_db_fe
+    image: mongo-express
+    ports:
+      - ${SECURECHAT_MONGO_FE_PORT}:8081
+    depends_on:
+      - mongo
 
-    react:
-      volumes:
-        - frontend-content:/app/frontend/build/
-      container_name: securechat_frontend
-      build: 
-        context: ./frontend
-      environment: 
-        REACT_APP_API_KEY: ${REACT_APP_API_KEY}
-        REACT_APP_AUTH_DOMAIN: ${REACT_APP_AUTH_DOMAIN}
-        REACT_APP_PROJECT_ID: ${REACT_APP_PROJECT_ID}
-        REACT_APP_STORAGE_BUCKET: ${REACT_APP_STORAGE_BUCKET}
-        REACT_APP_MESSAGING_SENDER_ID: ${REACT_APP_MESSAGING_SENDER_ID}
-        REACT_APP_APP_ID: ${REACT_APP_APP_ID}
-        REACT_APP_MEASUREMENT_ID: ${REACT_APP_MEASUREMENT_ID}
-        
-    node:
-      volumes:
-        - frontend-content:/app/backend/src/build
-        
-      container_name: securechat_backend
-      build: 
-        context: ./backend
-      ports:
-        - ${SECURECHAT_NODE_PORT}:${SECURECHAT_NODE_PORT}
-      depends_on:
-        - mongo-express
-        - react
-      environment:
-        SECURECHAT_NODE_PORT: ${SECURECHAT_NODE_PORT}
-        SECURECHAT_NODE_EMAIL: ${SECURECHAT_NODE_EMAIL}
-        SECURECHAT_NODE_PASSWORD: ${SECURECHAT_NODE_PASSWORD}
-        SECURECHAT_NODE_SECRET_KEY: ${SECURECHAT_NODE_SECRET_KEY}
-        SECURECHAT_NODE_MONGOURL: mongodb://mongo:27017/${SECURECHAT_MONGO_DATABASE}
-        SECURECHAT_NODE_CLIENT_ID: ${SECURECHAT_NODE_CLIENT_ID}
-        SECURECHAT_NODE_CLIENT_SECRET: ${SECURECHAT_NODE_CLIENT_SECRET}
-        SECURECHAT_NODE_REFRESH_TOKEN: ${SECURECHAT_NODE_REFRESH_TOKEN}
+  react:
+    volumes:
+      - frontend-content:/app/frontend/build/
+    container_name: securechat_frontend
+    build: 
+      context: ./frontend
+    environment: 
+      REACT_APP_API_KEY: ${REACT_APP_API_KEY}
+      REACT_APP_AUTH_DOMAIN: ${REACT_APP_AUTH_DOMAIN}
+      REACT_APP_PROJECT_ID: ${REACT_APP_PROJECT_ID}
+      REACT_APP_STORAGE_BUCKET: ${REACT_APP_STORAGE_BUCKET}
+      REACT_APP_MESSAGING_SENDER_ID: ${REACT_APP_MESSAGING_SENDER_ID}
+      REACT_APP_APP_ID: ${REACT_APP_APP_ID}
+      REACT_APP_MEASUREMENT_ID: ${REACT_APP_MEASUREMENT_ID}
+      
+  node:
+    volumes:
+      - frontend-content:/app/backend/src/build
+      
+    container_name: securechat_backend
+    build: 
+      context: ./backend
+    ports:
+      - ${SECURECHAT_NODE_PORT}:${SECURECHAT_NODE_PORT}
+    depends_on:
+      - mongo-express
+      - react
+    environment:
+      SECURECHAT_NODE_PORT: ${SECURECHAT_NODE_PORT}
+      SECURECHAT_NODE_EMAIL: ${SECURECHAT_NODE_EMAIL}
+      SECURECHAT_NODE_PASSWORD: ${SECURECHAT_NODE_PASSWORD}
+      SECURECHAT_NODE_SECRET_KEY: ${SECURECHAT_NODE_SECRET_KEY}
+      SECURECHAT_NODE_MONGOURL: mongodb://mongo:27017/${SECURECHAT_MONGO_DATABASE}
+      SECURECHAT_NODE_CLIENT_ID: ${SECURECHAT_NODE_CLIENT_ID}
+      SECURECHAT_NODE_CLIENT_SECRET: ${SECURECHAT_NODE_CLIENT_SECRET}
+      SECURECHAT_NODE_REFRESH_TOKEN: ${SECURECHAT_NODE_REFRESH_TOKEN}
+
+  nginx:
+    depends_on:
+      - react
+      - node
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
