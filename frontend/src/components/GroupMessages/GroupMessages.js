@@ -99,7 +99,7 @@ const GroupMessages = () => {
   }, []);
 
   useEffect(() => {
-    const socket = socketIOClient(process.env.REACT_APP_PROJECT_ID);
+    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL);
 
     socket.on("groupmessages__newgroup", (data) => {
       if (data && Object.keys(data).length > 0) {

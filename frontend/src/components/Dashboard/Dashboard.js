@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   //Effects
   useEffect(() => {
-    const socket = socketIOClient(process.env.REACT_APP_PROJECT_ID);
+    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL);
 
     socket.on("users__removeconnection", (data) => {
       const newConnections = DMSConnections.filter((connection) => {
