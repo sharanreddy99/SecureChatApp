@@ -64,4 +64,4 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - ${SECURECHAT_NGINX_PORT}:80
