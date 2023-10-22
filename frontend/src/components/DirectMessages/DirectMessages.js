@@ -61,7 +61,7 @@ const DirectMessages = () => {
   }, []);
 
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:4201");
+    const socket = socketIOClient(process.env.REACT_APP_PROJECT_ID);
 
     socket.on("users__removeconnection", (data) => {
       const newConnections = connections.filter((connection) => {

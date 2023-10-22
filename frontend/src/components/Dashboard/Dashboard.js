@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   //Effects
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:4201");
+    const socket = socketIOClient(process.env.REACT_APP_PROJECT_ID);
 
     socket.on("users__removeconnection", (data) => {
       const newConnections = DMSConnections.filter((connection) => {
@@ -32,7 +32,11 @@ const Dashboard = () => {
       });
       history.replace({
         ...history.location,
-        state: { ...location.state, connections: newConnections,emailconnections: newEmailConnections },
+        state: {
+          ...location.state,
+          connections: newConnections,
+          emailconnections: newEmailConnections,
+        },
       });
       setDMSConnections(newConnections);
       setEmailConnections(newEmailConnections);
@@ -165,7 +169,9 @@ const Dashboard = () => {
       connectionemail: connectionemail,
     });
 
-    const response2 = await axios.post("/getemailgroups", { owner: user.email });
+    const response2 = await axios.post("/getemailgroups", {
+      owner: user.email,
+    });
     const allgroups = response2.data.allgroups.map((group) => ({
       email: group.name,
       isGroup: true,

@@ -22,9 +22,9 @@ services:
     volumes:
       - frontend-content:/app/frontend/build/
     container_name: securechat_frontend
-    build: 
+    build:
       context: ./frontend
-    environment: 
+    environment:
       REACT_APP_API_KEY: ${REACT_APP_API_KEY}
       REACT_APP_AUTH_DOMAIN: ${REACT_APP_AUTH_DOMAIN}
       REACT_APP_PROJECT_ID: ${REACT_APP_PROJECT_ID}
@@ -32,13 +32,14 @@ services:
       REACT_APP_MESSAGING_SENDER_ID: ${REACT_APP_MESSAGING_SENDER_ID}
       REACT_APP_APP_ID: ${REACT_APP_APP_ID}
       REACT_APP_MEASUREMENT_ID: ${REACT_APP_MEASUREMENT_ID}
-      
+      REACT_APP_SOCKET_URL: ${REACT_APP_SOCKET_URL}
+
   node:
     volumes:
       - frontend-content:/app/backend/src/build
-      
+
     container_name: securechat_backend
-    build: 
+    build:
       context: ./backend
     ports:
       - ${SECURECHAT_NODE_PORT}:${SECURECHAT_NODE_PORT}
