@@ -1,6 +1,6 @@
-# Welcome to the SecureChatApp Repository
-A MERN Stack web application used to send instant as well as scheduled Direct Messages, Group Messages, Emails to connected members in the application.
+# Delay Messanger.
+Connect seamlessly with a versatile messaging app. Send instant or scheduled direct/group messages and emails. Features include polls, message editing/deletion, emojis, unread message tracking, and a comprehensive mailbox for inbox and sent items. Stay notified and attach documents effortlessly.
 
 # Instructions
 1) Goto the project directory and execute the command **docker-compose up**
-2) Access webiste at **localhost:4201** and database at **localhost:8081**<br><hr>
+2) Access the webiste at **localhost:80**
