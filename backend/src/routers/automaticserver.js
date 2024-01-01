@@ -7,7 +7,9 @@ const GroupMessages = require("../models/groupmessages");
 const DelayGroupMessages = require("../models/delaygroupmessages");
 const Emails = require("../models/emails");
 const DelayEmails = require("../models/delayemails");
-const encryptor = require("simple-encryptor")(process.env.SECURECHAT_NODE_SECRET_KEY);
+const encryptor = require("simple-encryptor")(
+  process.env.SECURECHAT_NODE_SECRET_KEY
+);
 const fs = require("fs-extra");
 
 async function updateDelayedDirectMessages(socket) {
@@ -151,7 +153,7 @@ async function updateDelayedEmails(socket) {
 
       const transporter = require("../miscellaneous/email");
       const mailOptions = {
-        from: "sharanreddyfake@gmail.com",
+        from: process.env.SECURECHAT_NODE_EMAIL,
         to: email.receiveremails,
         subject: email.subject,
         text: email.text,

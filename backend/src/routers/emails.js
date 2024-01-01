@@ -122,7 +122,7 @@ router.post("/sendmail", (req, res) => {
       await newMail.save();
 
       const mailOptions = {
-        from: "sharanreddyfake@gmail.com",
+        from: process.env.SECURECHAT_NODE_EMAIL,
         to: newEmails,
         subject: req.body.subject,
         text: req.body.text,
