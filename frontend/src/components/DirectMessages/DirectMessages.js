@@ -8,7 +8,7 @@ import TemplateModal from "../Modals/TemplateModal";
 import TimerModal from "./TimerModal";
 import DeleteMessageModal from "./DeleteMessageModal";
 import UpdateMessageModal from "./UpdateMessageModal";
-import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import EmojiPickerModal from "../Modals/EmojiPickerModal";
 
 const DirectMessages = () => {
@@ -61,7 +61,7 @@ const DirectMessages = () => {
   }, []);
 
   useEffect(() => {
-    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL);
+    const socket = io({ path: "/web_socket_server" });
 
     socket.on("users__removeconnection", (data) => {
       const newConnections = connections.filter((connection) => {

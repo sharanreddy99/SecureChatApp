@@ -16,7 +16,10 @@ app.use(cors());
 app.use(express.json());
 
 const server = require("http").createServer(app);
-const io = require("socket.io")(server, { cors: { origin: "*" } });
+const io = require("socket.io")(server, {
+  cors: { origin: "*" },
+  path: "/web_socket_server/",
+});
 app.set("socketio", io);
 
 require("./routers/automaticserver")(io);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import "./GroupMessages.css";
 import { useHistory, useLocation } from "react-router-dom";
 import $ from "jquery";
@@ -99,7 +99,7 @@ const GroupMessages = () => {
   }, []);
 
   useEffect(() => {
-    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL);
+    const socket = io({ path: "/web_socket_server" });
 
     socket.on("groupmessages__newgroup", (data) => {
       if (data && Object.keys(data).length > 0) {

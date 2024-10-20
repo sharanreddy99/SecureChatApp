@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { useStateValue } from "../../StateProvider";
 import { useHistory, useLocation } from "react-router-dom";
-import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 
 const Dashboard = () => {
   const [{ user }, dispatch] = useStateValue();
@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   //Effects
   useEffect(() => {
-    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL);
+    const socket = io({ path: "/web_socket_server" });
 
     socket.on("users__removeconnection", (data) => {
       const newConnections = DMSConnections.filter((connection) => {
